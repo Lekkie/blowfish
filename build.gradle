@@ -1,0 +1,39 @@
+group 'com.avantir'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.0.12.Final'
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.0.12.Final'
+    compile group: 'com.zaxxer', name: 'HikariCP', version: '2.7.2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '1.5.7.RELEASE',{
+        exclude group: "org.apache.tomcat", module: "tomcat-jdbc"
+    }
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.7.RELEASE'
+    compile group: 'com.h2database', name: 'h2', version: '1.4.196'
+
+
+    // https://mvnrepository.com/artifact/com.github.kpavlov.jreactive8583/netty-iso8583
+    compile group: 'com.github.kpavlov.jreactive8583', name: 'netty-iso8583', version: '0.2.1',{
+        exclude group: "net.sf.j8583", module: "j8583"
+    }
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.7.RELEASE'
+
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'com.github.danielwegener', name: 'logback-kafka-appender', version: '0.1.0'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.11'
+    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.1.11'
+    compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.8'
+
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.7.RELEASE'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
