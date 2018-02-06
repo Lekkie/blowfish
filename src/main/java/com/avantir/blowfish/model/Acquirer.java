@@ -22,6 +22,8 @@ public class Acquirer extends BaseModel{
     String name;
     @Column(name = "code", nullable = false, unique = true)
     String code;
+    @Column(name = "cbn_code", nullable = false, unique = true)
+    String cbnCode;
     @Column(name = "address", nullable = false)
     String address;
     @Column(name = "phoneNo", nullable = false)
@@ -34,6 +36,9 @@ public class Acquirer extends BaseModel{
     boolean enableAllBin;
     @Column(name = "description", nullable = true)
     private String description;
+    @Column(name = "status", nullable = false)
+    private int status = 1;
+
 
     public Long getId() {
         return id;
@@ -105,5 +110,21 @@ public class Acquirer extends BaseModel{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCbnCode() {
+        return cbnCode;
+    }
+
+    public void setCbnCode(String cbnCode) {
+        this.cbnCode = cbnCode;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

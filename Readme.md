@@ -6,7 +6,7 @@ Tran Types
 ==========
 log to transaction table
 ------------------------
-Notify transaction status - 
+Notify transaction status
 Card Purchase
 Cash Advance
 Refund

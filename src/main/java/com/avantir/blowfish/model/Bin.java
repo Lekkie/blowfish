@@ -23,6 +23,8 @@ public class Bin extends BaseModel implements Serializable {
     private String code;
     @Column(name = "description", nullable = true)
     private String description;
+    @Column(name = "status", nullable = false)
+    private int status = 1;
 
 
     public Long getId() {
@@ -47,5 +49,13 @@ public class Bin extends BaseModel implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

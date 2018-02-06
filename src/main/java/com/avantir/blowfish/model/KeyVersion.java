@@ -23,11 +23,15 @@ public class KeyVersion extends BaseModel implements Serializable {
     @Column(name = "version", nullable = false, unique = true)
     private String version; //e.g 1.0, 1.1
     @Column(name = "usage", nullable = false, unique = false)
-    private String usage; //e.g Auth, Encrypt, Sign
+    private int usage; //e.g Auth = 1, Encrypt = 2, Sign (Hash) = 3
     @Column(name = "algo", nullable = false, unique = false)
     private String algo; //e.g SHA512,SHA256
     @Column(name = "salt", nullable = true)
     private String salt; //e.g SHA512,SHA256
+    @Column(name = "description", nullable = true)
+    private String description;
+    @Column(name = "status", nullable = false)
+    private int status = 1;
 
 
     public Long getId() {
@@ -46,11 +50,11 @@ public class KeyVersion extends BaseModel implements Serializable {
         this.version = version;
     }
 
-    public String getUsage() {
+    public int getUsage() {
         return usage;
     }
 
-    public void setUsage(String usage) {
+    public void setUsage(int usage) {
         this.usage = usage;
     }
 
@@ -60,5 +64,29 @@ public class KeyVersion extends BaseModel implements Serializable {
 
     public void setAlgo(String algo) {
         this.algo = algo;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

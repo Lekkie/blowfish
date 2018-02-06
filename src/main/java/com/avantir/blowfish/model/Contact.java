@@ -18,14 +18,16 @@ public class Contact extends BaseModel{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", nullable = false, unique = true)
-    String name;
+    @Column(name = "fname", nullable = false, unique = true)
+    String fname;
+    @Column(name = "lname", nullable = false, unique = true)
+    String lname;
     @Column(name = "address", nullable = false)
     String address;
     @Column(name = "phoneNo", nullable = true)
     String phoneNo;
-    @Column(name = "description", nullable = true)
-    private String description;
+    @Column(name = "status", nullable = false)
+    private int status = 1;
 
     public Long getId() {
         return id;
@@ -35,12 +37,20 @@ public class Contact extends BaseModel{
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFname() {
+        return fname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
     }
 
     public String getAddress() {
@@ -59,11 +69,11 @@ public class Contact extends BaseModel{
         this.phoneNo = phoneNo;
     }
 
-    public String getDescription() {
-        return description;
+    public int getStatus() {
+        return status;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

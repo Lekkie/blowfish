@@ -23,6 +23,8 @@ public class Domain extends BaseModel implements Serializable {
     private String name; //e.g owner, acquirer, merchant
     @Column(name = "description", nullable = true)
     private String description;
+    @Column(name = "status", nullable = false)
+    private int status = 1;
 
 
     public Long getId() {
@@ -39,5 +41,21 @@ public class Domain extends BaseModel implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

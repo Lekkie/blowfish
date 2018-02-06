@@ -24,7 +24,7 @@ public class Merchant extends BaseModel{
     String code;
     @Column(name = "address", nullable = false)
     String address;
-    @Column(name = "phoneNo", nullable = false)
+    @Column(name = "phone_no", nullable = false)
     String phoneNo;
     @Column(name = "domain_id", nullable = false)
     Long domain_id;
@@ -34,6 +34,8 @@ public class Merchant extends BaseModel{
     boolean enableAllBin;
     @Column(name = "description", nullable = true)
     private String description;
+    @Column(name = "status", nullable = false)
+    private int status = 1;
 
     public Long getId() {
         return id;
@@ -105,5 +107,13 @@ public class Merchant extends BaseModel{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
