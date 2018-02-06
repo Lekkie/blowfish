@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.gquintana.metrics:metrics-sql:3.2.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.gquintana.metrics/metrics-sql/3.2.1/40dbe7d7d0e847c4aa8ae5cc691a90f8572afcec/metrics-sql-3.2.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.gquintana.metrics/metrics-sql/3.2.1/17c5582ccb60d03b1e846a4b19869aebb417d658/metrics-sql-3.2.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

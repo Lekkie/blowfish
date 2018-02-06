@@ -1,5 +1,7 @@
 blowfish:
   port: 30000
+
+
 ###
 #   Database Settings
 ###
@@ -101,5 +103,8 @@ management:
       settings:
         trace: false
         web-allow-others: false
+
+
+
 
 
