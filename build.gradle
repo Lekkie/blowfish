@@ -10,6 +10,12 @@ repositories {
 }
 
 dependencies {
+
+    compile group: 'biz.paluch.redis', name: 'lettuce', version: '4.4.1.Final'
+    compile group: 'org.springframework.data', name: 'spring-data-redis', version: '2.0.2.RELEASE',{
+        exclude group: "org.apache.tomcat", module: "tomcat-jdbc"
+    }
+
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.0.12.Final'
     compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.0.12.Final'
     compile group: 'com.zaxxer', name: 'HikariCP', version: '2.7.2'

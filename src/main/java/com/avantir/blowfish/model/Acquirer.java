@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @DynamicInsert
 @Table(name = "tbl_acquirers")
+@Cacheable(true)
 @SuppressWarnings("serial")
 public class Acquirer extends BaseModel{
 

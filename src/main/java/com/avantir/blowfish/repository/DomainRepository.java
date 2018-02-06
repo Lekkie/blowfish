@@ -16,10 +16,10 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface DomainRepository extends JpaRepository<Domain, String> {
+public interface DomainRepository extends JpaRepository<Domain, Long> {
 
     //@Cacheable(value = "endpointById")
-    Domain findById(@Param("id") Long id);
+    //Domain findById(@Param("id") Long id);
     @Query("FROM Node n WHERE n.status = :status")
     List<Domain> findByStatus(@Param("status") int status);
 

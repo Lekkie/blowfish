@@ -2,6 +2,7 @@ package com.avantir.blowfish.repository;
 
 import com.avantir.blowfish.model.Acquirer;
 import com.avantir.blowfish.model.Bin;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,10 +17,10 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface AcquirerRepository extends JpaRepository<Acquirer, String> {
+public interface AcquirerRepository extends JpaRepository<Acquirer, Long> {
 
     //@Cacheable(value = "endpointById")
-    Acquirer findById(@Param("id") Long id);
+    //Acquirer findById(@Param("id") Long id);
     //@Cacheable(value = "endpointByName")
     Acquirer findByCodeAllIgnoringCase(@Param("code") String code);
     @Query("FROM Node n WHERE n.status = :status")

@@ -285,3 +285,12 @@ Get Contacts
 Get Contact
 Update Contact
 
+
+
+App Ops
+=========
+Cache to Redis
+Log to Kafka (Metrics)
+Unit test
+
+

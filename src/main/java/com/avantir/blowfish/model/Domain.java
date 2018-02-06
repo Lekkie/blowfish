@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Entity
 @DynamicInsert
 @Table(name = "tbl_domains")
+@Cacheable(true)
 @SuppressWarnings("serial")
 public class Domain extends BaseModel implements Serializable {
 
