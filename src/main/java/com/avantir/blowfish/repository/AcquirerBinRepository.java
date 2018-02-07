@@ -19,7 +19,7 @@ import java.util.List;
 public interface AcquirerBinRepository extends JpaRepository<AcquirerBin, Long> {
 
     //@Cacheable(value = "endpointById")
-    AcquirerBin findById(@Param("id") Long id);
+    //AcquirerBin findById(@Param("id") Long id);
     //@Cacheable(value = "endpointByName")
     List<AcquirerBin> findByAcquirerId(@Param("acquirerId") Long acquirerId);
     AcquirerBin findByBinId(@Param("binId") Long binId);

@@ -33,7 +33,7 @@ public abstract class ISO8583Node {
 
     protected void receiveMessage(ChannelHandlerContext ctx, IsoMessage isoMessage){
         Exchange exchange = new Exchange(isoBridge.getIsoPackagerName(), isoBridge.isBinaryBitmap(), isoMessage, true, node, this, ctx);
-        isoProcessor.process(exchange);
+        isoProcessor.processIso8583(exchange);
     }
 
     protected void sendMessage(IConnection connection, IsoMessage isoMessage) throws Exception{

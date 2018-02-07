@@ -289,6 +289,7 @@ Update Contact
 
 App Ops
 =========
+Create Docker image
 Cache to Redis
 Log to Kafka (Metrics)
 Unit test

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * Service layer.
  * Specify transactional behavior and mainly
@@ -29,7 +31,8 @@ public class AcquirerMerchantService {
 
         try
         {
-            return acquirerMerchantRepository.findById(id);
+            Optional<AcquirerMerchant> optional = acquirerMerchantRepository.findById(id);
+            return optional.orElse(null);
         }
         catch(Exception ex)
         {

@@ -87,7 +87,7 @@ public class IsoPreprocessor extends APreprocessor {
         }
 
         try{
-            Transaction transaction = MessageUtil.copyIsoMessageRequest(isoMessage, 1);
+            Transaction transaction = MessageUtil.copyIsoMessageRequest(isoMessage, 1, "");
             requestExchange.setTransaction(transaction);
             TranType tranType = tranTypeService.findByCode(tranTypeCode);
 

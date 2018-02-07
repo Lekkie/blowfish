@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service layer.
@@ -38,7 +39,8 @@ public class AcquirerMerchantTranTypeBinService {
 
         try
         {
-            return acquirerMerchantTranTypeBinRepository.findById(id);
+            Optional<AcquirerMerchantTranTypeBin> optional = acquirerMerchantTranTypeBinRepository.findById(id);
+            return optional.orElse(null);
         }
         catch(Exception ex)
         {
