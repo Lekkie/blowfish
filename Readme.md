@@ -286,6 +286,30 @@ Get Contact
 Update Contact
 
 
+Terminal Parameters
+===================
+NIBSS Host, Port, Timeout, SSL
+CTMK Key
+BDK Key
+Acquirer ID
+Key Download time
+Key Download Interval Check time
+Terminal Type
+Terminal Capabilities
+Terminal Extra Capabilities
+Transaction Currency
+Transaction Reference Currency
+Force Online
+POS Data Code
+ICC Data
+
+tbl_terminal_parameter_group_acquirers
+tbl_terminal_parameter_group_merchants
+tbl_terminal_parameter_group_terminals
+
+Acquirer by Terminal Parameter Grp
+Merchant by Terminal Parameter Grp
+Terminal by Terminal Parameter Grp
 
 App Ops
 =========

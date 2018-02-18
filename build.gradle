@@ -12,18 +12,35 @@ repositories {
 dependencies {
 
     compile group: 'biz.paluch.redis', name: 'lettuce', version: '4.4.1.Final'
-    compile group: 'org.springframework.data', name: 'spring-data-redis', version: '2.0.2.RELEASE',{
-        exclude group: "org.apache.tomcat", module: "tomcat-jdbc"
-    }
-
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.0.12.Final'
     compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.0.12.Final'
     compile group: 'com.zaxxer', name: 'HikariCP', version: '2.7.2'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '1.5.7.RELEASE',{
+    compile group: 'com.h2database', name: 'h2', version: '1.4.196'
+
+
+    /*
+    compile group: 'org.springframework.data', name: 'spring-data-redis', version: '2.0.2.RELEASE',{
         exclude group: "org.apache.tomcat", module: "tomcat-jdbc"
     }
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.7.RELEASE'
-    compile group: 'com.h2database', name: 'h2', version: '1.4.196'
+    */
+
+    // 1.5.7.RELEASE
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '1.5.10.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '1.5.10.RELEASE',{
+        exclude group: "org.apache.tomcat", module: "tomcat-jdbc"
+    }
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.10.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.10.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '1.5.10.RELEASE'
+
+    /*
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    */
+
 
 
     // https://mvnrepository.com/artifact/com.github.kpavlov.jreactive8583/netty-iso8583
@@ -31,9 +48,7 @@ dependencies {
         exclude group: "net.sf.j8583", module: "j8583"
     }
 
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.7.RELEASE'
 
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '1.5.7.RELEASE'
     compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: '3.2.5'
     compile group: 'io.dropwizard.metrics', name: 'metrics-annotation', version: '3.2.5'
     compile group: 'io.dropwizard.metrics', name: 'metrics-httpclient', version: '3.2.5'
@@ -54,7 +69,8 @@ dependencies {
     compile group: 'ch.qos.logback', name: 'logback-core', version: '1.1.11'
     compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.8'
 
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    //testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.7.RELEASE'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.7.RELEASE'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }

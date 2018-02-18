@@ -18,7 +18,7 @@ import java.util.List;
 public interface AcquirerMerchantRepository extends JpaRepository<AcquirerMerchant, Long> {
 
     //@Cacheable(value = "endpointById")
-    //AcquirerMerchant findById(@Param("id") Long id);
+    AcquirerMerchant findById(@Param("id") Long id);
     //@Cacheable(value = "endpointByName")
     List<AcquirerMerchant> findByAcquirerId(@Param("acquirerId") Long acquirerId);
     AcquirerMerchant findByMerchantId(@Param("merchantId") Long merchantId);

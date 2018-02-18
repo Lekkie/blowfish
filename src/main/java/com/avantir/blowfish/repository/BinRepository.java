@@ -22,7 +22,7 @@ public interface BinRepository extends JpaRepository<Bin, String> {
     Bin findById(@Param("id") Long id);
     //@Cacheable(value = "endpointByName")
     Bin findByCodeAllIgnoringCase(@Param("code") String code);
-    @Query("FROM Node n WHERE n.status = :status")
+    @Query("FROM Bin n WHERE n.status = :status")
     List<Bin> findByStatus(@Param("status") int status);
 
 

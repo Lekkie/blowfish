@@ -24,7 +24,8 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactory",
-        basePackages = { "com.avantir.blowfish.repository"}
+        basePackages = {"com.avantir.blowfish.repository",
+                        "com.avantir.blowfish.messaging.repository"}
 )
 public class DatabaseConfig {
 
@@ -49,7 +50,7 @@ public class DatabaseConfig {
                                                                        @Qualifier("dataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("com.avantir.blowfish.model")
+                .packages("com.avantir.blowfish.model", "com.avantir.blowfish.messaging.model")
                 .persistenceUnit("blowfish")
                 .build();
 

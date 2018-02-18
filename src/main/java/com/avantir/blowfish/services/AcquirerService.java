@@ -42,8 +42,9 @@ public class AcquirerService {
     @Transactional(readOnly=false)
     public Acquirer update(Acquirer newAcquirer) {
         if(newAcquirer != null){
-            Optional<Acquirer> optional = acquirerRepository.findById(newAcquirer.getId());
-            Acquirer oldAcquirer = optional.orElse(null);
+            //Optional<Acquirer> optional = acquirerRepository.findById(newAcquirer.getId());
+            //Acquirer oldAcquirer = optional.orElse(null);
+            Acquirer oldAcquirer = acquirerRepository.findById(newAcquirer.getId());
             if(!StringUtil.isEmpty(newAcquirer.getName()))
                 oldAcquirer.setName(newAcquirer.getName());
             if(!StringUtil.isEmpty(newAcquirer.getDescription()))
@@ -57,7 +58,7 @@ public class AcquirerService {
     @CacheEvict(value = "acquirer", key = "#id")
     @Transactional(readOnly=false)
     public void delete(long id) {
-        acquirerRepository.deleteById(id);
+        acquirerRepository.delete(id);
     }
 
 
@@ -67,8 +68,9 @@ public class AcquirerService {
 
         try
         {
-            Optional<Acquirer> optional = acquirerRepository.findById(id);
-            return optional.orElse(null);
+            //Optional<Acquirer> optional = acquirerRepository.findById(id);
+            //return optional.orElse(null);
+            return acquirerRepository.findById(id);
         }
         catch(Exception ex)
         {

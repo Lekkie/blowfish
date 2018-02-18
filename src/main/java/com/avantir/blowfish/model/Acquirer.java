@@ -23,6 +23,8 @@ public class Acquirer extends BaseModel{
     String name;
     @Column(name = "code", nullable = false, unique = true)
     String code;
+    @Column(name = "bin_code", nullable = false, unique = true)
+    String binCode;
     @Column(name = "cbn_code", nullable = false, unique = true)
     String cbnCode;
     @Column(name = "address", nullable = false)
@@ -127,5 +129,13 @@ public class Acquirer extends BaseModel{
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getBinCode() {
+        return binCode;
+    }
+
+    public void setBinCode(String binCode) {
+        this.binCode = binCode;
     }
 }

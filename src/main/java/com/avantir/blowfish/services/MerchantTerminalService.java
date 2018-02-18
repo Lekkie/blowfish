@@ -31,8 +31,9 @@ public class MerchantTerminalService {
 
         try
         {
-            Optional<MerchantTerminal> optional = merchantTerminalRepository.findById(id);
-            return optional.orElse(null);
+            //Optional<MerchantTerminal> optional = merchantTerminalRepository.findById(id);
+            //return optional.orElse(null);
+            return merchantTerminalRepository.findById(id);
         }
         catch(Exception ex)
         {

@@ -54,6 +54,20 @@ public class TerminalService {
         return null;
     }
 
+    @Transactional(readOnly=true)
+    public Terminal findByDeviceSerialNo(String deviceSerialNo) {
+
+        try
+        {
+            return terminalRepository.findByDeviceSerialNoAllIgnoringCase(deviceSerialNo);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
 
     @Transactional(readOnly=true)
     public List<Terminal> findAllActive() {

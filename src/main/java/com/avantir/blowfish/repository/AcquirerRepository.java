@@ -20,10 +20,10 @@ import java.util.List;
 public interface AcquirerRepository extends JpaRepository<Acquirer, Long> {
 
     //@Cacheable(value = "endpointById")
-    //Acquirer findById(@Param("id") Long id);
+    Acquirer findById(@Param("id") Long id);
     //@Cacheable(value = "endpointByName")
     Acquirer findByCodeAllIgnoringCase(@Param("code") String code);
-    @Query("FROM Node n WHERE n.status = :status")
+    @Query("FROM Acquirer n WHERE n.status = :status")
     List<Acquirer> findByStatus(@Param("status") int status);
 
 

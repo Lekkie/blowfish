@@ -5,7 +5,7 @@ package com.avantir.blowfish.messaging.services;
  */
 
 import com.avantir.blowfish.messaging.model.TCPEndpoint;
-import com.avantir.blowfish.messaging.respository.TCPEndpointRepository;
+import com.avantir.blowfish.messaging.repository.TCPEndpointRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

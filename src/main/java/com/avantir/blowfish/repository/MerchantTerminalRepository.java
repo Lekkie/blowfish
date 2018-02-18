@@ -18,7 +18,7 @@ import java.util.List;
 public interface MerchantTerminalRepository extends JpaRepository<MerchantTerminal, Long> {
 
     //@Cacheable(value = "endpointById")
-    //MerchantTerminal findById(@Param("id") Long id);
+    MerchantTerminal findById(@Param("id") Long id);
     //@Cacheable(value = "endpointByName")
     List<MerchantTerminal> findByMerchantId(@Param("merchantId") Long merchantId);
     MerchantTerminal findByTerminalId(@Param("terminalId") Long terminalId);

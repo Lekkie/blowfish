@@ -20,7 +20,7 @@ public class ServerConnection  implements IConnection {
     private Iso8583Server server = null;
     TCPEndpoint tcpEndpoint;
     ISOBridge isoBridge;
-    SinkNodeListener sinkNodeListener;
+    //SinkNodeListener sinkNodeListener;
     SrcNodeListener srcNodeListener;
 
     public ServerConnection(TCPEndpoint tcpEndpoint, ISOBridge isoBridge) {
@@ -79,12 +79,14 @@ public class ServerConnection  implements IConnection {
     }
 
     public SinkNodeListener getSinkNodeListener() {
-        return sinkNodeListener;
+        return null;
+        //return sinkNodeListener;
     }
 
     public void setSinkNodeListener(SinkNodeListener sinkNodeListener) {
-        this.sinkNodeListener = sinkNodeListener;
+        //this.sinkNodeListener = sinkNodeListener;
     }
+
 
     public SrcNodeListener getSrcNodeListener() {
         return srcNodeListener;

@@ -21,7 +21,8 @@ public interface TerminalRepository extends JpaRepository<Terminal, String> {
     Terminal findById(@Param("id") Long id);
     //@Cacheable(value = "endpointByName")
     Terminal findByCodeAllIgnoringCase(@Param("code") String code);
-    @Query("FROM Node n WHERE n.status = :status")
+    Terminal findByDeviceSerialNoAllIgnoringCase(@Param("deviceSerialNo") String deviceSerialNo);
+    @Query("FROM Terminal n WHERE n.status = :status")
     List<Terminal> findByStatus(@Param("status") int status);
 
 

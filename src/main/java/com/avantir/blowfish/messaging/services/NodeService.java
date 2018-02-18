@@ -5,9 +5,8 @@ package com.avantir.blowfish.messaging.services;
  */
 
 import com.avantir.blowfish.messaging.model.Node;
-import com.avantir.blowfish.messaging.respository.NodeRepository;
+import com.avantir.blowfish.messaging.repository.NodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -15,9 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -33,7 +31,7 @@ import java.util.Arrays;
 @EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
 
-    @Value("${blowfish.redis.defaultexpiration}")
+    //@Value("${blowfish.redis.defaultexpiration}")
     private int redisExpiration = 300;
     @Value("${spring.redis.host}")
     private String redisHost = "127.0.0.1";
@@ -60,16 +58,6 @@ public class CacheConfig extends CachingConfigurerSupport {
                 .sentinel("127.0.0.1", 26379)
                 .sentinel("127.0.0.1", 26380);
         return new LettuceConnectionFactory(sentinelConfig);
-        */
-
-        /*
-        LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-                .useSsl()
-                .and()
-                .commandTimeout(Duration.ofSeconds(2))
-                .shutdownTimeout(Duration.ZERO)
-                .build();
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration("localhost", 6379), clientConfig);
         */
 
         return new LettuceConnectionFactory(redisHost, redisPort);

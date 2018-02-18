@@ -22,11 +22,26 @@ public class Terminal  extends BaseModel implements Serializable {
     private Long id;
     @Column(name = "code", nullable = false, unique = true)
     String code;
+    @Column(name = "device_serial_no", nullable = false, unique = true)
+    String deviceSerialNo;
+    @Column(name = "terminal_parameter_group", nullable = false, unique = true)
+    Long terminalParameterGroup;
     @Column(name = "description", nullable = true)
     private String description;
     @Column(name = "status", nullable = false)
     private int status = 1;
 
+    // Add public key
+    // terminal parameter download id?
+
+
+    public String getDeviceSerialNo() {
+        return deviceSerialNo;
+    }
+
+    public void setDeviceSerialNo(String deviceSerialNo) {
+        this.deviceSerialNo = deviceSerialNo;
+    }
 
     public Long getId() {
         return id;
@@ -58,5 +73,13 @@ public class Terminal  extends BaseModel implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Long getTerminalParameterGroup() {
+        return terminalParameterGroup;
+    }
+
+    public void setTerminalParameterGroup(Long terminalParameterGroup) {
+        this.terminalParameterGroup = terminalParameterGroup;
     }
 }

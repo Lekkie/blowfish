@@ -5,7 +5,7 @@ package com.avantir.blowfish.messaging.services;
  */
 
 import com.avantir.blowfish.messaging.model.RouteByReceivingInst;
-import com.avantir.blowfish.messaging.respository.RouteByReceivingInstRepository;
+import com.avantir.blowfish.messaging.repository.RouteByReceivingInstRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

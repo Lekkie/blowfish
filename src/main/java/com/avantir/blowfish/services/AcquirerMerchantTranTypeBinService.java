@@ -39,8 +39,9 @@ public class AcquirerMerchantTranTypeBinService {
 
         try
         {
-            Optional<AcquirerMerchantTranTypeBin> optional = acquirerMerchantTranTypeBinRepository.findById(id);
-            return optional.orElse(null);
+            //Optional<AcquirerMerchantTranTypeBin>optional = acquirerMerchantTranTypeBinRepository.findById(id);
+            //return optional.orElse(null);
+            return acquirerMerchantTranTypeBinRepository.findById(id);
         }
         catch(Exception ex)
         {

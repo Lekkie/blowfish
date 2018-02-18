@@ -6,7 +6,7 @@ package com.avantir.blowfish.messaging.services;
 
 import com.avantir.blowfish.messaging.model.Node;
 import com.avantir.blowfish.messaging.model.SAPEndpoint;
-import com.avantir.blowfish.messaging.respository.SAPEndpointRepository;
+import com.avantir.blowfish.messaging.repository.SAPEndpointRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

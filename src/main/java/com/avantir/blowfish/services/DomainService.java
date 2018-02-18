@@ -42,8 +42,9 @@ public class DomainService {
     @Transactional(readOnly=false)
     public Domain update(Domain newDomain) {
         if(newDomain != null){
-            Optional<Domain> optional = domainRepository.findById(newDomain.getId());
-            Domain oldDomain = optional.orElse(null);
+            //Optional<Domain> optional = domainRepository.findById(newDomain.getId());
+            //Domain oldDomain = optional.orElse(null);
+            Domain oldDomain = domainRepository.findById(newDomain.getId());
             if(!StringUtil.isEmpty(newDomain.getName()))
                 oldDomain.setName(newDomain.getName());
             if(!StringUtil.isEmpty(newDomain.getDescription()))
@@ -57,7 +58,7 @@ public class DomainService {
     @CacheEvict(value = "domain", key = "#id")
     @Transactional(readOnly=false)
     public void delete(Long id) {
-        domainRepository.deleteById(id);
+        domainRepository.delete(id);
     }
 
     @Cacheable(value = "domain", key = "#id")
@@ -66,8 +67,9 @@ public class DomainService {
 
         try
         {
-            Optional<Domain> optional = domainRepository.findById(id);
-            return optional.orElse(null);
+            //Optional<Domain> optional = domainRepository.findById(id);
+            //return optional.orElse(null);
+            return domainRepository.findById(id);
         }
         catch(Exception ex)
         {

@@ -5,14 +5,10 @@ package com.avantir.blowfish.messaging.services;
  */
 
 import com.avantir.blowfish.messaging.model.DefaultSinkNode;
-import com.avantir.blowfish.messaging.model.Node;
-import com.avantir.blowfish.messaging.respository.DefaultSinkNodeRepository;
-import com.avantir.blowfish.messaging.respository.NodeRepository;
+import com.avantir.blowfish.messaging.repository.DefaultSinkNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Service layer.

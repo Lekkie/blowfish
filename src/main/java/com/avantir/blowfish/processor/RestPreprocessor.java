@@ -5,18 +5,14 @@ import com.avantir.blowfish.consumers.rest.model.TranNotification;
 import com.avantir.blowfish.exceptions.*;
 import com.avantir.blowfish.messaging.Exchange;
 import com.avantir.blowfish.messaging.Message;
-import com.avantir.blowfish.model.KeyVersion;
-import com.avantir.blowfish.model.TranType;
+import com.avantir.blowfish.model.Key;
 import com.avantir.blowfish.model.Transaction;
-import com.avantir.blowfish.processor.trans.FinancialProcessor;
 import com.avantir.blowfish.processor.trans.TranAuthenticateProcessor;
 import com.avantir.blowfish.processor.trans.TranNotificationProcessor;
 import com.avantir.blowfish.services.TransactionService;
-import com.avantir.blowfish.utils.IsoUtil;
 import com.avantir.blowfish.utils.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.avantir.blowfish.consumers.rest.model.Error;
 
 /**
  * Created by lekanomotayo on 13/01/2018.
@@ -48,7 +44,7 @@ public class RestPreprocessor extends APreprocessor {
 
         validateBase(mid, tid, tranTypeCode, pan, expDate);
 
-        KeyVersion keyVersion = null;
+        Key keyVersion = null;
         Transaction transaction = MessageUtil.copyMessage(message, keyVersion.getId(), keyVersion.getSalt());
         requestExchange.setTransaction(transaction);
 

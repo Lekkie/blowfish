@@ -22,7 +22,7 @@ public interface MerchantRepository extends JpaRepository<Merchant, String> {
     Merchant findById(@Param("id") Long id);
     //@Cacheable(value = "endpointByName")
     Merchant findByCodeAllIgnoringCase(@Param("code") String code);
-    @Query("FROM Node n WHERE n.status = :status")
+    @Query("FROM Merchant n WHERE n.status = :status")
     List<Merchant> findByStatus(@Param("status") int status);
 
 

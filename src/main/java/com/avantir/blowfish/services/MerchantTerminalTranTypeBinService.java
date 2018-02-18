@@ -39,8 +39,9 @@ public class MerchantTerminalTranTypeBinService {
 
         try
         {
-            Optional<MerchantTerminalTranTypeBin> optional = merchantTerminalTranTypeBinRepository.findById(id);
-            return optional.orElse(null);
+            //Optional<MerchantTerminalTranTypeBin> optional = merchantTerminalTranTypeBinRepository.findById(id);
+            //return optional.orElse(null);
+            return merchantTerminalTranTypeBinRepository.findById(id);
         }
         catch(Exception ex)
         {

@@ -1,12 +1,6 @@
 blowfish:
   port: 30000
 
-  @Value("${blowfish.redis.defaultexpiration}")
-      private int redisExpiration = 300;
-      @Value("${blowfish.redis.host}")
-      private String redisHost = "127.0.0.1";
-      @Value("${blowfish.redis.defaultexpiration}")
-
 
 ###
 #   Database Settings

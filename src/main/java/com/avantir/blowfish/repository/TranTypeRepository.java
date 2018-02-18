@@ -21,7 +21,7 @@ public interface TranTypeRepository extends JpaRepository<TranType, String> {
     TranType findById(@Param("id") Long id);
     //@Cacheable(value = "endpointByName")
     TranType findByCodeAllIgnoringCase(@Param("code") String code);
-    @Query("FROM Node n WHERE n.status = :status")
+    @Query("FROM TranType n WHERE n.status = :status")
     List<TranType> findByStatus(@Param("status") int status);
 
 

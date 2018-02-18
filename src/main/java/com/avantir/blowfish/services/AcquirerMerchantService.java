@@ -31,8 +31,9 @@ public class AcquirerMerchantService {
 
         try
         {
-            Optional<AcquirerMerchant> optional = acquirerMerchantRepository.findById(id);
-            return optional.orElse(null);
+            //Optional<AcquirerMerchant> optional = acquirerMerchantRepository.findById(id);
+            //return optional.orElse(null);
+            return acquirerMerchantRepository.findById(id);
         }
         catch(Exception ex)
         {
