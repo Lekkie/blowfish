@@ -21,7 +21,7 @@ import java.util.List;
 public class TerminalParametersApi {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(DomainApi.class);
+    private static final Logger logger = LoggerFactory.getLogger(TerminalParametersApi.class);
 
     @Autowired
     TerminalParameterService terminalParameterService;
@@ -107,11 +107,12 @@ public class TerminalParametersApi {
     @RequestMapping(method= RequestMethod.GET,
             headers = "Accept=application/json")
     @ResponseBody
-    public Object get(@RequestHeader(value="id") long id, @RequestHeader(value="deviceSerialNo") String deviceSerialNo, HttpServletResponse response)
+    public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="deviceSerialNo", required = false) String deviceSerialNo, HttpServletResponse response)
     {
+        String fxnParams = "id=" + id + ", deviceSerialNo=" + deviceSerialNo + ",HttpServletResponse=" + response.toString();
         try
         {
-            if(id > 0)
+            if(id != null && id > 0)
                 return getById(id, response);
 
             if(deviceSerialNo != null && !deviceSerialNo.isEmpty())
@@ -123,6 +124,8 @@ public class TerminalParametersApi {
         }
         catch(Exception ex)
         {
+            BlowfishLog log = new BlowfishLog(fxnParams, ex);
+            logger.error(log.toString());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new Error(IsoUtil.RESP_06, ex.getMessage());
         }
@@ -137,6 +140,7 @@ public class TerminalParametersApi {
     */
     public Object getById(long id, HttpServletResponse response)
     {
+        String fxnParams = "id=" + id + ",HttpServletResponse=" + response.toString();
         try
         {
             TerminalParameter terminalParameter = terminalParameterService.findById(id);
@@ -145,6 +149,8 @@ public class TerminalParametersApi {
         }
         catch(Exception ex)
         {
+            BlowfishLog log = new BlowfishLog(fxnParams, ex);
+            logger.error(log.toString());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new Error(IsoUtil.RESP_06, ex.getMessage());
         }
@@ -159,6 +165,7 @@ public class TerminalParametersApi {
     */
     public Object getByDeviceSerialNo(String deviceSerialNo, HttpServletResponse response)
     {
+        String fxnParams = "deviceSerialNo=" + deviceSerialNo + ",HttpServletResponse=" + response.toString();
         try
         {
             Terminal terminal = terminalService.findByDeviceSerialNo(deviceSerialNo);
@@ -225,6 +232,8 @@ public class TerminalParametersApi {
         }
         catch(Exception ex)
         {
+            BlowfishLog log = new BlowfishLog(fxnParams, ex);
+            logger.error(log.toString());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new Error(IsoUtil.RESP_06, ex.getMessage());
         }

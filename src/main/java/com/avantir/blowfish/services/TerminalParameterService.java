@@ -24,18 +24,22 @@ import java.util.List;
 @Component
 public class TerminalParameterService {
 
+
+    public static final String ALL = "all";
+    public static final String ACTIVE = "active";
+
     @Autowired
     private TerminalParameterRepository terminalParameterRepository;
 
 
-    @CachePut(cacheNames="terminalparameter", key="#newTerminalParameter.id")
+    @CachePut(cacheNames="termParam")
     @Transactional(readOnly=false)
     public TerminalParameter create(TerminalParameter terminalParameter) {
         return terminalParameterRepository.save(terminalParameter);
     }
 
 
-    @CachePut(cacheNames="terminalparameter", key="#newTerminalParameter.id")
+    @CachePut(cacheNames="termParam", unless="#result==null")
     @Transactional(readOnly=false)
     public TerminalParameter update(TerminalParameter newTerminalParameter) {
         if(newTerminalParameter != null){
@@ -77,14 +81,14 @@ public class TerminalParameterService {
         return null;
     }
 
-    @CacheEvict(value = "terminalparameter", key = "#id")
+    @CacheEvict(value = "termParam")
     @Transactional(readOnly=false)
     public void delete(long id) {
         terminalParameterRepository.delete(id);
     }
 
 
-    @Cacheable(value = "terminalparameter", key = "#id")
+    @Cacheable(value = "termParam")
     @Transactional(readOnly=true)
     public TerminalParameter findById(Long id) {
 
@@ -100,7 +104,7 @@ public class TerminalParameterService {
     }
 
 
-    @Cacheable(value = "terminalparameter", key = "#name")
+    @Cacheable(value = "termParam")
     @Transactional(readOnly=true)
     public TerminalParameter findByName(String name) {
 
@@ -117,7 +121,7 @@ public class TerminalParameterService {
 
 
 
-    @Cacheable(value = "terminalparameters", key = "1")
+    @Cacheable(value = "termParams", key = "#root.target.ACTIVE")
     @Transactional(readOnly=true)
     public List<TerminalParameter> findAllActive() {
 
@@ -133,7 +137,7 @@ public class TerminalParameterService {
         return null;
     }
 
-    @Cacheable(value = "terminalparameters", key = "1")
+    @Cacheable(value = "termParams", key = "#root.target.ALL")
     @Transactional(readOnly=true)
     public List<TerminalParameter> findAll() {
 

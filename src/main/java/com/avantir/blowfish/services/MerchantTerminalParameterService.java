@@ -9,6 +9,7 @@ import com.avantir.blowfish.model.MerchantTerminalParameter;
 import com.avantir.blowfish.repository.AcquirerTerminalParameterRepository;
 import com.avantir.blowfish.repository.MerchantTerminalParameterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class MerchantTerminalParameterService {
 
+    public static final String ALL = "all";
+    public static final String ACTIVE = "active";
+
     @Autowired
     private MerchantTerminalParameterRepository merchantTerminalParameterRepository;
 
 
+    @Cacheable(value = "merchTermParam")
     @Transactional(readOnly=true)
     public MerchantTerminalParameter findById(Long id) {
 
@@ -40,6 +45,7 @@ public class MerchantTerminalParameterService {
         return null;
     }
 
+    @Cacheable(value = "merchTermParam")
     @Transactional(readOnly=true)
     public MerchantTerminalParameter findByMerchantId(Long merchantId) {
 

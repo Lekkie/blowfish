@@ -25,6 +25,8 @@ dependencies {
     */
 
     // 1.5.7.RELEASE
+    // org.springframework.boot:spring-boot-starter-cache
+    // com.hazelcast:hazelcast and com.hazelcast:hazelcast-spring
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '1.5.10.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '1.5.10.RELEASE',{
         exclude group: "org.apache.tomcat", module: "tomcat-jdbc"
@@ -63,6 +65,7 @@ dependencies {
     //compile group: 'com.soulgalore', name: 'jdbcmetrics', version: '2.0.1'
     compile group: 'com.github.gquintana.metrics', name: 'metrics-sql', version: '3.2.1'
 
+    compile group: 'org.json', name: 'json', version: '20180130'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     compile group: 'com.github.danielwegener', name: 'logback-kafka-appender', version: '0.1.0'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.11'

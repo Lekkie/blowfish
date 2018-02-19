@@ -28,6 +28,9 @@ import java.util.Optional;
 @Component
 public class AcquirerService {
 
+    public static final String ALL = "all";
+    public static final String ACTIVE = "active";
+
     @Autowired
     private AcquirerRepository acquirerRepository;
 
@@ -95,7 +98,7 @@ public class AcquirerService {
     }
 
 
-    @Cacheable(value = "acquirers", key = "1")
+    @Cacheable(value = "acquirers", key = "#root.target.ACTIVE")
     @Transactional(readOnly=true)
     public List<Acquirer> findAllActive() {
 

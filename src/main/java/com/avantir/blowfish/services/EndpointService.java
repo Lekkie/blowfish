@@ -27,17 +27,20 @@ import java.util.List;
 @Component
 public class EndpointService {
 
+    public static final String ALL = "all";
+    public static final String ACTIVE = "active";
+
     @Autowired
     private EndpointRepository endpointRepository;
 
-    @CachePut(cacheNames="endpoint", key="#endpoint.id")
+    @CachePut(cacheNames="endpoint")
     @Transactional(readOnly=false)
     public Endpoint create(Endpoint endpoint) {
         return endpointRepository.save(endpoint);
     }
 
 
-    @CachePut(cacheNames="endpoint", key="#newEndpoint.id")
+    @CachePut(cacheNames="endpoint")
     @Transactional(readOnly=false)
     public Endpoint update(Endpoint newEndpoint) {
         if(newEndpoint != null){
@@ -59,14 +62,14 @@ public class EndpointService {
         return null;
     }
 
-    @CacheEvict(value = "endpoint", key = "#id")
+    @CacheEvict(value = "endpoint")
     @Transactional(readOnly=false)
     public void delete(long id) {
         endpointRepository.delete(id);
     }
 
 
-    @Cacheable(value = "endpoint", key = "#id")
+    @Cacheable(value = "endpoint")
     @Transactional(readOnly=true)
     public Endpoint findById(Long id) {
 
@@ -83,7 +86,7 @@ public class EndpointService {
         return null;
     }
 
-    @Cacheable(value = "endpoints", key = "#ip_port")
+    @Cacheable(value = "endpoints", key = "{#ip, #port}")
     @Transactional(readOnly=true)
     public Endpoint findByIpPort(String ip, int port) {
 
@@ -99,7 +102,7 @@ public class EndpointService {
     }
 
 
-    @Cacheable(value = "endpoints", key = "1")
+    @Cacheable(value = "endpoints")
     @Transactional(readOnly=true)
     public List<Endpoint> findAllActive() {
 

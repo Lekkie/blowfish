@@ -4,8 +4,8 @@ INSERT INTO tbl_domains (name, description, status, created_by, created_on) VALU
 INSERT INTO tbl_domains (name, description, status, created_by, created_on) VALUES ('Merchant', 'Merchant', 1, 'System', CURRENT_TIMESTAMP())
 
 -- Acquirers
-INSERT INTO tbl_acquirers (name, code, bin_code, cbn_code, address, phoneNo, domain_id, enable_all_tran_type, enable_all_bin, description, status, created_by, created_on) VALUES ('Access bank', '044', '628051', '044', 'Head Office, Plot 999c, Danmole Street, Off Adeola Odeku/Idejo Street, Victoria Island, Lagos, Nigeria', '+234 1- 2712005-7', 2, 1, 1, 'Access Bank', 1, 'System', CURRENT_TIMESTAMP())
-INSERT INTO tbl_acquirers (name, code, bin_code, cbn_code, address, phoneNo, domain_id, enable_all_tran_type, enable_all_bin, description, status, created_by, created_on) VALUES ('GTBank', '057', '628052', '057', '635 Akin Adesola Street, Victoria Island, Lagos', '+234 1 448 0000', 2, 1, 1, 'Guaranty Trust Bank', 1, 'System', CURRENT_TIMESTAMP())
+INSERT INTO tbl_acquirers (name, code, bin_code, cbn_code, address, phoneNo, domain_id, enable_all_tran_type, enable_all_bin, description, status, created_by, created_on) VALUES ('Access bank', '044', '628050', '044', 'Head Office, Plot 999c, Danmole Street, Off Adeola Odeku/Idejo Street, Victoria Island, Lagos, Nigeria', '+234 1- 2712005-7', 2, 1, 1, 'Access Bank', 1, 'System', CURRENT_TIMESTAMP())
+INSERT INTO tbl_acquirers (name, code, bin_code, cbn_code, address, phoneNo, domain_id, enable_all_tran_type, enable_all_bin, description, status, created_by, created_on) VALUES ('GTBank', '057', '628051', '057', '635 Akin Adesola Street, Victoria Island, Lagos', '+234 1 448 0000', 2, 1, 1, 'Guaranty Trust Bank', 1, 'System', CURRENT_TIMESTAMP())
 
 -- Transaction Types
 INSERT INTO tbl_transaction_types (name, code, description, status, created_by, created_on) VALUES ('Purchase', '00', 'Purchase of Goods & Services', 1, 'System', CURRENT_TIMESTAMP())
@@ -48,7 +48,7 @@ INSERT INTO tbl_merchants (name, code, address, phone_no, domain_id, enable_all_
 INSERT INTO tbl_terminals (code, device_serial_no, description, status, created_on, created_by) VALUES ('20390059', 'P352701711018088', 'Terminal', 1, CURRENT_TIMESTAMP(), 'System')
 
 -- Terminal Parameters (test purpose)
-INSERT INTO tbl_terminal_parameters (name, tms_endpoint_id, ctmk_key_id, bdk_key_id, key_download_time_in_min, key_download_interval_in_min, terminal_type, terminal_capabilities, terminal_extra_capabilities, transaction_currency, transaction_reference_currency, force_online, pos_data_code, icc_data, description, status, created_on, created_by) VALUES ('DefaultGroup', 1, 1, 1, 1440, 60, 22, 'E090C8', '7F80C0F0FF', '0566', '0566', true, '510101511344101', '9F26,9F27,9F10,9F37,9F36,95,9A,9C,9F02,5F2A,82,9F1A,9F34,9F33,9F35,9F03', 'Default Terminal Parameter Download group', 1, CURRENT_TIMESTAMP(), 'System')
+INSERT INTO tbl_terminal_parameters (name, tms_endpoint_id, ctmk_key_id, bdk_key_id, key_download_time_in_min, key_download_interval_in_min, terminal_type, terminal_capabilities, terminal_extra_capabilities, transaction_currency, transaction_reference_currency, force_online, pos_data_code, icc_data, description, status, created_on, created_by) VALUES ('Default', 1, 1, 1, 1440, 60, 22, 'E090C8', '7F80C0F0FF', '0566', '0566', true, '510101511344101', '9F26,9F27,9F10,9F37,9F36,95,9A,9C,9F02,5F2A,82,9F1A,9F34,9F33,9F35,9F03', 'Default Terminal Parameter Download group', 1, CURRENT_TIMESTAMP(), 'System')
 
 -- Merchants (test purpose)
 INSERT INTO tbl_endpoints (ip, port, timeout, ssl, description, status, created_by, created_on) VALUES ('196.6.103.72', 5042, 60, false, 'NIBSS CTMS', 1, 'System', CURRENT_TIMESTAMP())
@@ -62,13 +62,13 @@ INSERT INTO tbl_acquirers_bins (acquirer_id, bin_id, created_on, created_by) VAL
 INSERT INTO tbl_acquirers_bins (acquirer_id, bin_id, created_on, created_by) VALUES (2, 10, CURRENT_TIMESTAMP(), 'System')
 
 -- Acquirer Merchants (test purpose)
-INSERT INTO tbl_acquirers_merchants (acquirer_id, merchant_id, created_on, created_by) VALUES (1, 1, CURRENT_TIMESTAMP(), 'System')
+INSERT INTO tbl_acquirers_merchants (acquirer_id, merchant_id, created_on, created_by) VALUES (2, 1, CURRENT_TIMESTAMP(), 'System')
 
 -- Merchant Terminals (test purpose)
 INSERT INTO tbl_merchants_terminals (merchant_id, terminal_id, created_on, created_by) VALUES (1, 1, CURRENT_TIMESTAMP(), 'System')
 
 -- Acquirer Terminal Parameters (test purpose)
-INSERT INTO tbl_acquirers_terminal_parameters (acquirer_id, terminal_parameter_id, created_on, created_by) VALUES (1, 1, CURRENT_TIMESTAMP(), 'System')
+INSERT INTO tbl_acquirers_terminal_parameters (acquirer_id, terminal_parameter_id, created_on, created_by) VALUES (2, 1, CURRENT_TIMESTAMP(), 'System')
 
 -- Merchant Terminal Parameters (test purpose)
 INSERT INTO tbl_merchants_terminal_parameters (merchant_id, terminal_parameter_id, created_on, created_by) VALUES (1, 1, CURRENT_TIMESTAMP(), 'System')
