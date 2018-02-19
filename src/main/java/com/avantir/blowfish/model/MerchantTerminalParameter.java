@@ -20,7 +20,7 @@ public class MerchantTerminalParameter extends BaseModel implements Serializable
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "merchant_id", nullable = false)
+    @Column(name = "merchant_id", nullable = false, unique = true)
     Long merchantId;
     @Column(name = "terminal_parameter_id", nullable = false)
     Long terminalParameterId;

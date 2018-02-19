@@ -4,11 +4,8 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.Endpoint;
-import com.avantir.blowfish.model.Terminal;
 import com.avantir.blowfish.model.TerminalParameter;
 import com.avantir.blowfish.repository.TerminalParameterRepository;
-import com.avantir.blowfish.repository.TerminalRepository;
 import com.avantir.blowfish.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -61,8 +58,6 @@ public class TerminalParameterService {
                 oldTerminalParameter.setTransactionCurrency(newTerminalParameter.getTransactionCurrency());
             if(!StringUtil.isEmpty(newTerminalParameter.getTransactionReferenceCurrency()))
                 oldTerminalParameter.setTransactionReferenceCurrency(newTerminalParameter.getTransactionReferenceCurrency());
-            if(newTerminalParameter.getAcquirerId() != 0)
-                oldTerminalParameter.setAcquirerId(newTerminalParameter.getAcquirerId());
             if(newTerminalParameter.getBdkKeyId() != 0)
                 oldTerminalParameter.setBdkKeyId(newTerminalParameter.getBdkKeyId());
             if(newTerminalParameter.getCtmkKeyId() != 0)
@@ -129,6 +124,22 @@ public class TerminalParameterService {
         try
         {
             List<TerminalParameter> list = terminalParameterRepository.findByStatus(1);
+            return list;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Cacheable(value = "terminalparameters", key = "1")
+    @Transactional(readOnly=true)
+    public List<TerminalParameter> findAll() {
+
+        try
+        {
+            List<TerminalParameter> list = terminalParameterRepository.findAll();
             return list;
         }
         catch(Exception ex)

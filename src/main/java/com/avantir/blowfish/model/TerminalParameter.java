@@ -28,8 +28,6 @@ public class TerminalParameter extends BaseModel implements Serializable {
     long ctmkKeyId;
     @Column(name = "bdk_key_id", nullable = false)
     long bdkKeyId;
-    @Column(name = "acquirer_id", nullable = false)
-    long acquirerId;
     @Column(name = "key_download_time_in_min", nullable = false)
     int keyDownloadTimeInMin;
     @Column(name = "key_download_interval_in_min", nullable = false)
@@ -94,14 +92,6 @@ public class TerminalParameter extends BaseModel implements Serializable {
 
     public void setBdkKeyId(long bdkKeyId) {
         this.bdkKeyId = bdkKeyId;
-    }
-
-    public long getAcquirerId() {
-        return acquirerId;
-    }
-
-    public void setAcquirerId(long acquirerId) {
-        this.acquirerId = acquirerId;
     }
 
     public int getKeyDownloadTimeInMin() {

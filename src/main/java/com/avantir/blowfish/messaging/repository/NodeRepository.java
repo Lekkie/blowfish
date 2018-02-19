@@ -20,7 +20,9 @@ public interface NodeRepository extends JpaRepository<Node, Long> {
     //@Cacheable(value = "endpointById")
     Node findById(@Param("id") Long id);
     //@Cacheable(value = "endpointByName")
+    @Query("FROM Node n WHERE n.name = :name AND n.status = :status")
     Node findByNameStatusAllIgnoringCase(@Param("name") String name, @Param("status") int status);
+    @Query("FROM Node n WHERE n.type = :type AND n.status = :status")
     Node findByTypeStatusAllIgnoringCase(@Param("type") int type, @Param("status") int status);
     @Query("FROM Node n WHERE n.status = :status")
     List<Node> findByStatus(@Param("status") int status);

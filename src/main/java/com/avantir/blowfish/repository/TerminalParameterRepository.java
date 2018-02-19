@@ -2,6 +2,7 @@ package com.avantir.blowfish.repository;
 
 import com.avantir.blowfish.model.Terminal;
 import com.avantir.blowfish.model.TerminalParameter;
+import com.avantir.blowfish.model.TerminalTerminalParameter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,8 +23,7 @@ public interface TerminalParameterRepository extends JpaRepository<TerminalParam
     TerminalParameter findById(@Param("id") Long id);
     //@Cacheable(value = "endpointByName")
     TerminalParameter findByNameAllIgnoringCase(@Param("name") String name);
-    @Query("FROM TerminalParameter n WHERE n.status = :status")
+    @Query("FROM TerminalParameter t WHERE t.status = :status")
     List<TerminalParameter> findByStatus(@Param("status") int status);
-
 
 }

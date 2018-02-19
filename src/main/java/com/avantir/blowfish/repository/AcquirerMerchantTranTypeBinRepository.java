@@ -2,6 +2,7 @@ package com.avantir.blowfish.repository;
 
 import com.avantir.blowfish.model.AcquirerMerchantTranTypeBin;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ public interface AcquirerMerchantTranTypeBinRepository extends JpaRepository<Acq
     //List<AcquirerMerchantTranTypeBin> findByAcquirerIdTranTypeId(@Param("acquirerId") Long acquirerId, @Param("tranTypeId") Long tranTypeId);
     //AcquirerMerchantTranTypeBin findByMerchantIdTranTypeId(@Param("merchantId") Long merchantId, @Param("tranTypeId") Long tranTypeId);
     //List<AcquirerMerchantTranTypeBin> findByAcquirerIdMerchantIdTranTypeId(@Param("acquirerId") Long acquirerId, @Param("merchantId") Long merchantId, @Param("tranTypeId") Long tranTypeId);
+    @Query("FROM AcquirerMerchantTranTypeBin a WHERE a.acquirerId = :acquirerId AND a.merchantId = :merchantId AND a.tranTypeId = :tranTypeId AND a.binId = :binId")
     AcquirerMerchantTranTypeBin findByAcquirerIdMerchantIdTranTypeIdBinId(@Param("acquirerId") Long acquirerId, @Param("merchantId") Long merchantId, @Param("tranTypeId") Long tranTypeId, @Param("binId") Long binId);
 
 }

@@ -3,6 +3,7 @@ package com.avantir.blowfish.repository;
 import com.avantir.blowfish.model.MerchantBin;
 import com.avantir.blowfish.model.MerchantTerminal;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public interface MerchantTerminalRepository extends JpaRepository<MerchantTermin
     //@Cacheable(value = "endpointByName")
     List<MerchantTerminal> findByMerchantId(@Param("merchantId") Long merchantId);
     MerchantTerminal findByTerminalId(@Param("terminalId") Long terminalId);
+    @Query("FROM MerchantTerminal m WHERE m.merchantId = :merchantId AND m.terminalId = :terminalId")
     MerchantTerminal findByMerchantIdTerminalId(@Param("merchantId") Long merchantId, @Param("terminalId") Long terminalId);
 
 

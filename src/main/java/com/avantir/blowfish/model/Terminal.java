@@ -24,8 +24,8 @@ public class Terminal  extends BaseModel implements Serializable {
     String code;
     @Column(name = "device_serial_no", nullable = false, unique = true)
     String deviceSerialNo;
-    @Column(name = "terminal_parameter_group", nullable = false, unique = true)
-    Long terminalParameterGroup;
+    //@Column(name = "terminal_parameter_group", nullable = false, unique = true)
+    //Long terminalParameterGroup;
     @Column(name = "description", nullable = true)
     private String description;
     @Column(name = "status", nullable = false)
@@ -75,11 +75,4 @@ public class Terminal  extends BaseModel implements Serializable {
         this.status = status;
     }
 
-    public Long getTerminalParameterGroup() {
-        return terminalParameterGroup;
-    }
-
-    public void setTerminalParameterGroup(Long terminalParameterGroup) {
-        this.terminalParameterGroup = terminalParameterGroup;
-    }
 }

@@ -20,7 +20,7 @@ public class AcquirerTerminalParameter extends BaseModel implements Serializable
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "acquirer_id", nullable = false)
+    @Column(name = "acquirer_id", nullable = false, unique = true)
     Long acquirerId;
     @Column(name = "terminal_parameter_id", nullable = false)
     Long terminalParameterId;
