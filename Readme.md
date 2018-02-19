@@ -6,53 +6,47 @@ Tran Types
 ==========
 log to transaction table
 ------------------------
-Notify transaction status
-Card Purchase
-Cash Advance
-Refund
-Deposit
-Purchase with Cashback
-Balance Inquiry
-Link Account Inquiry
-Mini Statement
-Fund Transfer
-Card Recharge
-Bill Payments
-Prepaid
-Purchase with Additional Data
-POS Pre – Authorization
-POS Pre – Authorization Completion
-PIN Change
+Notify transaction status  
+Card Purchase  
+Cash Advance  
+Refund  
+Deposit  
+Purchase with Cashback  
+Balance Inquiry  
+Link Account Inquiry  
+Mini Statement  
+Fund Transfer  
+Card Recharge  
+Bill Payments  
+Prepaid  
+Purchase with Additional Data  
+POS Pre – Authorization  
+POS Pre – Authorization Completion  
+PIN Change  
 
 
 Log all requests to NoSQL
 -------------------------
-authenticate transaction
-Biller List Download
-Product List Download
-Biller Subscription Information Download
-Payment Validation
-Terminal Master Key Download
-Terminal Session Key
-Terminal PIN Key
-Initial PIN Encryption Key Download / Track2 Data
-Initial PIN Encryption Key Download / EMV
-Terminal Parameter Download
-Call home
-CA Public Key Download
-EMV Application AID Download
-Dynamic Currency Conversion
-
-
-Daily Transaction Report Download
-
-
-
-
-Agent Cash out
-Agent Cash in
-Agent Bill Payment
-Agent Recharge
+authenticate transaction  
+Biller List Download  
+Product List Download  
+Biller Subscription Information Download  
+Payment Validation  
+Terminal Master Key Download  
+Terminal Session Key  
+Terminal PIN Key  
+Initial PIN Encryption Key Download / Track2 Data  
+Initial PIN Encryption Key Download / EMV  
+Terminal Parameter Download  
+Call home  
+CA Public Key Download  
+EMV Application AID Download  
+Dynamic Currency Conversion  
+Daily Transaction Report Download  
+Agent Cash out  
+Agent Cash in  
+Agent Bill Payment  
+Agent Recharge  
 
 
 
@@ -60,14 +54,14 @@ Tranasction flow
 ================
 Card Purchase/Balance/Deposit/Mini Statement/CashBack
 -----------------------------------------------------
-Model 1(Arca)
-    Step 1. POS(REST) -> messaging interface -> preprocessor -> transaction processor (Verify transaction)
-    Step 2. POS(ISO8583) -> NIBSS(ISO8583) -> Switch -> Issuer
-    Step 3. POS(REST) -> messaging interface -> preprocessor -> transaction processor (Notify transaction status)
-Model 2(Arca)
+Model 1(Arca)  
+    Step 1. POS(REST) -> messaging interface -> preprocessor -> transaction processor (Verify transaction)  
+    Step 2. POS(ISO8583) -> NIBSS(ISO8583) -> Switch -> Issuer  
+    Step 3. POS(REST) -> messaging interface -> preprocessor -> transaction processor (Notify transaction status)  
+Model 2(Arca)  
     POS(REST) -> messaging interface -> preprocessor -> transaction processor -> router(ISO8583) -> NIBSS -> Switch -> Issuer
-Model 2(3Line)
-    POS(REST) -> messaging interface -> preprocessor -> transaction processor -> router(ISO8583) -> Switch -> Issuer
+Model 2(3Line)  
+    POS(REST) -> messaging interface -> preprocessor -> transaction processor -> router(ISO8583) -> Switch -> Issuer  
 
 
 Card Bill Payment/Recharge
