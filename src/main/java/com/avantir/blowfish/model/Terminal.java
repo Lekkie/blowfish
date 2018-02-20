@@ -22,26 +22,25 @@ public class Terminal  extends BaseModel implements Serializable {
     private Long id;
     @Column(name = "code", nullable = false, unique = true)
     String code;
-    @Column(name = "device_serial_no", nullable = false, unique = true)
-    String deviceSerialNo;
-    //@Column(name = "terminal_parameter_group", nullable = false, unique = true)
-    //Long terminalParameterGroup;
+    @Column(name = "serial_no", nullable = false, unique = true)
+    String serialNo;
+    @Column(name = "manufacturer", nullable = true)
+    String manufacturer;
+    @Column(name = "model_no", nullable = true)
+    String modelNo;
+    @Column(name = "build_no", nullable = true)
+    String buildNo;
+    @Column(name = "os", nullable = true)
+    String os;
+    @Column(name = "os_version", nullable = true)
+    String osVersion;
+    @Column(name = "firmware_no", nullable = true)
+    String firmwareNo;
     @Column(name = "description", nullable = true)
     private String description;
     @Column(name = "status", nullable = false)
     private int status = 1;
 
-    // Add public key
-    // terminal parameter download id?
-
-
-    public String getDeviceSerialNo() {
-        return deviceSerialNo;
-    }
-
-    public void setDeviceSerialNo(String deviceSerialNo) {
-        this.deviceSerialNo = deviceSerialNo;
-    }
 
     public Long getId() {
         return id;
@@ -75,4 +74,60 @@ public class Terminal  extends BaseModel implements Serializable {
         this.status = status;
     }
 
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public String getModelNo() {
+        return modelNo;
+    }
+
+    public void setModelNo(String modelNo) {
+        this.modelNo = modelNo;
+    }
+
+    public String getBuildNo() {
+        return buildNo;
+    }
+
+    public void setBuildNo(String buildNo) {
+        this.buildNo = buildNo;
+    }
+
+    public String getOs() {
+        return os;
+    }
+
+    public void setOs(String os) {
+        this.os = os;
+    }
+
+    public String getOsVersion() {
+        return osVersion;
+    }
+
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
+    }
+
+    public String getFirmwareNo() {
+        return firmwareNo;
+    }
+
+    public void setFirmwareNo(String firmwareNo) {
+        this.firmwareNo = firmwareNo;
+    }
 }

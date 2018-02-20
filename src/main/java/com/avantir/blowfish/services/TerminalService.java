@@ -55,11 +55,11 @@ public class TerminalService {
     }
 
     @Transactional(readOnly=true)
-    public Terminal findByDeviceSerialNo(String deviceSerialNo) {
+    public Terminal findBySerialNo(String serialNo) {
 
         try
         {
-            return terminalRepository.findByDeviceSerialNoAllIgnoringCase(deviceSerialNo);
+            return terminalRepository.findBySerialNoAllIgnoringCase(serialNo);
         }
         catch(Exception ex)
         {

@@ -42,12 +42,24 @@ public class TerminalParameter extends BaseModel implements Serializable {
     String transactionCurrency;
     @Column(name = "transaction_reference_currency", nullable = false)
     String transactionReferenceCurrency;
+    @Column(name = "transaction_currency_exponent", nullable = false)
+    int transactionCurrencyExponent;
+    @Column(name = "reference_currency_exponent", nullable = false)
+    int referenceCurrencyExponent;
+    @Column(name = "reference_currency_conversion", nullable = false)
+    int referenceCurrencyConversion;
     @Column(name = "force_online", nullable = false)
     boolean forceOnline;
     @Column(name = "pos_data_code", nullable = false)
     String posDataCode;
     @Column(name = "icc_data", nullable = false)
     String iccData;
+    @Column(name = "support_default_tdol", nullable = false)
+    boolean supportDefaultTDOL;
+    @Column(name = "support_default_ddol", nullable = false)
+    boolean supportDefaultDDOL;
+    @Column(name = "support_pse_selection", nullable = false)
+    boolean supportPSESelection;
     @Column(name = "description", nullable = true)
     private String description;
     @Column(name = "status", nullable = false)
@@ -188,5 +200,53 @@ public class TerminalParameter extends BaseModel implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getTransactionCurrencyExponent() {
+        return transactionCurrencyExponent;
+    }
+
+    public void setTransactionCurrencyExponent(int transactionCurrencyExponent) {
+        this.transactionCurrencyExponent = transactionCurrencyExponent;
+    }
+
+    public int getReferenceCurrencyExponent() {
+        return referenceCurrencyExponent;
+    }
+
+    public void setReferenceCurrencyExponent(int referenceCurrencyExponent) {
+        this.referenceCurrencyExponent = referenceCurrencyExponent;
+    }
+
+    public int getReferenceCurrencyConversion() {
+        return referenceCurrencyConversion;
+    }
+
+    public void setReferenceCurrencyConversion(int referenceCurrencyConversion) {
+        this.referenceCurrencyConversion = referenceCurrencyConversion;
+    }
+
+    public boolean isSupportDefaultTDOL() {
+        return supportDefaultTDOL;
+    }
+
+    public void setSupportDefaultTDOL(boolean supportDefaultTDOL) {
+        this.supportDefaultTDOL = supportDefaultTDOL;
+    }
+
+    public boolean isSupportDefaultDDOL() {
+        return supportDefaultDDOL;
+    }
+
+    public void setSupportDefaultDDOL(boolean supportDefaultDDOL) {
+        this.supportDefaultDDOL = supportDefaultDDOL;
+    }
+
+    public boolean isSupportPSESelection() {
+        return supportPSESelection;
+    }
+
+    public void setSupportPSESelection(boolean supportPSESelection) {
+        this.supportPSESelection = supportPSESelection;
     }
 }

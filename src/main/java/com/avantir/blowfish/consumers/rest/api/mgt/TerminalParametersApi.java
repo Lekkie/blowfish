@@ -5,6 +5,7 @@ import com.avantir.blowfish.consumers.rest.model.Parameter;
 import com.avantir.blowfish.model.*;
 import com.avantir.blowfish.services.*;
 import com.avantir.blowfish.utils.IsoUtil;
+import com.avantir.blowfish.utils.KeyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.List;
  * Created by lekanomotayo on 18/02/2018.
  */
 @RestController
-@RequestMapping("/parameters")
+@RequestMapping("api/v1/terminals/parameters")
 public class TerminalParametersApi {
 
 
@@ -107,16 +108,16 @@ public class TerminalParametersApi {
     @RequestMapping(method= RequestMethod.GET,
             headers = "Accept=application/json")
     @ResponseBody
-    public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="deviceSerialNo", required = false) String deviceSerialNo, HttpServletResponse response)
+    public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="deviceSerialNo", required = false) String deviceSerialNo, @RequestHeader(value="devicePublicKey", required = false) String devicePublicKey, HttpServletResponse response)
     {
-        String fxnParams = "id=" + id + ", deviceSerialNo=" + deviceSerialNo + ",HttpServletResponse=" + response.toString();
+        String fxnParams = "id=" + id + ", deviceSerialNo=" + deviceSerialNo + ",devicePublicKey=" + devicePublicKey + ",HttpServletResponse=" + response.toString();
         try
         {
             if(id != null && id > 0)
                 return getById(id, response);
 
             if(deviceSerialNo != null && !deviceSerialNo.isEmpty())
-                return getByDeviceSerialNo(deviceSerialNo, response);
+                return getByDeviceSerialNo(deviceSerialNo, devicePublicKey, response);
 
             List<TerminalParameter> terminalParameterList = terminalParameterService.findAll();
             response.setStatus(HttpServletResponse.SC_OK);
@@ -163,12 +164,15 @@ public class TerminalParametersApi {
             headers = "Accept=application/json")
     @ResponseBody
     */
-    public Object getByDeviceSerialNo(String deviceSerialNo, HttpServletResponse response)
+    public Object getByDeviceSerialNo(String deviceSerialNo, String devicePublicKey, HttpServletResponse response)
     {
-        String fxnParams = "deviceSerialNo=" + deviceSerialNo + ",HttpServletResponse=" + response.toString();
+        String fxnParams = "deviceSerialNo=" + deviceSerialNo + ",devicePublicKey=" + devicePublicKey + ",HttpServletResponse=" + response.toString();
         try
         {
-            Terminal terminal = terminalService.findByDeviceSerialNo(deviceSerialNo);
+            if(devicePublicKey == null || devicePublicKey.isEmpty())
+                throw new Exception("Expecting a public key for this terminal");
+
+            Terminal terminal = terminalService.findBySerialNo(deviceSerialNo);
             TerminalParameter terminalParameter = null;
             MerchantTerminal merchantTerminal = merchantTerminalService.findByTerminalId(terminal.getId());
             if(merchantTerminal == null)
@@ -197,16 +201,25 @@ public class TerminalParametersApi {
             if(terminalParameter == null)
                 throw new Exception("No Terminal Parameter configured");
 
-            //terminalParameterService.findById(terminal.getId());
             Acquirer acquirer = acquirerService.findById(acquirerMerchant.getAcquirerId());
             Endpoint endpoint = endpointService.findById(terminalParameter.getTmsEndpointId());
             Key ctmkKey = keyService.findById(terminalParameter.getCtmkKeyId());
             Key bdkKey = keyService.findById(terminalParameter.getBdkKeyId());
+            //  decrypt ctmkKey.getData(), before re-encrypting under RSA
+            String base64Ctmk = KeyUtil.encryptWithRSA(devicePublicKey, ctmkKey.getData());
+            if(base64Ctmk == null)
+                throw new Exception("Unable to encrypt ctmk");
+            String base64Bdk = KeyUtil.encryptWithRSA(devicePublicKey, bdkKey.getData());
+            if(base64Bdk == null)
+                throw new Exception("Unable to encrypt bdk");
 
             Parameter parameter = new Parameter();
             parameter.setDesc(terminalParameter.getDescription());
             parameter.setName(terminalParameter.getName());
             parameter.setForceOnline(terminalParameter.isForceOnline());
+            parameter.setSupportDefaultTDOL(terminalParameter.isSupportDefaultTDOL());
+            parameter.setSupportDefaultDDOL(terminalParameter.isSupportDefaultDDOL());
+            parameter.setSupportPSESelection(terminalParameter.isSupportPSESelection());
             parameter.setIccData(terminalParameter.getIccData());
             parameter.setKeyDownlIntervalInMin(terminalParameter.getKeyDownloadIntervalInMin());
             parameter.setKeyDownlTimeInMin(terminalParameter.getKeyDownloadTimeInMin());
@@ -216,16 +229,20 @@ public class TerminalParametersApi {
             parameter.setTermType(terminalParameter.getTerminalType());
             parameter.setTransCurr(terminalParameter.getTransactionCurrency());
             parameter.setTransRefCurr(terminalParameter.getTransactionReferenceCurrency());
+            parameter.setTransCurrExp(terminalParameter.getTransactionCurrencyExponent());
+            parameter.setRefCurrExp(terminalParameter.getReferenceCurrencyExponent());
+            parameter.setRefCurrConv(terminalParameter.getReferenceCurrencyConversion());
             parameter.setStatus(terminalParameter.getStatus());
             parameter.setAcquirer(acquirer.getBinCode());
             parameter.setTmsIp(endpoint.getIp());
             parameter.setTmsPort(endpoint.getPort());
             parameter.setTmsTimeout(endpoint.getTimeout());
             parameter.setTmsSsl(endpoint.isSsl());
-            parameter.setBdk(bdkKey.getData());
-            parameter.setCtmk(ctmkKey.getData());
+            parameter.setCtmk(base64Ctmk);
+            parameter.setBdk(base64Bdk);
             parameter.setBdkChkDigit(bdkKey.getCheckDigit());
             parameter.setCtmkChkDigit(ctmkKey.getCheckDigit());
+            parameter.setTerminalId(terminal.getCode());
 
             response.setStatus(HttpServletResponse.SC_OK);
             return parameter;

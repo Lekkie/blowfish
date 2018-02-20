@@ -62,6 +62,12 @@ public class TerminalParameterService {
                 oldTerminalParameter.setTransactionCurrency(newTerminalParameter.getTransactionCurrency());
             if(!StringUtil.isEmpty(newTerminalParameter.getTransactionReferenceCurrency()))
                 oldTerminalParameter.setTransactionReferenceCurrency(newTerminalParameter.getTransactionReferenceCurrency());
+            if(newTerminalParameter.getTransactionCurrencyExponent() != 0)
+                oldTerminalParameter.setTransactionCurrencyExponent(newTerminalParameter.getTransactionCurrencyExponent());
+            if(newTerminalParameter.getReferenceCurrencyExponent() != 0)
+                oldTerminalParameter.setReferenceCurrencyExponent(newTerminalParameter.getReferenceCurrencyExponent());
+            if(newTerminalParameter.getReferenceCurrencyConversion() != 0)
+                oldTerminalParameter.setReferenceCurrencyConversion(newTerminalParameter.getReferenceCurrencyConversion());
             if(newTerminalParameter.getBdkKeyId() != 0)
                 oldTerminalParameter.setBdkKeyId(newTerminalParameter.getBdkKeyId());
             if(newTerminalParameter.getCtmkKeyId() != 0)
@@ -75,6 +81,9 @@ public class TerminalParameterService {
             if(newTerminalParameter.getTmsEndpointId() != 0)
                 oldTerminalParameter.setTmsEndpointId(newTerminalParameter.getTmsEndpointId());
             oldTerminalParameter.setForceOnline(newTerminalParameter.isForceOnline());
+            oldTerminalParameter.setSupportDefaultDDOL(newTerminalParameter.isSupportDefaultDDOL());
+            oldTerminalParameter.setSupportDefaultTDOL(newTerminalParameter.isSupportDefaultTDOL());
+            oldTerminalParameter.setSupportPSESelection(newTerminalParameter.isSupportPSESelection());
             oldTerminalParameter.setStatus(newTerminalParameter.getStatus());
             return terminalParameterRepository.save(oldTerminalParameter);
         }

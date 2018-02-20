@@ -45,10 +45,13 @@ INSERT INTO tbl_keys (data, check_digit, version, usage, algo, salt, description
 INSERT INTO tbl_merchants (name, code, address, phone_no, domain_id, enable_all_tran_type, enable_all_bin, description, status, created_by, created_on) VALUES ('Test Merchant', 'TESTMERCHANT001', 'Merchant Address', '08055475028', 3, 1, 0, 'Test Merchant', 1, 'System', CURRENT_TIMESTAMP())
 
 -- Terminals (test purpose)
-INSERT INTO tbl_terminals (code, device_serial_no, description, status, created_on, created_by) VALUES ('20390059', 'P352701711018088', 'Terminal', 1, CURRENT_TIMESTAMP(), 'System')
+INSERT INTO tbl_terminals (code, serial_no, manufacturer, model_no, build_no, os, os_version, firmware_no, description, status, created_on, created_by) VALUES ('20390059', 'P352701711018088', 'WPOS', 'WPOS-3', 'WPOS-3_V1.01_18020715_userdebug', 'Android', '5.1.1', 'SP_V1.21_B0T0_170920', 'WPOS Terminal', 1, CURRENT_TIMESTAMP(), 'System')
+
+--WZ_V1.56_B0P0_180126SP_BOOT_PV1.04
+--software_version
 
 -- Terminal Parameters (test purpose)
-INSERT INTO tbl_terminal_parameters (name, tms_endpoint_id, ctmk_key_id, bdk_key_id, key_download_time_in_min, key_download_interval_in_min, terminal_type, terminal_capabilities, terminal_extra_capabilities, transaction_currency, transaction_reference_currency, force_online, pos_data_code, icc_data, description, status, created_on, created_by) VALUES ('Default', 1, 1, 1, 1440, 60, 22, 'E090C8', '7F80C0F0FF', '0566', '0566', true, '510101511344101', '9F26,9F27,9F10,9F37,9F36,95,9A,9C,9F02,5F2A,82,9F1A,9F34,9F33,9F35,9F03', 'Default Terminal Parameter Download group', 1, CURRENT_TIMESTAMP(), 'System')
+INSERT INTO tbl_terminal_parameters (name, tms_endpoint_id, ctmk_key_id, bdk_key_id, key_download_time_in_min, key_download_interval_in_min, terminal_type, terminal_capabilities, terminal_extra_capabilities, transaction_currency, transaction_reference_currency, transaction_currency_exponent, reference_currency_exponent, reference_currency_conversion, force_online, pos_data_code, icc_data, support_default_tdol, support_default_ddol, support_pse_selection, description, status, created_on, created_by) VALUES ('Default', 1, 1, 1, 1440, 60, 22, 'E090C8', '7F80C0F0FF', '0566', '0566', '2', '2', '0', true, '510101511344101', '9F26,9F27,9F10,9F37,9F36,95,9A,9C,9F02,5F2A,82,9F1A,9F34,9F33,9F35,9F03', true, true, true, 'Default Terminal Parameter Download group', 1, CURRENT_TIMESTAMP(), 'System')
 
 -- Merchants (test purpose)
 INSERT INTO tbl_endpoints (ip, port, timeout, ssl, description, status, created_by, created_on) VALUES ('196.6.103.72', 5042, 60, false, 'NIBSS CTMS', 1, 'System', CURRENT_TIMESTAMP())

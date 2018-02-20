@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by lekanomotayo on 13/10/2017.
  */
 @RestController
-@RequestMapping("/transactions/notifications")
+@RequestMapping("api/v1/transactions/notifications")
 public class TranNotificationApi {
 
     private static final Logger logger = LoggerFactory.getLogger(TranNotificationApi.class);

@@ -15,6 +15,7 @@ public class Parameter {
     private String ctmkChkDigit;
     private String bdkChkDigit;
     private String acquirer;
+    private String terminalId;
     private int keyDownlTimeInMin;
     private int keyDownlIntervalInMin;
     private int termType;
@@ -27,6 +28,12 @@ public class Parameter {
     private String iccData;
     private String desc;
     private int status;
+    int transCurrExp; // https://en.wikipedia.org/wiki/ISO_4217#Treatment_of_minor_currency_units_(the_"exponent")
+    int refCurrExp;
+    int refCurrConv;
+    boolean supportDefaultTDOL;
+    boolean supportDefaultDDOL;
+    boolean supportPSESelection;
 
     public String getName() {
         return name;
@@ -202,5 +209,61 @@ public class Parameter {
 
     public void setBdkChkDigit(String bdkChkDigit) {
         this.bdkChkDigit = bdkChkDigit;
+    }
+
+    public String getTerminalId() {
+        return terminalId;
+    }
+
+    public void setTerminalId(String terminalId) {
+        this.terminalId = terminalId;
+    }
+
+    public int getTransCurrExp() {
+        return transCurrExp;
+    }
+
+    public void setTransCurrExp(int transCurrExp) {
+        this.transCurrExp = transCurrExp;
+    }
+
+    public int getRefCurrExp() {
+        return refCurrExp;
+    }
+
+    public void setRefCurrExp(int refCurrExp) {
+        this.refCurrExp = refCurrExp;
+    }
+
+    public int getRefCurrConv() {
+        return refCurrConv;
+    }
+
+    public void setRefCurrConv(int refCurrConv) {
+        this.refCurrConv = refCurrConv;
+    }
+
+    public boolean isSupportDefaultTDOL() {
+        return supportDefaultTDOL;
+    }
+
+    public void setSupportDefaultTDOL(boolean supportDefaultTDOL) {
+        this.supportDefaultTDOL = supportDefaultTDOL;
+    }
+
+    public boolean isSupportDefaultDDOL() {
+        return supportDefaultDDOL;
+    }
+
+    public void setSupportDefaultDDOL(boolean supportDefaultDDOL) {
+        this.supportDefaultDDOL = supportDefaultDDOL;
+    }
+
+    public boolean isSupportPSESelection() {
+        return supportPSESelection;
+    }
+
+    public void setSupportPSESelection(boolean supportPSESelection) {
+        this.supportPSESelection = supportPSESelection;
     }
 }

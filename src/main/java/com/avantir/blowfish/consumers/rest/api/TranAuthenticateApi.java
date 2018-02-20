@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by lekanomotayo on 13/10/2017.
  */
 @RestController
-@RequestMapping("/transactions/auths")
+@RequestMapping("api/v1/transactions/auths")
 public class TranAuthenticateApi {
 
     private static final Logger logger = LoggerFactory.getLogger(TranAuthenticateApi.class);
