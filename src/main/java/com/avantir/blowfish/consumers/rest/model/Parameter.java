@@ -15,6 +15,7 @@ public class Parameter {
     private String ctmkChkDigit;
     private String bdkChkDigit;
     private String acquirer;
+    private String merchantName;
     private String terminalId;
     private int keyDownlTimeInMin;
     private int keyDownlIntervalInMin;
@@ -265,5 +266,13 @@ public class Parameter {
 
     public void setSupportPSESelection(boolean supportPSESelection) {
         this.supportPSESelection = supportPSESelection;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
     }
 }

@@ -202,6 +202,7 @@ public class TerminalParametersApi {
                 throw new Exception("No Terminal Parameter configured");
 
             Acquirer acquirer = acquirerService.findById(acquirerMerchant.getAcquirerId());
+            Merchant merchant = merchantService.findById(acquirerMerchant.getMerchantId());
             Endpoint endpoint = endpointService.findById(terminalParameter.getTmsEndpointId());
             Key ctmkKey = keyService.findById(terminalParameter.getCtmkKeyId());
             Key bdkKey = keyService.findById(terminalParameter.getBdkKeyId());
@@ -214,6 +215,7 @@ public class TerminalParametersApi {
                 throw new Exception("Unable to encrypt bdk");
 
             Parameter parameter = new Parameter();
+            parameter.setMerchantName(merchant.getName());
             parameter.setDesc(terminalParameter.getDescription());
             parameter.setName(terminalParameter.getName());
             parameter.setForceOnline(terminalParameter.isForceOnline());
