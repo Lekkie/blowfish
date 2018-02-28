@@ -1,5 +1,7 @@
 package com.avantir.blowfish.utils;
 
+import com.avantir.blowfish.consumers.rest.model.Error;
+import com.avantir.blowfish.consumers.rest.model.Errors;
 import com.avantir.blowfish.model.Bin;
 
 import java.security.MessageDigest;
@@ -14,6 +16,13 @@ import java.util.List;
 public class BlowfishUtil {
 
 
+    public static Errors getError(String code, String msg){
+        Errors errors = new Errors();
+        Error[]  errorArr = new Error[1];
+        errorArr[0] = new Error(code, msg);
+        errors.setErrors(errorArr);
+        return errors;
+    }
 
     public static boolean validatePan(String pan) {
         if(pan == null)

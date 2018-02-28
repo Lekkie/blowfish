@@ -3,9 +3,9 @@ package com.avantir.blowfish.exceptions;
 /**
  * Created by lekanomotayo on 13/01/2018.
  */
-public class TranTypeNotSupportedException extends Exception {
+public class TranTypeNotSupportedException extends BlowfishException {
 
     public TranTypeNotSupportedException(String msg){
-        super(msg);
+        super("1501", msg);
     }
 }

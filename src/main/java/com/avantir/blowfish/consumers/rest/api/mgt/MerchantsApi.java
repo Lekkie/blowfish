@@ -4,6 +4,7 @@ import com.avantir.blowfish.consumers.rest.model.Error;
 import com.avantir.blowfish.consumers.rest.model.Parameter;
 import com.avantir.blowfish.model.*;
 import com.avantir.blowfish.services.*;
+import com.avantir.blowfish.utils.BlowfishUtil;
 import com.avantir.blowfish.utils.IsoUtil;
 import com.avantir.blowfish.utils.KeyUtil;
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ public class MerchantsApi {
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -62,7 +63,7 @@ public class MerchantsApi {
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -80,7 +81,7 @@ public class MerchantsApi {
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -107,7 +108,7 @@ public class MerchantsApi {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -126,7 +127,7 @@ public class MerchantsApi {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -145,7 +146,7 @@ public class MerchantsApi {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 

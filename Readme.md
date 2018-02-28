@@ -302,3 +302,59 @@ Log to Kafka (Metrics)
 Unit test  
 
 
+
+Response Codes
+==============
+11XX- Acquirer Error Codes  
+1101- Not found
+
+12XX- Merchant Error Codes
+1201 - Not found
+
+13XX- Terminal Error Codes
+1301 - Not found
+
+14XX- Terminal Parameters Error Codes  
+1401 - Not found
+1402 - Missing device serial no
+1403 - Missing public key
+1404 - Unable encrypt CTMK 
+1405 - Unable encrypt BDK 
+
+15XX- Tran Type Error Codes  
+1501 - Not found
+
+16XX- Bin Error Codes 
+1601 - Not found
+ 
+21XX- Domain Error Codes
+22XX- User Error Codes
+23XX- Contact Error Codes
+24XX- Key Error Codes
+
+31XX - Acq/Merch Error Codes  
+3101 - Not linked
+
+32XX - Acq/Merch/TranType/Bin Error Codes    
+3201 - not linked
+
+33XX - Acq/TermParam Error Codes    
+34XX - Merch/Bin  
+
+35XX - Merch/Term Error Codes    
+3501 - Not linked 
+
+36XX - Merch/TermParam Error Codes    
+36XX - Merch/Term/TranType/Bin Error Codes    
+3601 - not linked
+
+37XX - Term/TermParam Error Codes  
+
+41XX - Transaction Error Codes  
+4101 - Invalid PAN
+4102 - Invalid Expiry Date
+4103 - Transaction terminal & configured terminal are not the same
+4104 - 
+4105 -
+
+

@@ -47,7 +47,6 @@ INSERT INTO tbl_merchants (name, code, address, phone_no, domain_id, enable_all_
 
 -- Terminals (test purpose)
 INSERT INTO tbl_terminals (code, serial_no, manufacturer, model_no, build_no, os, os_version, firmware_no, description, status, created_on, created_by) VALUES ('20390059', 'P352701711018088', 'WPOS', 'WPOS-3', 'WPOS-3_V1.01_18020715_userdebug', 'Android', '5.1.1', 'SP_V1.21_B0T0_170920', 'WPOS Terminal', 1, CURRENT_TIMESTAMP(), 'System');
-INSERT INTO tbl_terminals (code, serial_no, manufacturer, model_no, build_no, os, os_version, firmware_no, description, status, created_on, created_by) VALUES ('20390058', 'P327701708002831', 'WPOS', 'WPOS-3', 'WPOS-3_P2_V00.02_170810_android_international', 'Android', '5.1.1', 'SP_V1.21_B0T0_170920', 'WPOS Terminal', 1, CURRENT_TIMESTAMP(), 'System');
 
 -- Terminal Parameters (test purpose)
 INSERT INTO tbl_terminal_parameters (name, tms_endpoint_id, ctmk_key_id, bdk_key_id, key_download_time_in_min, key_download_interval_in_min, terminal_type, terminal_capabilities, terminal_extra_capabilities, transaction_currency, transaction_reference_currency, transaction_currency_exponent, reference_currency_exponent, reference_currency_conversion, force_online, pos_data_code, icc_data, support_default_tdol, support_default_ddol, support_pse_selection, description, status, created_on, created_by) VALUES ('Default', 1, 1, 1, 1440, 60, 22, 'E090C8', '7F80C0F0FF', '0566', '0566', '2', '2', '0', true, '510101511344101', '9F26,9F27,9F10,9F37,9F36,95,9A,9C,9F02,5F2A,82,9F1A,9F34,9F33,9F35,9F03', true, true, true, 'Default Terminal Parameter Download group', 1, CURRENT_TIMESTAMP(), 'System');
@@ -68,7 +67,6 @@ INSERT INTO tbl_acquirers_merchants (acquirer_id, merchant_id, created_on, creat
 
 -- Merchant Terminals (test purpose)
 INSERT INTO tbl_merchants_terminals (merchant_id, terminal_id, created_on, created_by) VALUES (1, 1, CURRENT_TIMESTAMP(), 'System');
-INSERT INTO tbl_merchants_terminals (merchant_id, terminal_id, created_on, created_by) VALUES (1, 2, CURRENT_TIMESTAMP(), 'System');
 
 -- Acquirer Terminal Parameters (test purpose)
 INSERT INTO tbl_acquirers_terminal_parameters (acquirer_id, terminal_parameter_id, created_on, created_by) VALUES (2, 1, CURRENT_TIMESTAMP(), 'System');

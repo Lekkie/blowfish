@@ -3,6 +3,7 @@ package com.avantir.blowfish.consumers.rest.api.mgt;
 import com.avantir.blowfish.consumers.rest.model.Error;
 import com.avantir.blowfish.model.Domain;
 import com.avantir.blowfish.services.DomainService;
+import com.avantir.blowfish.utils.BlowfishUtil;
 import com.avantir.blowfish.utils.IsoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class DomainApi {
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -64,7 +65,7 @@ public class DomainApi {
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -82,7 +83,7 @@ public class DomainApi {
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -101,7 +102,7 @@ public class DomainApi {
         catch(Exception ex)
         {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 

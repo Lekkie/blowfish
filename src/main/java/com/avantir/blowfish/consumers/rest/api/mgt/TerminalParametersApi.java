@@ -1,9 +1,15 @@
 package com.avantir.blowfish.consumers.rest.api.mgt;
 
 import com.avantir.blowfish.consumers.rest.model.Error;
+import com.avantir.blowfish.consumers.rest.model.Errors;
 import com.avantir.blowfish.consumers.rest.model.Parameter;
+import com.avantir.blowfish.exceptions.AcquirerMerchantNotLinkedException;
+import com.avantir.blowfish.exceptions.BlowfishException;
+import com.avantir.blowfish.exceptions.MerchantTerminalNotLinkedException;
+import com.avantir.blowfish.exceptions.TerminalNotSupportedException;
 import com.avantir.blowfish.model.*;
 import com.avantir.blowfish.services.*;
+import com.avantir.blowfish.utils.BlowfishUtil;
 import com.avantir.blowfish.utils.IsoUtil;
 import com.avantir.blowfish.utils.KeyUtil;
 import org.slf4j.Logger;
@@ -61,7 +67,7 @@ public class TerminalParametersApi {
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -83,7 +89,7 @@ public class TerminalParametersApi {
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -101,7 +107,7 @@ public class TerminalParametersApi {
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -128,7 +134,7 @@ public class TerminalParametersApi {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -153,7 +159,7 @@ public class TerminalParametersApi {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
 
@@ -170,16 +176,18 @@ public class TerminalParametersApi {
         try
         {
             if(devicePublicKey == null || devicePublicKey.isEmpty())
-                throw new Exception("Expecting a public key for this terminal");
+                throw new BlowfishException("1403", "Expecting a public key for this terminal");
 
             Terminal terminal = terminalService.findBySerialNo(deviceSerialNo);
+            if(terminal == null)
+                throw new TerminalNotSupportedException("Terminal has not been provisioned yet (Missing Terminal)");
             TerminalParameter terminalParameter = null;
             MerchantTerminal merchantTerminal = merchantTerminalService.findByTerminalId(terminal.getId());
             if(merchantTerminal == null)
-                throw new Exception("Terminal has not been provisioned yet (Missing Merchant)");
+                throw new MerchantTerminalNotLinkedException("Terminal has not been linked with any merchant (Missing Merchant)");
             AcquirerMerchant acquirerMerchant = acquirerMerchantService.findByMerchantId(merchantTerminal.getMerchantId());
             if(acquirerMerchant == null)
-                throw new Exception("Terminal has not been provisioned yet (Missing Acquirer)");
+                throw new AcquirerMerchantNotLinkedException("Merchant has not been linked with  an acquirer (Missing Acquirer)");
 
             TerminalTerminalParameter terminalTerminalParameter = terminalTerminalParameterService.findByTerminalId(terminal.getId());
             if(terminalTerminalParameter == null){
@@ -199,7 +207,7 @@ public class TerminalParametersApi {
             }
 
             if(terminalParameter == null)
-                throw new Exception("No Terminal Parameter configured");
+                throw new BlowfishException("1401", "No Terminal Parameter configured");
 
             Acquirer acquirer = acquirerService.findById(acquirerMerchant.getAcquirerId());
             Merchant merchant = merchantService.findById(acquirerMerchant.getMerchantId());
@@ -209,10 +217,10 @@ public class TerminalParametersApi {
             //  decrypt ctmkKey.getData(), before re-encrypting under RSA
             String base64Ctmk = KeyUtil.encryptWithRSA(devicePublicKey, ctmkKey.getData());
             if(base64Ctmk == null)
-                throw new Exception("Unable to encrypt ctmk");
+                throw new BlowfishException("1404", "Unable to encrypt ctmk");
             String base64Bdk = KeyUtil.encryptWithRSA(devicePublicKey, bdkKey.getData());
             if(base64Bdk == null)
-                throw new Exception("Unable to encrypt bdk");
+                throw new BlowfishException("1405", "Unable to encrypt bdk");
 
             Parameter parameter = new Parameter();
             parameter.setMerchantName(merchant.getName());
@@ -249,12 +257,12 @@ public class TerminalParametersApi {
             response.setStatus(HttpServletResponse.SC_OK);
             return parameter;
         }
-        catch(Exception ex)
+        catch(BlowfishException ex)
         {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new Error(IsoUtil.RESP_06, ex.getMessage());
+            return BlowfishUtil.getError(ex.getCode(), ex.getMessage());
         }
     }
 

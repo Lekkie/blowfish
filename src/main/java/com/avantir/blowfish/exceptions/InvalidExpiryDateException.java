@@ -3,9 +3,9 @@ package com.avantir.blowfish.exceptions;
 /**
  * Created by lekanomotayo on 13/01/2018.
  */
-public class InvalidExpiryDateException extends Exception {
+public class InvalidExpiryDateException extends BlowfishException {
 
     public InvalidExpiryDateException(String msg){
-        super(msg);
+        super("4102", msg);
     }
 }
