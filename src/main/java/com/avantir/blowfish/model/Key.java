@@ -26,7 +26,7 @@ public class Key extends BaseModel implements Serializable {
     private String checkDigit;
     @Column(name = "version", nullable = false, unique = true)
     private String version; //e.g 1.0, 1.1
-    @Column(name = "usage", nullable = false, unique = false)
+    @Column(name = "key_usage", nullable = false, unique = false)
     private int usage; //e.g Auth = 1, Encrypt = 2, Sign (Hash) = 3
     @Column(name = "algo", nullable = false, unique = false)
     private String algo; //e.g SHA512,SHA256

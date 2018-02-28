@@ -79,7 +79,7 @@ public class TerminalParametersApi {
             newTerminalParameter.setId(id);
             newTerminalParameter = terminalParameterService.update(newTerminalParameter);
             response.setStatus(HttpServletResponse.SC_OK);
-            return null;
+            return newTerminalParameter;
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -239,7 +239,7 @@ public class TerminalParametersApi {
             parameter.setTmsIp(endpoint.getIp());
             parameter.setTmsPort(endpoint.getPort());
             parameter.setTmsTimeout(endpoint.getTimeout());
-            parameter.setTmsSsl(endpoint.isSsl());
+            parameter.setTmsSsl(endpoint.isSslEnabled());
             parameter.setCtmk(base64Ctmk);
             parameter.setBdk(base64Bdk);
             parameter.setBdkChkDigit(bdkKey.getCheckDigit());

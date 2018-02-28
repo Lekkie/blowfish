@@ -35,6 +35,12 @@ import java.util.List;
 @EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
 
+    String[] cacheStrings = new String[]{"default", "terminalparameter", "terminalparameters",
+            "endpoint", "endpoints", "acquirer", "acquirers", "key", "keys",
+            "acquirerterminalparameter", "acquirerterminalparameters", "merchantterminalparameter",
+            "merchantterminalparameters", "terminalterminalparameter", "terminalterminalparameters",
+            "merchant", "merchants"};
+
     //@Value("${blowfish.redis.defaultexpiration}")
     private int redisExpiration = 300;
     @Value("${spring.redis.host}")
@@ -125,6 +131,16 @@ public class CacheConfig extends CachingConfigurerSupport {
         cacheNameList.add("merchTermParams");
         cacheNameList.add("termTermParam");
         cacheNameList.add("termTermParams");
+        cacheNameList.add("merchant");
+        cacheNameList.add("merchants");
+        cacheNameList.add("terminal");
+        cacheNameList.add("terminals");
+        cacheNameList.add("bin");
+        cacheNameList.add("bins");
+        cacheNameList.add("domain");
+        cacheNameList.add("domains");
+        cacheNameList.add("trantype");
+        cacheNameList.add("trantypes");
         cacheManager.setCacheNames(cacheNameList);
         return cacheManager;
     }
@@ -147,6 +163,8 @@ public class CacheConfig extends CachingConfigurerSupport {
         ConcurrentMapCache mercTermParamsCache = new ConcurrentMapCache("merchantterminalparameters");
         ConcurrentMapCache termTermParamCache = new ConcurrentMapCache("terminalterminalparameter");
         ConcurrentMapCache termTermParamsCache = new ConcurrentMapCache("terminalterminalparameters");
+        ConcurrentMapCache merchantCache = new ConcurrentMapCache("merchant");
+        ConcurrentMapCache merchantsCache = new ConcurrentMapCache("merchants");
 
         List<ConcurrentMapCache> concurrentMapCacheList = new ArrayList<ConcurrentMapCache>();
         concurrentMapCacheList.add(defaultCache);
@@ -164,6 +182,8 @@ public class CacheConfig extends CachingConfigurerSupport {
         concurrentMapCacheList.add(mercTermParamsCache);
         concurrentMapCacheList.add(termTermParamCache);
         concurrentMapCacheList.add(termTermParamsCache);
+        concurrentMapCacheList.add(merchantCache);
+        concurrentMapCacheList.add(merchantsCache);
 
         //cacheManager.setCaches(Arrays.asList(new ConcurrentMapCache("default")));
         cacheManager.setCaches(concurrentMapCacheList);

@@ -89,13 +89,13 @@ public class IsoUtil {
                 int compositeChildValLen = compositeChildVal.length();
                 totalLen += compositeChildValLen;
                 IsoValue childIsoValue = new IsoValue<String>(compositeChildType, compositeChildVal, compositeChildValLen);
-                composite.addValue(childFieldNo, childIsoValue);
+                //composite.addValue(childFieldNo, childIsoValue);
             }
             else{
                 int compositeTemplChildLen = compositeTemplChildField.getLength();
                 totalLen += compositeTemplChildLen;
                 IsoValue childIsoValue =new IsoValue<String>(compositeChildType, compositeChildVal, compositeTemplChildLen);
-                composite.addValue(childFieldNo, childIsoValue);
+                //composite.addValue(childFieldNo, childIsoValue);
             }
 
             isoMessage.setValue(parentFieldNo, composite, composite, compositeTempl.getType(), totalLen);
@@ -108,6 +108,7 @@ public class IsoUtil {
     private static int getCompositeFieldTotalLen(CompositeField composite, CompositeField compositeTemplVal, IsoValue compositeTemplChildField){
         int totalLen = 0;
         int j = 0;
+        /*
         IsoValue[] values = compositeTemplVal.getValues();
         for(IsoValue index:values){
             if(composite.getField(j)!= null){
@@ -121,6 +122,7 @@ public class IsoUtil {
             }
             j++;
         }
+        */
         return totalLen;
     }
 

@@ -23,7 +23,7 @@ import java.util.List;
 public class KeyService {
 
     public static final String ALL = "all";
-    public static final String ACTIVE = "active";
+    public static final String ACTIVE_KEY = "ACTIVE_KEY";
 
     @Autowired
     private KeyRepository keyRepository;
@@ -59,7 +59,7 @@ public class KeyService {
         return null;
     }
 
-    @Cacheable(value = "keys")
+    @Cacheable(value = "keys", key = "#root.target.ACTIVE_KEY")
     @Transactional(readOnly=true)
     public List<Key> findAllActive() {
 

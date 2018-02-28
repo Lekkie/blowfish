@@ -5,19 +5,17 @@
 set -e
 cd /root/blowfish/
 
-sed -i '/trade: /c\    trade: '${TRADE_DELAY} application.yml
-sed -i '/completeOpenOrder: /c\    completeOpenOrder: '${COMPLETE_OPEN_ORDER_DELAY} application.yml
-#sed -i '/deleteOldHistory: /c\deleteOldHistory: '${DELETE_OLD_HISTORY_CRON} application.yml
-#sed -i '/setAverageRate: /c\setAverageRate: '${AVERAGE_RATE_CRON} application.yml
+sed -i '/jdbcUrl: jdbc:h2/c\    jdbcUrl: '${DB_URL} application.yml
+sed -i '/platform: h2/c\    platform: '${DB_PLATFORM} application.yml
+sed -i '/username: sa/c\    username: '${DB_USER} application.yml
+sed -i '/password: test/c\    password: '${DB_PASSWD} application.yml
+sed -i '/driverClassName: org.h2.Driver/c\    driverClassName: '${DB_DRIVER} application.yml
+sed -i '/database-platform: org.hibernate.dialect.H2Dialect/c\    database-platform: '${DB_DATABASE_PLATFORM} application.yml
 
-sed -i '/jdbcUrl: /c\    jdbcUrl: '${DB_URL} application.yml
-sed -i '/platform:: /c\    platform:: '${DB_PLATFORM} application.yml
-sed -i '/username: /c\    username: '${DB_USER} application.yml
-sed -i '/password: /c\    password: '${DB_PASSWD} application.yml
-sed -i '/driverClassName:/c\    driverClassName: '${DB_DRIVER} application.yml
-sed -i '/database-platform: /c\    database-platform: '${DB_DATABASE_PLATFORM} application.yml
+sed -i '/host: localhost/c\    host: '${REDIS_HOST} application.yml
+sed -i '/port: 6379/c\    port: '${REDIS_PORT} application.yml
 
-sed -i '/enabled: /c\      enabled: '${H2_ENABLED} application.yml
+sed -i '/enabled: true/c\      enabled: '${H2_ENABLED} application.yml
 
 
 

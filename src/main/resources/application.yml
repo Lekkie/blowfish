@@ -1,6 +1,5 @@
 blowfish:
-  port: 30000
-
+  port: 3000
 
 ###
 #   Database Settings
@@ -13,7 +12,7 @@ spring:
     #url: jdbc:h2:file:~/phoenix
     platform: h2
     username: sa
-    password:
+    password: test
     driverClassName: org.h2.Driver
     hikari:
       data-source-properties:
@@ -99,6 +98,9 @@ management:
     include: parameters, errors, remote_address, request_headers, response_headers, cookies, authorization_header, path_info, path_translated, context_path, user_principal, query_string, auth_type, session_id, remote_user, time_taken
   security:
     enabled: false
+
+flyway:
+  baselineOnMigrate: true
 
 #security.user.name=admin
 #security.user.password=secret

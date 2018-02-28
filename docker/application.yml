@@ -1,12 +1,5 @@
 blowfish:
-  port: 30000
-
-  @Value("${blowfish.redis.defaultexpiration}")
-      private int redisExpiration = 300;
-      @Value("${blowfish.redis.host}")
-      private String redisHost = "127.0.0.1";
-      @Value("${blowfish.redis.defaultexpiration}")
-
+  port: 3000
 
 ###
 #   Database Settings
@@ -19,7 +12,7 @@ spring:
     #url: jdbc:h2:file:~/phoenix
     platform: h2
     username: sa
-    password:
+    password: test
     driverClassName: org.h2.Driver
     hikari:
       data-source-properties:
@@ -43,6 +36,7 @@ spring:
     database: default
     generate-ddl: true
     database-platform: org.hibernate.dialect.H2Dialect
+    #database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: create-drop
     properties:
@@ -83,6 +77,18 @@ spring:
       send-latest: false
 #      includes: heap.used,heap.committed,mem,mem.free,threads,datasource.primary.active,datasource.primary.usage,gauge.response.persons,gauge.response.persons.id,gauge.response.persons.remove
 
+###
+#   H2 Settings
+###
+  h2:
+    console:
+      enabled: true
+      path: /console
+      settings:
+        trace: false
+        web-allow-others: false
+
+
 endpoints:
   trace:
     sensitive: false
@@ -94,21 +100,15 @@ management:
   security:
     enabled: false
 
+flyway:
+  baselineOnMigrate: true
+
 #security.user.name=admin
 #security.user.password=secret
 #management.security.role=SUPERUSER
 
 
-###
-#   H2 Settings
-###
-  h2:
-    console:
-      enabled: true
-      path: /console
-      settings:
-        trace: false
-        web-allow-others: false
+
 
 
 

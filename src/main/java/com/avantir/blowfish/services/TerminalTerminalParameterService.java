@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class TerminalTerminalParameterService {
 
-    public static final String ALL = "all";
-    public static final String ACTIVE = "active";
+    public static final String ALL_TERM_PARAM = "ALL_TERM_PARAM";
+    public static final String ACTIVE_TERM_PARAM = "ACTIVE_TERM_PARAM";
 
     @Autowired
     private TerminalTerminalParameterRepository terminalTerminalParameterRepository;

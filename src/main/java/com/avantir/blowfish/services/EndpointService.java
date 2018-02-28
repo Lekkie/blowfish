@@ -27,8 +27,8 @@ import java.util.List;
 @Component
 public class EndpointService {
 
-    public static final String ALL = "all";
-    public static final String ACTIVE = "active";
+    public static final String ALL_ENDPOINT = "ALL_ENDPOINT";
+    public static final String ACTIVE_ENDPOINT = "ACTIVE_ENDPOINT";
 
     @Autowired
     private EndpointRepository endpointRepository;
@@ -55,7 +55,7 @@ public class EndpointService {
                 oldEndpoint.setTimeout(newEndpoint.getTimeout());
             if(!StringUtil.isEmpty(newEndpoint.getDescription()))
                 oldEndpoint.setDescription(newEndpoint.getDescription());
-            oldEndpoint.setSsl(newEndpoint.isSsl());
+            oldEndpoint.setSslEnabled(newEndpoint.isSslEnabled());
             oldEndpoint.setStatus(newEndpoint.getStatus());
             return endpointRepository.save(oldEndpoint);
         }
@@ -102,7 +102,7 @@ public class EndpointService {
     }
 
 
-    @Cacheable(value = "endpoints")
+    @Cacheable(value = "endpoints", key = "#root.target.ACTIVE_ENDPOINT")
     @Transactional(readOnly=true)
     public List<Endpoint> findAllActive() {
 

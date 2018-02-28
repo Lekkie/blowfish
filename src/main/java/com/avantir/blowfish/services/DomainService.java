@@ -28,17 +28,20 @@ import java.util.Optional;
 @Component
 public class DomainService {
 
+    public static final String ALL_DOMAIN = "ALL_DOMAIN";
+    public static final String ACTIVE_DOMAINL = "ACTIVE_DOMAIN";
+
     @Autowired
     private DomainRepository domainRepository;
 
 
-    @CachePut(cacheNames="domain", key="#id")
+    @CachePut(cacheNames="domain")
     @Transactional(readOnly=false)
     public Domain create(Domain domain) {
         return domainRepository.save(domain);
     }
 
-    @CachePut(cacheNames="domain", key="#id")
+    @CachePut(cacheNames="domain")
     @Transactional(readOnly=false)
     public Domain update(Domain newDomain) {
         if(newDomain != null){
@@ -55,13 +58,13 @@ public class DomainService {
         return null;
     }
 
-    @CacheEvict(value = "domain", key = "#id")
+    @CacheEvict(value = "domain")
     @Transactional(readOnly=false)
     public void delete(Long id) {
         domainRepository.delete(id);
     }
 
-    @Cacheable(value = "domain", key = "#id")
+    @Cacheable(value = "domain")
     @Transactional(readOnly=true)
     public Domain findById(Long id) {
 
@@ -79,7 +82,7 @@ public class DomainService {
     }
 
 
-    @Cacheable(value = "domains", key = "1")
+    @Cacheable(value = "domains", key = "#root.target.ACTIVE_DOMAIN")
     @Transactional(readOnly=true)
     public List<Domain> findAllActive() {
 

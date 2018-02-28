@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface TerminalRepository extends JpaRepository<Terminal, String> {
+public interface TerminalRepository extends JpaRepository<Terminal, Long> {
 
     //@Cacheable(value = "endpointById")
     Terminal findById(@Param("id") Long id);

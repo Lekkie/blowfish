@@ -16,7 +16,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface MerchantRepository extends JpaRepository<Merchant, String> {
+public interface MerchantRepository extends JpaRepository<Merchant, Long> {
 
     //@Cacheable(value = "endpointById")
     Merchant findById(@Param("id") Long id);

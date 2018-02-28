@@ -18,26 +18,24 @@ EXPOSE 8080
 
 ENV DB_NAME blowfish
 ENV DB_USER blowfish
-ENV DB_PASSWD 51lv3r%H)#846
+ENV DB_PASSWD nk30ny3
 
 
-# ENV DB_URL jdbc:mysql://172.31.1.223:4000/blowfish
-# ENV DB_DRIVER com.mysql.cj.jdbc.Driver
-# ENV DB_PLATFORM mysql
-# ENV DB_DATABASE_PLATFORM org.hibernate.dialect.MySQLDialect
+ENV DB_URL jdbc:mysql://172.31.1.223:4000/blowfish
+ENV DB_DRIVER com.mysql.cj.jdbc.Driver
+ENV DB_PLATFORM mysql
+ENV DB_DATABASE_PLATFORM org.hibernate.dialect.MySQLDialect
 
 
-ENV DB_URL jdbc:h2:mem:blowfish;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-ENV DB_DRIVER org.h2.Driver
-ENV DB_PLATFORM h2
-ENV DB_DATABASE_PLATFORM org.hibernate.dialect.H2Dialect
-
-ENV AVERAGE_RATE_CRON 0 0 0 1/1 * ?
-ENV DELETE_OLD_HISTORY_CRON 0 0 0 1/1 * ?
-ENV TRADE_DELAY 21000
-ENV COMPLETE_OPEN_ORDER_DELAY 300000
+#ENV DB_URL jdbc:h2:mem:blowfish;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#ENV DB_DRIVER org.h2.Driver
+#ENV DB_PLATFORM h2
+#ENV DB_DATABASE_PLATFORM org.hibernate.dialect.H2Dialect
 
 ENV H2_ENABLED false
+
+ENV REDIS_HOST 172.31.1.223
+ENV REDIS_PORT 4001
 
 VOLUME /tmp
 #WORKDIR /root/blowfish

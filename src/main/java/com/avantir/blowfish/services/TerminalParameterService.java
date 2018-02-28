@@ -25,8 +25,8 @@ import java.util.List;
 public class TerminalParameterService {
 
 
-    public static final String ALL = "all";
-    public static final String ACTIVE = "active";
+    public static final String ALL_TERM_PARAM = "ALL_TERM_PARAM";
+    public static final String ACTIVE_TERM_PARAM = "ACTIVE_TERM_PARAM";
 
     @Autowired
     private TerminalParameterRepository terminalParameterRepository;
@@ -80,6 +80,10 @@ public class TerminalParameterService {
                 oldTerminalParameter.setTerminalType(newTerminalParameter.getTerminalType());
             if(newTerminalParameter.getTmsEndpointId() != 0)
                 oldTerminalParameter.setTmsEndpointId(newTerminalParameter.getTmsEndpointId());
+            if(!StringUtil.isEmpty(newTerminalParameter.getCreatedBy()))
+                oldTerminalParameter.setCreatedBy(newTerminalParameter.getCreatedBy());
+            if(newTerminalParameter.getCreatedOn() != null)
+                oldTerminalParameter.setCreatedOn(newTerminalParameter.getCreatedOn());
             oldTerminalParameter.setForceOnline(newTerminalParameter.isForceOnline());
             oldTerminalParameter.setSupportDefaultDDOL(newTerminalParameter.isSupportDefaultDDOL());
             oldTerminalParameter.setSupportDefaultTDOL(newTerminalParameter.isSupportDefaultTDOL());
@@ -130,7 +134,7 @@ public class TerminalParameterService {
 
 
 
-    @Cacheable(value = "termParams", key = "#root.target.ACTIVE")
+    @Cacheable(value = "termParams", key = "#root.target.ACTIVE_TERM_PARAM")
     @Transactional(readOnly=true)
     public List<TerminalParameter> findAllActive() {
 
@@ -146,7 +150,7 @@ public class TerminalParameterService {
         return null;
     }
 
-    @Cacheable(value = "termParams", key = "#root.target.ALL")
+    @Cacheable(value = "termParams", key = "#root.target.ALL_TERM_PARAM")
     @Transactional(readOnly=true)
     public List<TerminalParameter> findAll() {
 

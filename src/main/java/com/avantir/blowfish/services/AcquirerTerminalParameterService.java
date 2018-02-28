@@ -21,9 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class AcquirerTerminalParameterService {
 
-    public static final String ALL = "all";
-    public static final String ACTIVE = "active";
-
     @Autowired
     private AcquirerTerminalParameterRepository acquirerTerminalParameterRepository;
 

@@ -26,8 +26,8 @@ public class Endpoint extends BaseModel implements Serializable {
     private int port;
     @Column(name = "timeout", nullable = false)
     private int timeout;
-    @Column(name = "ssl", nullable = false)
-    private boolean ssl;
+    @Column(name = "ssl_enabled", nullable = false)
+    private boolean sslEnabled;
     @Column(name = "description", nullable = true)
     private String description;
     @Column(name = "status", nullable = false)
@@ -66,12 +66,12 @@ public class Endpoint extends BaseModel implements Serializable {
         this.timeout = timeout;
     }
 
-    public boolean isSsl() {
-        return ssl;
+    public boolean isSslEnabled() {
+        return sslEnabled;
     }
 
-    public void setSsl(boolean ssl) {
-        this.ssl = ssl;
+    public void setSslEnabled(boolean sslEnabled) {
+        this.sslEnabled = sslEnabled;
     }
 
     public String getDescription() {

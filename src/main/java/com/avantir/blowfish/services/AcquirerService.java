@@ -28,8 +28,8 @@ import java.util.Optional;
 @Component
 public class AcquirerService {
 
-    public static final String ALL = "all";
-    public static final String ACTIVE = "active";
+    public static final String ALL_ACQUIRER = "ALL_ACQUIRER";
+    public static final String ACTIVE_ACQUIRER = "ACTIVE_ACQUIRER";
 
     @Autowired
     private AcquirerRepository acquirerRepository;
@@ -58,14 +58,14 @@ public class AcquirerService {
         return null;
     }
 
-    @CacheEvict(value = "acquirer", key = "#id")
+    @CacheEvict(value = "acquirer")
     @Transactional(readOnly=false)
     public void delete(long id) {
         acquirerRepository.delete(id);
     }
 
 
-    @Cacheable(value = "acquirer", key = "#id")
+    @Cacheable(value = "acquirer")
     @Transactional(readOnly=true)
     public Acquirer findById(Long id) {
 
@@ -82,7 +82,7 @@ public class AcquirerService {
         return null;
     }
 
-    @Cacheable(value = "acquirer", key = "#code")
+    @Cacheable(value = "acquirer")
     @Transactional(readOnly=true)
     public Acquirer findByCode(String code) {
 
@@ -98,7 +98,7 @@ public class AcquirerService {
     }
 
 
-    @Cacheable(value = "acquirers", key = "#root.target.ACTIVE")
+    @Cacheable(value = "acquirers", key = "#root.target.ACTIVE_ACQUIRER")
     @Transactional(readOnly=true)
     public List<Acquirer> findAllActive() {
 

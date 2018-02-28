@@ -27,7 +27,7 @@ public class Merchant extends BaseModel{
     @Column(name = "phone_no", nullable = false)
     String phoneNo;
     @Column(name = "domain_id", nullable = false)
-    Long domain_id;
+    Long domainId;
     @Column(name = "enable_all_tran_type", nullable = false)
     boolean enableAllTranType;
     @Column(name = "enable_all_bin", nullable = false)
@@ -77,12 +77,12 @@ public class Merchant extends BaseModel{
         this.phoneNo = phoneNo;
     }
 
-    public Long getDomain_id() {
-        return domain_id;
+    public Long getDomainId() {
+        return domainId;
     }
 
-    public void setDomain_id(Long domain_id) {
-        this.domain_id = domain_id;
+    public void setDomainId(Long domainId) {
+        this.domainId = domainId;
     }
 
     public boolean isEnableAllTranType() {
