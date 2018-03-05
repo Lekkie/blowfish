@@ -1,39 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2843ab1b-262c-4bcf-8ce6-4d892fba73e4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/consumers/rest/model/Errors.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/BlowfishException.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V1_0_2__init.sql" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/consumers/rest/api/mgt/ParametersApi.java" afterPath="$PROJECT_DIR$/backup/ParametersApi.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docker/blowfish-1.0-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/docker/blowfish-1.0-SNAPSHOT.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Readme.md" afterPath="$PROJECT_DIR$/Readme.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docker/VERSION" afterPath="$PROJECT_DIR$/docker/VERSION" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docker/application.yml" afterPath="$PROJECT_DIR$/docker/application.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/consumers/rest/api/mgt/DomainApi.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/consumers/rest/api/mgt/DomainApi.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/consumers/rest/api/mgt/MerchantsApi.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/consumers/rest/api/mgt/MerchantsApi.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/consumers/rest/api/mgt/TerminalParametersApi.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/consumers/rest/api/mgt/TerminalParametersApi.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/consumers/rest/api/mgt/TerminalsApi.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/consumers/rest/api/mgt/TerminalsApi.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/AcquirerMerchantNotLinkedException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/AcquirerMerchantNotLinkedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/AcquirerMerchantTranTypeBinNotSupportedException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/AcquirerMerchantTranTypeBinNotSupportedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/AcquirerNotSupportedException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/AcquirerNotSupportedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/BinNotSupportedException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/BinNotSupportedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/InvalidExpiryDateException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/InvalidExpiryDateException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/InvalidPanException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/InvalidPanException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/MerchantNotSupportedException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/MerchantNotSupportedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/MerchantTerminalNotLinkedException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/MerchantTerminalNotLinkedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/MerchantTerminalTranTypeBinNotSupportedException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/MerchantTerminalTranTypeBinNotSupportedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/TerminalMerchantMismatchException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/TerminalMerchantMismatchException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/TerminalNotSupportedException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/TerminalNotSupportedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/TranTypeNotSupportedException.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/exceptions/TranTypeNotSupportedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/utils/BlowfishUtil.java" afterPath="$PROJECT_DIR$/src/main/java/com/avantir/blowfish/utils/BlowfishUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/db/migration/V1_0_1__init.sql" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V1_0_1__init.sql" />
-    </list>
+    <list default="true" id="2843ab1b-262c-4bcf-8ce6-4d892fba73e4" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -1142,7 +1110,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="750" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1157,7 +1125,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24959612" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27373418" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27373418" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Salesforce" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="DB Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
