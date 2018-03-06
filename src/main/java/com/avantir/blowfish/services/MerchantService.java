@@ -35,13 +35,13 @@ public class MerchantService {
     @Autowired
     private MerchantRepository merchantRepository;
 
-    @CachePut(cacheNames="merchant")
+    @CachePut(cacheNames="merchant", key = "#result.id")
     @Transactional(readOnly=false)
     public Merchant create(Merchant merchant) {
         return merchantRepository.save(merchant);
     }
 
-    @CachePut(cacheNames="merchant", unless="#result==null")
+    @CachePut(cacheNames="merchant", unless="#result==null", key = "#result.id")
     @Transactional(readOnly=false)
     public Merchant update(Merchant newMerchant) {
         if(newMerchant != null){
@@ -108,7 +108,7 @@ public class MerchantService {
     }
 
 
-    @Cacheable(value = "merchants", key = "#root.target.ALL_MERCHANT")
+    @Cacheable(value = "merchants", key = "#root.target.ACTIVE_MERCHANT")
     @Transactional(readOnly=true)
     public List<Merchant> findAllActive() {
 
@@ -125,7 +125,7 @@ public class MerchantService {
     }
 
 
-    @Cacheable(value = "merchants", key = "#root.target.ACTIVE_MERCHANT")
+    @Cacheable(value = "merchants", key = "#root.target.ALL_MERCHANT")
     @Transactional(readOnly=true)
     public List<Merchant> findAll() {
 

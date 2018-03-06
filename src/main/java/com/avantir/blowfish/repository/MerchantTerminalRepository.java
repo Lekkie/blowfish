@@ -2,6 +2,7 @@ package com.avantir.blowfish.repository;
 
 import com.avantir.blowfish.model.MerchantBin;
 import com.avantir.blowfish.model.MerchantTerminal;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +18,10 @@ import java.util.List;
 @Repository
 @Transactional
 public interface MerchantTerminalRepository extends JpaRepository<MerchantTerminal, Long> {
+
+    @CachePut(cacheNames="merchantTerminal")
+    @Override
+    MerchantTerminal save(MerchantTerminal merchantTerminal);
 
     //@Cacheable(value = "endpointById")
     MerchantTerminal findById(@Param("id") Long id);

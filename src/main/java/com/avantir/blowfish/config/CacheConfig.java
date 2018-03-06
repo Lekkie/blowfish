@@ -39,7 +39,7 @@ public class CacheConfig extends CachingConfigurerSupport {
             "endpoint", "endpoints", "acquirer", "acquirers", "key", "keys",
             "acquirerterminalparameter", "acquirerterminalparameters", "merchantterminalparameter",
             "merchantterminalparameters", "terminalterminalparameter", "terminalterminalparameters",
-            "merchant", "merchants"};
+            "merchant", "merchants", "merchantTerminal", "merchantTerminals"};
 
     //@Value("${blowfish.redis.defaultexpiration}")
     private int redisExpiration = 300;
@@ -115,6 +115,8 @@ public class CacheConfig extends CachingConfigurerSupport {
 
     private RedisCacheManager getRedisCacheManager(RedisTemplate redisTemplate){
         RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+        List<String> cacheNameList = Arrays.asList(cacheStrings);
+        /*
         List<String> cacheNameList = new ArrayList<String>();
         cacheNameList.add("default");
         cacheNameList.add("termParam");
@@ -142,6 +144,7 @@ public class CacheConfig extends CachingConfigurerSupport {
         cacheNameList.add("trantype");
         cacheNameList.add("trantypes");
         cacheManager.setCacheNames(cacheNameList);
+        */
         return cacheManager;
     }
 
