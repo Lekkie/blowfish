@@ -35,6 +35,10 @@ public class Parameter {
     boolean supportDefaultTDOL;
     boolean supportDefaultDDOL;
     boolean supportPSESelection;
+    String ptsp;
+    private String tmsHost;
+    boolean useLocalNetworkConfig;
+
 
     public String getName() {
         return name;
@@ -274,5 +278,29 @@ public class Parameter {
 
     public void setMerchantName(String merchantName) {
         this.merchantName = merchantName;
+    }
+
+    public String getPtsp() {
+        return ptsp;
+    }
+
+    public void setPtsp(String ptsp) {
+        this.ptsp = ptsp;
+    }
+
+    public String getTmsHost() {
+        return tmsHost;
+    }
+
+    public void setTmsHost(String tmsHost) {
+        this.tmsHost = tmsHost;
+    }
+
+    public boolean isUseLocalNetworkConfig() {
+        return useLocalNetworkConfig;
+    }
+
+    public void setUseLocalNetworkConfig(boolean useLocalNetworkConfig) {
+        this.useLocalNetworkConfig = useLocalNetworkConfig;
     }
 }

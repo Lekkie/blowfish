@@ -20,8 +20,10 @@ public class Domain extends BaseModel implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name", nullable = false, unique = true)
-    private String name; //e.g owner, acquirer, merchant
+    @Column(name = "code", nullable = false, unique = true)
+    private String code; //e.g owner, acquirer, merchant
+    @Column(name = "name", nullable = false)
+    private String name;
     @Column(name = "description", nullable = true)
     private String description;
     @Column(name = "status", nullable = false)
@@ -34,6 +36,14 @@ public class Domain extends BaseModel implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {

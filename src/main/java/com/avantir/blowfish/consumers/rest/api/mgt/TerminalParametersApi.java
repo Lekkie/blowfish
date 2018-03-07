@@ -52,6 +52,8 @@ public class TerminalParametersApi {
     AcquirerMerchantService acquirerMerchantService;
     @Autowired
     MerchantService merchantService;
+    @Autowired
+    DomainService domainService;
 
 
     @RequestMapping(method= RequestMethod.POST,
@@ -175,6 +177,10 @@ public class TerminalParametersApi {
         String fxnParams = "deviceSerialNo=" + deviceSerialNo + ",devicePublicKey=" + devicePublicKey + ",HttpServletResponse=" + response.toString();
         try
         {
+            Domain domain = domainService.findByCode("OWNER");
+            if(domain == null || domain.getName().isEmpty())
+                throw new BlowfishException("1403", "Missing PTSP");
+
             if(devicePublicKey == null || devicePublicKey.isEmpty())
                 throw new BlowfishException("1403", "Expecting a public key for this terminal");
 
@@ -242,8 +248,10 @@ public class TerminalParametersApi {
             parameter.setTransCurrExp(terminalParameter.getTransactionCurrencyExponent());
             parameter.setRefCurrExp(terminalParameter.getReferenceCurrencyExponent());
             parameter.setRefCurrConv(terminalParameter.getReferenceCurrencyConversion());
+            parameter.setUseLocalNetworkConfig(terminalParameter.isUseLocalNetworkConfig());
             parameter.setStatus(terminalParameter.getStatus());
             parameter.setAcquirer(acquirer.getBinCode());
+            parameter.setTmsHost(endpoint.getHostname());
             parameter.setTmsIp(endpoint.getIp());
             parameter.setTmsPort(endpoint.getPort());
             parameter.setTmsTimeout(endpoint.getTimeout());
@@ -253,6 +261,7 @@ public class TerminalParametersApi {
             parameter.setBdkChkDigit(bdkKey.getCheckDigit());
             parameter.setCtmkChkDigit(ctmkKey.getCheckDigit());
             parameter.setTerminalId(terminal.getCode());
+            parameter.setPtsp(domain.getName());
 
             response.setStatus(HttpServletResponse.SC_OK);
             return parameter;

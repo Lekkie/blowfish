@@ -64,6 +64,8 @@ public class TerminalParameter extends BaseModel implements Serializable {
     private String description;
     @Column(name = "status", nullable = false)
     private int status = 1;
+    @Column(name = "use_local_network_config", nullable = false)
+    boolean useLocalNetworkConfig;
 
 
     public Long getId() {
@@ -248,5 +250,13 @@ public class TerminalParameter extends BaseModel implements Serializable {
 
     public void setSupportPSESelection(boolean supportPSESelection) {
         this.supportPSESelection = supportPSESelection;
+    }
+
+    public boolean isUseLocalNetworkConfig() {
+        return useLocalNetworkConfig;
+    }
+
+    public void setUseLocalNetworkConfig(boolean useLocalNetworkConfig) {
+        this.useLocalNetworkConfig = useLocalNetworkConfig;
     }
 }

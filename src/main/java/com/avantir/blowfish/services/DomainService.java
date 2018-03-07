@@ -81,6 +81,21 @@ public class DomainService {
         return null;
     }
 
+    @Cacheable(value = "domain")
+    @Transactional(readOnly=true)
+    public Domain findByCode(String code) {
+
+        try
+        {
+            return domainRepository.findOneByCode(code);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
 
     @Cacheable(value = "domains", key = "#root.target.ACTIVE_DOMAIN")
     @Transactional(readOnly=true)
