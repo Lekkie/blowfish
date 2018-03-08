@@ -17,7 +17,7 @@ public class Contact extends BaseModel{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long contactId;
     @Column(name = "fname", nullable = false, unique = true)
     String fname;
     @Column(name = "lname", nullable = false, unique = true)
@@ -29,12 +29,13 @@ public class Contact extends BaseModel{
     @Column(name = "status", nullable = false)
     private int status = 1;
 
-    public Long getId() {
-        return id;
+
+    public Long getContactId() {
+        return contactId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
     }
 
     public String getFname() {

@@ -18,7 +18,7 @@ import java.util.List;
 public interface ISOBridgeRepository extends JpaRepository<ISOBridge, String> {
 
     //@Cacheable(value = "endpointById")
-    ISOBridge findById(@Param("id") Long id);
+    ISOBridge findByIsoBridgeId(@Param("isoBridgeId") Long isoBridgeId);
     //@Cacheable(value = "endpointByName")
     ISOBridge findByNameAllIgnoringCase(@Param("name") String name);
     @Query("FROM Node n WHERE n.status = :status")

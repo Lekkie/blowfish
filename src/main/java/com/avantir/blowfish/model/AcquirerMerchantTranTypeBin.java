@@ -17,7 +17,7 @@ public class AcquirerMerchantTranTypeBin extends BaseModel{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long acquirerMerchantTranTypeBinId;
     @Column(name = "acquirer_id", nullable = false)
     Long acquirerId;
     @Column(name = "merchant_id", nullable = false)
@@ -28,12 +28,13 @@ public class AcquirerMerchantTranTypeBin extends BaseModel{
     Long binId;
     // merchant id & tran_type are unique together
 
-    public Long getId() {
-        return id;
+
+    public Long getAcquirerMerchantTranTypeBinId() {
+        return acquirerMerchantTranTypeBinId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAcquirerMerchantTranTypeBinId(Long acquirerMerchantTranTypeBinId) {
+        this.acquirerMerchantTranTypeBinId = acquirerMerchantTranTypeBinId;
     }
 
     public Long getAcquirerId() {

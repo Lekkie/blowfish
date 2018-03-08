@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface SAPEndpointRepository extends JpaRepository<SAPEndpoint, String> {
 
     //@Cacheable(value = "endpointById")
-    SAPEndpoint findById(@Param("id") Long id);
+    SAPEndpoint findBySapEndpointId(@Param("sapEndpointId") Long sapEndpointId);
     //@Cacheable(value = "routeByRouteId")
     SAPEndpoint findByNameAllIgnoringCase(String name);
     //@Cacheable(value = "endpointById")

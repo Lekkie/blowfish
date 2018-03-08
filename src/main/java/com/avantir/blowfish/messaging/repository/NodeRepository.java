@@ -18,7 +18,7 @@ import java.util.List;
 public interface NodeRepository extends JpaRepository<Node, Long> {
 
     //@Cacheable(value = "endpointById")
-    Node findById(@Param("id") Long id);
+    Node findByNodeId(@Param("nodeId") Long nodeId);
     //@Cacheable(value = "endpointByName")
     @Query("FROM Node n WHERE n.name = :name AND n.status = :status")
     Node findByNameStatusAllIgnoringCase(@Param("name") String name, @Param("status") int status);

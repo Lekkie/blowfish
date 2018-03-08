@@ -18,7 +18,7 @@ public class Acquirer extends BaseModel{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long acquirerId;
     @Column(name = "name", nullable = false, unique = true)
     String name;
     @Column(name = "code", nullable = false, unique = true)
@@ -43,12 +43,12 @@ public class Acquirer extends BaseModel{
     private int status = 1;
 
 
-    public Long getId() {
-        return id;
+    public Long getAcquirerId() {
+        return acquirerId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAcquirerId(Long acquirerId) {
+        this.acquirerId = acquirerId;
     }
 
     public String getName() {

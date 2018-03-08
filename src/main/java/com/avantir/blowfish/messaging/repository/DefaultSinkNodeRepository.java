@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface DefaultSinkNodeRepository extends JpaRepository<DefaultSinkNode, String> {
 
     //@Cacheable(value = "endpointById")
-    DefaultSinkNode findById(@Param("id") Long id);
+    DefaultSinkNode findByDefaultSinkNodeId(@Param("defaultSinkNodeId") Long defaultSinkNodeId);
     //@Cacheable(value = "endpointByName")
     DefaultSinkNode findByNameAllIgnoringCase(@Param("name") String name);
 

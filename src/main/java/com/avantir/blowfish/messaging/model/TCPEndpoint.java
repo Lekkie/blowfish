@@ -20,7 +20,7 @@ public class TCPEndpoint extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    private Long tcpEndpointId;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
     //@EmbeddedId
@@ -40,12 +40,13 @@ public class TCPEndpoint extends BaseModel implements Serializable {
     public TCPEndpoint(){
     }
 
-    public Long getId() {
-        return id;
+
+    public Long getTcpEndpointId() {
+        return tcpEndpointId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTcpEndpointId(Long tcpEndpointId) {
+        this.tcpEndpointId = tcpEndpointId;
     }
 
     public String getName() {

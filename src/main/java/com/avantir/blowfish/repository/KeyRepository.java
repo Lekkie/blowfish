@@ -16,10 +16,10 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface KeyRepository extends JpaRepository<Key, String> {
+public interface KeyRepository extends JpaRepository<Key, Long> {
 
     //@Cacheable(value = "endpointById")
-    Key findById(@Param("id") Long id);
+    Key findByKeyId(@Param("keyId") Long keyId);
     Key findByVersion(@Param("version") String version);
     @Query("FROM Key n WHERE n.status = :status")
     List<Key> findByStatus(@Param("status") int status);

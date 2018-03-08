@@ -17,7 +17,7 @@ public class MerchantTerminalTranTypeBin extends BaseModel{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long merchantTerminalTranTypeBinId;
     @Column(name = "merchant_id", nullable = false)
     Long merchantId;
     @Column(name = "terminal_id", nullable = false, unique = true)
@@ -27,12 +27,13 @@ public class MerchantTerminalTranTypeBin extends BaseModel{
     @Column(name = "bin_id", nullable = false)
     Long binId;
 
-    public Long getId() {
-        return id;
+
+    public Long getMerchantTerminalTranTypeBinId() {
+        return merchantTerminalTranTypeBinId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMerchantTerminalTranTypeBinId(Long merchantTerminalTranTypeBinId) {
+        this.merchantTerminalTranTypeBinId = merchantTerminalTranTypeBinId;
     }
 
     public Long getMerchantId() {

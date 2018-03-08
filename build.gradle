@@ -83,6 +83,8 @@ dependencies {
         exclude group: "net.sf.j8583", module: "j8583"
     }
 
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: '1.5.10.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.10.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '1.5.10.RELEASE'
     compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: '3.2.5'

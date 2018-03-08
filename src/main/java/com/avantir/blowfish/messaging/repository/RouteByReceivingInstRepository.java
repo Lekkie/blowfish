@@ -16,7 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public interface RouteByReceivingInstRepository extends JpaRepository<RouteByReceivingInst, String> {
 
     //@Cacheable(value = "endpointById")
-    RouteByReceivingInst findById(@Param("id") Long id);
+    @Query("FROM RouteByReceivingInst r WHERE r.routeByReceivingInstId = :routeByReceivingInstId")
+    RouteByReceivingInst findByRouteByReceivingInstId(@Param("routeByReceivingInstId") Long routeByReceivingInstId);
     //@Cacheable(value = "endpointByName")
     @Query("FROM RouteByReceivingInst r WHERE r.receivingInstId = :receivingInstId")
     RouteByReceivingInst findByReceivingInstId(@Param("receivingInstId") String receivingInstId);

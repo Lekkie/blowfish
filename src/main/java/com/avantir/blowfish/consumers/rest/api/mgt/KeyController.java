@@ -1,15 +1,16 @@
 package com.avantir.blowfish.consumers.rest.api.mgt;
 
-import com.avantir.blowfish.consumers.rest.model.Error;
-import com.avantir.blowfish.consumers.rest.model.Parameter;
-import com.avantir.blowfish.model.*;
-import com.avantir.blowfish.services.*;
+import com.avantir.blowfish.model.BlowfishLog;
+import com.avantir.blowfish.model.Endpoint;
+import com.avantir.blowfish.model.Key;
+import com.avantir.blowfish.services.KeyService;
 import com.avantir.blowfish.utils.BlowfishUtil;
 import com.avantir.blowfish.utils.IsoUtil;
-import com.avantir.blowfish.utils.KeyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,24 +20,23 @@ import java.util.List;
  * Created by lekanomotayo on 18/02/2018.
  */
 @RestController
-@RequestMapping("api/v1/merchants")
-public class MerchantsApi {
+@RequestMapping(value = "api/v1/keys", produces = "application/hal+json")
+public class KeyController {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(MerchantsApi.class);
+    private static final Logger logger = LoggerFactory.getLogger(KeyController.class);
     @Autowired
-    MerchantService merchantService;
+    KeyService keyService;
 
 
-    @RequestMapping(method= RequestMethod.POST,
-            consumes = "application/json",
-            produces = "application/json")
+    @RequestMapping(method= RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Object create(@RequestBody Merchant merchant, HttpServletResponse response)
+    public Object create(@RequestBody Key key, HttpServletResponse response)
     {
         try{
-            merchantService.create(merchant);
+            keyService.create(key);
             response.setStatus(HttpServletResponse.SC_CREATED);
+            key = getLinks(key, response);
             return "";
         }
         catch(Exception ex){
@@ -45,21 +45,19 @@ public class MerchantsApi {
         }
     }
 
-    @RequestMapping(method= RequestMethod.PATCH,
-            consumes = "application/json",
-            value = "/{id}",
-            produces = "application/json")
+    @RequestMapping(method= RequestMethod.PATCH, consumes = "application/json", value = "/{id}")
     @ResponseBody
-    public Object update(@PathVariable("id") long id, @RequestBody Merchant newMerchant, HttpServletResponse response)
+    public Object update(@PathVariable("id") long id, @RequestBody Key newKey, HttpServletResponse response)
     {
         try{
-            if(newMerchant == null)
+            if(newKey == null)
                 throw new Exception();
 
-            newMerchant.setId(id);
-            newMerchant = merchantService.update(newMerchant);
+            newKey.setKeyId(id);
+            newKey = keyService.update(newKey);
             response.setStatus(HttpServletResponse.SC_OK);
-            return newMerchant;
+            newKey = getLinks(newKey, response);
+            return newKey;
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -67,15 +65,12 @@ public class MerchantsApi {
         }
     }
 
-    @RequestMapping(method= RequestMethod.DELETE,
-            consumes = "application/json",
-            value = "/{id}",
-            headers = "Accept=application/json")
+    @RequestMapping(method= RequestMethod.DELETE, consumes = "application/json", value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
     public Object delete(@PathVariable("id") long id, HttpServletResponse response)
     {
         try{
-            merchantService.delete(id);
+            keyService.delete(id);
             response.setStatus(HttpServletResponse.SC_OK);
             return "";
         }
@@ -88,39 +83,21 @@ public class MerchantsApi {
     @RequestMapping(method= RequestMethod.GET,
             headers = "Accept=application/json")
     @ResponseBody
-    public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="code", required = false) String code, HttpServletResponse response)
-    {
-        String fxnParams = "id=" + id + ", code=" + code + ",HttpServletResponse=" + response.toString();
-        try
-        {
-            if(id != null && id > 0)
-                return getById(id, response);
-
-            if(code != null && !code.isEmpty())
-                return getByCode(code, response);
-
-            List<Merchant> merchantList = merchantService.findAll();
-            response.setStatus(HttpServletResponse.SC_OK);
-            return merchantList;
-        }
-        catch(Exception ex)
-        {
-            BlowfishLog log = new BlowfishLog(fxnParams, ex);
-            logger.error(log.toString());
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
-        }
-    }
-
-
-    public Object getById(long id, HttpServletResponse response)
+    public Object get(@RequestHeader(value="id", required = false) Long id, HttpServletResponse response)
     {
         String fxnParams = "id=" + id + ",HttpServletResponse=" + response.toString();
         try
         {
-            Merchant merchant = merchantService.findById(id);
+            if(id != null && id > 0)
+                return getById(id, response);
+            List<Key> keyList = keyService.findAll();
+            for (Key key : keyList) {
+                key = getLinks(key, response);
+            }
+
             response.setStatus(HttpServletResponse.SC_OK);
-            return merchant;
+
+            return keyList;
         }
         catch(Exception ex)
         {
@@ -132,14 +109,17 @@ public class MerchantsApi {
     }
 
 
-    public Object getByCode(String code, HttpServletResponse response)
+    @RequestMapping(method= RequestMethod.GET, value = "/{id}", headers = "Accept=application/json")
+    @ResponseBody
+    public Object getById(@PathVariable long id, HttpServletResponse response)
     {
-        String fxnParams = "code=" + code + ",HttpServletResponse=" + response.toString();
+        String fxnParams = "id=" + id + ",HttpServletResponse=" + response.toString();
         try
         {
-            Merchant merchant = merchantService.findByCode(code);
+            Key key = keyService.findByKeyId(id);
             response.setStatus(HttpServletResponse.SC_OK);
-            return merchant;
+            key = getLinks(key, response);
+            return key;
         }
         catch(Exception ex)
         {
@@ -149,5 +129,14 @@ public class MerchantsApi {
             return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
+
+
+    private Key getLinks(Key key, HttpServletResponse response){
+        Link selfLink = ControllerLinkBuilder.linkTo(KeyController.class).slash(key.getKeyId()).withSelfRel();
+        key.add(selfLink);
+
+        return key;
+    }
+
 
 }

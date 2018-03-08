@@ -19,7 +19,7 @@ public class TranType extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    private Long tranTypeId;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
     @Column(name = "code", nullable = false)
@@ -30,13 +30,12 @@ public class TranType extends BaseModel implements Serializable {
     private int status = 1;
 
 
-
-    public Long getId() {
-        return id;
+    public Long getTranTypeId() {
+        return tranTypeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTranTypeId(Long tranTypeId) {
+        this.tranTypeId = tranTypeId;
     }
 
     public String getName() {

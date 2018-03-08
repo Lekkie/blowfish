@@ -46,7 +46,7 @@ public class EndpointService {
         if(newEndpoint != null){
             //Optional<Acquirer> optional = acquirerRepository.findById(newAcquirer.getId());
             //Acquirer oldAcquirer = optional.orElse(null);
-            Endpoint oldEndpoint = endpointRepository.findById(newEndpoint.getId());
+            Endpoint oldEndpoint = endpointRepository.findByEndpointId(newEndpoint.getEndpointId());
             if(!StringUtil.isEmpty(newEndpoint.getIp()))
                 oldEndpoint.setIp(newEndpoint.getIp());
             if(newEndpoint.getPort() != 0)
@@ -71,13 +71,13 @@ public class EndpointService {
 
     @Cacheable(value = "endpoint")
     @Transactional(readOnly=true)
-    public Endpoint findById(Long id) {
+    public Endpoint findByEndpointId(Long id) {
 
         try
         {
             //Optional<Acquirer> optional = acquirerRepository.findById(id);
             //return optional.orElse(null);
-            return endpointRepository.findById(id);
+            return endpointRepository.findByEndpointId(id);
         }
         catch(Exception ex)
         {
@@ -117,5 +117,23 @@ public class EndpointService {
         }
         return null;
     }
+
+
+    @Cacheable(value = "endpoints", key = "#root.target.ALL_ENDPOINT")
+    @Transactional(readOnly=true)
+    public List<Endpoint> findAll() {
+
+        try
+        {
+            List<Endpoint> list = endpointRepository.findAll();
+            return list;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

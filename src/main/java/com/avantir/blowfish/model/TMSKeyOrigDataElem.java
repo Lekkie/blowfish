@@ -19,7 +19,7 @@ public class TMSKeyOrigDataElem extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    private Long tmsKeyOrigDataElemId;
     @Column(name = "original_data_element", nullable = false, unique = true)
     private String originalDataElement;
 
@@ -27,12 +27,12 @@ public class TMSKeyOrigDataElem extends BaseModel implements Serializable {
 
     }
 
-    public Long getId() {
-        return id;
+    public Long getTmsKeyOrigDataElemId() {
+        return tmsKeyOrigDataElemId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTmsKeyOrigDataElemId(Long tmsKeyOrigDataElemId) {
+        this.tmsKeyOrigDataElemId = tmsKeyOrigDataElemId;
     }
 
     public String getOriginalDataElement() {

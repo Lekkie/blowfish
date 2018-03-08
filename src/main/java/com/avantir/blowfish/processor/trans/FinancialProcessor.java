@@ -100,7 +100,7 @@ public class FinancialProcessor {
         if(requestExchange.isIso8583Exchange()){
             SrcNodeInfo srcNodeInfo = new SrcNodeInfo();
             srcNodeInfo.setCtx(requestExchange.getCtx());
-            srcNodeInfo.setSrcNodeId(requestExchange.getFromNode().getId());
+            srcNodeInfo.setSrcNodeId(requestExchange.getFromNode().getNodeId());
             String tmsKey = IsoUtil.getCompositeFieldValue(isoMessage, IsoUtil.f127, IsoUtil.f2);
             EndpointStarter.addSrcNodeInfo(tmsKey, srcNodeInfo);
         }

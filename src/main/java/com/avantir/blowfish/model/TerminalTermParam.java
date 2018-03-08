@@ -13,25 +13,24 @@ import java.io.Serializable;
 @DynamicInsert
 @Table(name = "tbl_terminals_terminal_parameters")
 @SuppressWarnings("serial")
-public class TerminalTerminalParameter extends BaseModel implements Serializable {
+public class TerminalTermParam extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long terminalTermParamId;
     @Column(name = "terminal_id", nullable = false)
     Long terminalId;
-    @Column(name = "terminal_parameter_id", nullable = false)
-    Long terminalParameterId;
+    @Column(name = "term_param_id", nullable = false)
+    Long termParamId;
 
-
-    public Long getId() {
-        return id;
+    public Long getTerminalTermParamId() {
+        return terminalTermParamId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTerminalTermParamId(Long terminalTermParamId) {
+        this.terminalTermParamId = terminalTermParamId;
     }
 
     public Long getTerminalId() {
@@ -42,11 +41,11 @@ public class TerminalTerminalParameter extends BaseModel implements Serializable
         this.terminalId = terminalId;
     }
 
-    public Long getTerminalParameterId() {
-        return terminalParameterId;
+    public Long getTermParamId() {
+        return termParamId;
     }
 
-    public void setTerminalParameterId(Long terminalParameterId) {
-        this.terminalParameterId = terminalParameterId;
+    public void setTermParamId(Long termParamId) {
+        this.termParamId = termParamId;
     }
 }

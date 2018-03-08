@@ -20,7 +20,7 @@ public class ISOBridge extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long isoBridgeId;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
     @Column(name = "class_name", nullable = false)
@@ -36,12 +36,13 @@ public class ISOBridge extends BaseModel implements Serializable {
     //BinaryMessages
     //CharacterEncoding
 
-    public Long getId() {
-        return id;
+
+    public Long getIsoBridgeId() {
+        return isoBridgeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIsoBridgeId(Long isoBridgeId) {
+        this.isoBridgeId = isoBridgeId;
     }
 
     public String getName() {

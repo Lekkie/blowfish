@@ -1,5 +1,7 @@
 package com.avantir.blowfish.model;
 
+import org.springframework.hateoas.ResourceSupport;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
@@ -9,7 +11,7 @@ import java.util.Date;
  * Created by lekanomotayo on 21/10/2017.
  */
 @MappedSuperclass
-public abstract class BaseModel implements Serializable {
+public abstract class BaseModel extends ResourceSupport implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

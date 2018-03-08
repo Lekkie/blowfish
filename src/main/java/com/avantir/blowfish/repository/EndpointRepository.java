@@ -19,7 +19,7 @@ import java.util.List;
 public interface EndpointRepository extends JpaRepository<Endpoint, Long> {
 
     //@Cacheable(value = "endpointById")
-    Endpoint findById(@Param("id") Long id);
+    Endpoint findByEndpointId(@Param("endpointId") Long endpointId);
     @Query("FROM Endpoint e WHERE e.ip = :ip AND e.port = :port")
     Endpoint findByIpPort(@Param("ip") String ip, @Param("port") int port);
 

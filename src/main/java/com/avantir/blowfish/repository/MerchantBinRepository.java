@@ -17,8 +17,7 @@ import java.util.List;
 @Transactional
 public interface MerchantBinRepository extends JpaRepository<MerchantBin, Long> {
 
-    //@Cacheable(value = "endpointById")
-    //MerchantBin findById(@Param("id") Long id);
+    MerchantBin findByMerchantBinId(@Param("merchantBinId") Long merchantBinId);
     //@Cacheable(value = "endpointByName")
     List<MerchantBin> findByMerchantId(@Param("merchantId") Long merchantId);
     List<MerchantBin> findByBinId(@Param("binId") Long binId);

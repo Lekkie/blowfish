@@ -13,13 +13,13 @@ import java.io.Serializable;
 @DynamicInsert
 @Table(name = "tbl_terminal_parameters")
 @SuppressWarnings("serial")
-public class TerminalParameter extends BaseModel implements Serializable {
+public class TermParam extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long termParamId;
     @Column(name = "name", nullable = false, unique = true)
     String name;
     @Column(name = "tms_endpoint_id", nullable = false)
@@ -67,13 +67,12 @@ public class TerminalParameter extends BaseModel implements Serializable {
     @Column(name = "use_local_network_config", nullable = false)
     boolean useLocalNetworkConfig;
 
-
-    public Long getId() {
-        return id;
+    public Long getTermParamId() {
+        return termParamId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTermParamId(Long termParamId) {
+        this.termParamId = termParamId;
     }
 
     public String getName() {

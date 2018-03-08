@@ -33,11 +33,11 @@ public class TransactionService {
     }
 
     @Transactional(readOnly=true)
-    public Transaction findById(Long id) {
+    public Transaction findByTransactionId(Long transactionId) {
 
         try
         {
-            return transactionRepository.findById(id);
+            return transactionRepository.findByTransactionId(transactionId);
         }
         catch(Exception ex)
         {

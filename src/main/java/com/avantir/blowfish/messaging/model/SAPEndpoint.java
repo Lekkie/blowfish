@@ -21,7 +21,7 @@ public class SAPEndpoint extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    private Long sapEndpointId;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
     @Column(name = "src_node_id", nullable = true)
@@ -39,6 +39,14 @@ public class SAPEndpoint extends BaseModel implements Serializable {
     @Column(name = "status", nullable = false)
     private int status = 1; // 0 - inactive, 1- active
 
+
+    public Long getSapEndpointId() {
+        return sapEndpointId;
+    }
+
+    public void setSapEndpointId(Long sapEndpointId) {
+        this.sapEndpointId = sapEndpointId;
+    }
 
     public String getName() {
         return name;
@@ -72,13 +80,6 @@ public class SAPEndpoint extends BaseModel implements Serializable {
         this.tcpEndpointId = tcpEndpointId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public int getStatus() {
         return status;

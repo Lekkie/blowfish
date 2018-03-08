@@ -19,7 +19,7 @@ import java.util.List;
 public interface DomainRepository extends JpaRepository<Domain, Long> {
 
     //@Cacheable(value = "endpointById")
-    Domain findById(@Param("id") Long id);
+    Domain findByDomainId(@Param("domainId") Long domainId);
     Domain findOneByCode(String code);
     @Query("FROM Domain n WHERE n.status = :status")
     List<Domain> findByStatus(@Param("status") int status);

@@ -34,20 +34,20 @@ public class AcquirerService {
     @Autowired
     private AcquirerRepository acquirerRepository;
 
-    @CachePut(cacheNames="acquirer", key="#acquirer.id")
+    @CachePut(cacheNames="acquirer", key="#acquirer.acquirerId")
     @Transactional(readOnly=false)
     public Acquirer create(Acquirer acquirer) {
         return acquirerRepository.save(acquirer);
     }
 
 
-    @CachePut(cacheNames="acquirer", key="#newAcquirer.id")
+    @CachePut(cacheNames="acquirer", key="#newAcquirer.acquirerId")
     @Transactional(readOnly=false)
     public Acquirer update(Acquirer newAcquirer) {
         if(newAcquirer != null){
             //Optional<Acquirer> optional = acquirerRepository.findById(newAcquirer.getId());
             //Acquirer oldAcquirer = optional.orElse(null);
-            Acquirer oldAcquirer = acquirerRepository.findById(newAcquirer.getId());
+            Acquirer oldAcquirer = acquirerRepository.findByAcquirerId(newAcquirer.getAcquirerId());
             if(!StringUtil.isEmpty(newAcquirer.getName()))
                 oldAcquirer.setName(newAcquirer.getName());
             if(!StringUtil.isEmpty(newAcquirer.getDescription()))
@@ -67,13 +67,13 @@ public class AcquirerService {
 
     @Cacheable(value = "acquirer")
     @Transactional(readOnly=true)
-    public Acquirer findById(Long id) {
+    public Acquirer findByAcquirerId(Long id) {
 
         try
         {
             //Optional<Acquirer> optional = acquirerRepository.findById(id);
             //return optional.orElse(null);
-            return acquirerRepository.findById(id);
+            return acquirerRepository.findByAcquirerId(id);
         }
         catch(Exception ex)
         {

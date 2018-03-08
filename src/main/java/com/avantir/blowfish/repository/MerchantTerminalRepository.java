@@ -24,7 +24,7 @@ public interface MerchantTerminalRepository extends JpaRepository<MerchantTermin
     MerchantTerminal save(MerchantTerminal merchantTerminal);
 
     //@Cacheable(value = "endpointById")
-    MerchantTerminal findById(@Param("id") Long id);
+    MerchantTerminal findByMerchantTerminalId(@Param("merchantTerminalId") Long merchantTerminalId);
     //@Cacheable(value = "endpointByName")
     List<MerchantTerminal> findByMerchantId(@Param("merchantId") Long merchantId);
     MerchantTerminal findByTerminalId(@Param("terminalId") Long terminalId);

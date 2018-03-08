@@ -19,7 +19,7 @@ import java.util.List;
 public interface ContactRepository extends JpaRepository<Contact, String> {
 
     //@Cacheable(value = "endpointById")
-    Contact findById(@Param("id") Long id);
+    Contact findByContactId(@Param("contactId") Long contactId);
     @Query("FROM Contact n WHERE n.status = :status")
     List<Contact> findByStatus(@Param("status") int status);
 

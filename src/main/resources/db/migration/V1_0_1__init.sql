@@ -1,5 +1,5 @@
 -- Domains
-INSERT INTO tbl_domains (code, name, description, status, created_by, created_on) VALUES ('OWNER', 'Arca Network', 'Platform Owner', 1, 'System', CURRENT_TIMESTAMP());
+INSERT INTO tbl_domains (code, name, description, status, created_by, created_on) VALUES ('OWNER', 'Arca Payment', 'Platform Owner', 1, 'System', CURRENT_TIMESTAMP());
 INSERT INTO tbl_domains (code, name, description, status, created_by, created_on) VALUES ('ACQUIRER', 'Acquirer', 'Acquiring financial institution', 1, 'System', CURRENT_TIMESTAMP());
 INSERT INTO tbl_domains (code, name, description, status, created_by, created_on) VALUES ('MERCHANT', 'Merchant', 'Merchant', 1, 'System', CURRENT_TIMESTAMP());
 
@@ -43,7 +43,8 @@ INSERT INTO tbl_keys (data, check_digit, version, key_usage, algo, salt, descrip
 INSERT INTO tbl_keys (data, check_digit, version, key_usage, algo, salt, description, status, created_by, created_on) VALUES ('DBEECACCB4210977ACE73A1D873CA59F', '1DDD47', '2.0', 3, 'SHA512', '1010101010101010', 'Encrypt Key version 1', 1, 'System', CURRENT_TIMESTAMP());
 
 -- Merchants (test purpose)
-INSERT INTO tbl_merchants (name, code, address, phone_no, domain_id, enable_all_tran_type, enable_all_bin, description, status, created_by, created_on) VALUES ('Test Merchant', 'TESTMERCHANT001', 'Merchant Address', '08055475028', 3, 1, 0, 'Test Merchant', 1, 'System', CURRENT_TIMESTAMP());
+INSERT INTO tbl_merchants (name, code, address, phone_no, domain_id, enable_all_tran_type, enable_all_bin, description, status, created_by, created_on) VALUES ('Test Merchant 1', 'TESTMERCHANT001', 'Merchant Address', '08055475028', 3, 1, 0, 'Test Merchant 1', 1, 'System', CURRENT_TIMESTAMP());
+INSERT INTO tbl_merchants (name, code, address, phone_no, domain_id, enable_all_tran_type, enable_all_bin, description, status, created_by, created_on) VALUES ('Test Merchant 2', 'TESTMERCHANT002', 'Merchant Address', '08055475029', 3, 1, 0, 'Test Merchant 2', 1, 'System', CURRENT_TIMESTAMP());
 
 -- Terminals (test purpose)
 INSERT INTO tbl_terminals (code, serial_no, manufacturer, model_no, build_no, os, os_version, firmware_no, description, status, created_on, created_by) VALUES ('20390059', 'P352701711018088', 'WPOS', 'WPOS-3', 'WPOS-3_V1.01_18020715_userdebug', 'Android', '5.1.1', 'SP_V1.21_B0T0_170920', 'WPOS Terminal', 1, CURRENT_TIMESTAMP(), 'System');
@@ -69,13 +70,13 @@ INSERT INTO tbl_acquirers_merchants (acquirer_id, merchant_id, created_on, creat
 INSERT INTO tbl_merchants_terminals (merchant_id, terminal_id, created_on, created_by) VALUES (1, 1, CURRENT_TIMESTAMP(), 'System');
 
 -- Acquirer Terminal Parameters (test purpose)
-INSERT INTO tbl_acquirers_terminal_parameters (acquirer_id, terminal_parameter_id, created_on, created_by) VALUES (2, 1, CURRENT_TIMESTAMP(), 'System');
+INSERT INTO tbl_acquirers_terminal_parameters (acquirer_id, term_param_id, created_on, created_by) VALUES (2, 1, CURRENT_TIMESTAMP(), 'System');
 
 -- Merchant Terminal Parameters (test purpose)
-INSERT INTO tbl_merchants_terminal_parameters (merchant_id, terminal_parameter_id, created_on, created_by) VALUES (1, 1, CURRENT_TIMESTAMP(), 'System');
+INSERT INTO tbl_merchants_terminal_parameters (merchant_id, term_param_id, created_on, created_by) VALUES (1, 1, CURRENT_TIMESTAMP(), 'System');
 
 -- Terminal Terminal Parameters (test purpose)
-INSERT INTO tbl_terminals_terminal_parameters (terminal_id, terminal_parameter_id, created_on, created_by) VALUES (1, 1, CURRENT_TIMESTAMP(), 'System');
+INSERT INTO tbl_terminals_terminal_parameters (terminal_id, term_param_id, created_on, created_by) VALUES (1, 1, CURRENT_TIMESTAMP(), 'System');
 
 
 

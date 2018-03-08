@@ -31,7 +31,7 @@ public class SAPEndpointService {
 
         try
         {
-            return sapEndpointRepository.findById(sapEndpointId);
+            return sapEndpointRepository.findBySapEndpointId(sapEndpointId);
         }
         catch(Exception ex)
         {

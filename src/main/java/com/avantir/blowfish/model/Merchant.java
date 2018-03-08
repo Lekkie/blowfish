@@ -17,7 +17,7 @@ public class Merchant extends BaseModel{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long merchantId;
     @Column(name = "name", nullable = false, unique = true)
     String name;
     @Column(name = "code", nullable = false, unique = true)
@@ -37,12 +37,12 @@ public class Merchant extends BaseModel{
     @Column(name = "status", nullable = false)
     private int status = 1;
 
-    public Long getId() {
-        return id;
+    public Long getMerchantId() {
+        return merchantId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMerchantId(Long merchantId) {
+        this.merchantId = merchantId;
     }
 
     public String getName() {

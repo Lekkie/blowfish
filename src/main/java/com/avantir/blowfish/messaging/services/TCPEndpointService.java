@@ -25,11 +25,11 @@ public class TCPEndpointService {
 
 
     @Transactional(readOnly=true)
-    public TCPEndpoint findByTCPEndpointIdId(Long tcpEndpointId) {
+    public TCPEndpoint findByTCPEndpointId(Long tcpEndpointId) {
 
         try
         {
-            return tcpEndpointRepository.findById(tcpEndpointId);
+            return tcpEndpointRepository.findByTcpEndpointId(tcpEndpointId);
         }
         catch(Exception ex)
         {

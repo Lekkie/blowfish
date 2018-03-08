@@ -18,7 +18,7 @@ import java.util.List;
 public interface TerminalRepository extends JpaRepository<Terminal, Long> {
 
     //@Cacheable(value = "endpointById")
-    Terminal findById(@Param("id") Long id);
+    Terminal findByTerminalId(@Param("terminalId") Long terminalId);
     //@Cacheable(value = "endpointByName")
     Terminal findByCodeAllIgnoringCase(@Param("code") String code);
     Terminal findBySerialNoAllIgnoringCase(@Param("serialNo") String serialNo);

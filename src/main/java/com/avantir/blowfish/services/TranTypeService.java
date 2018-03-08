@@ -25,11 +25,11 @@ public class TranTypeService {
 
 
     @Transactional(readOnly=true)
-    public TranType findById(Long id) {
+    public TranType findByTranTypeId(Long id) {
 
         try
         {
-            return tranTypeRepository.findById(id);
+            return tranTypeRepository.findByTranTypeId(id);
         }
         catch(Exception ex)
         {

@@ -49,7 +49,7 @@ public class EndpointStarter {
         List<TCPEndpoint> TCPEndpointList = tcpEndpointService.findAllActive();
         if(TCPEndpointList != null && TCPEndpointList.size() > 0){
             for(TCPEndpoint tcpEndpoint : TCPEndpointList){
-                SAPEndpoint sapEndpoint = sapEndpointService.findByTcpEndpointId(tcpEndpoint.getId());
+                SAPEndpoint sapEndpoint = sapEndpointService.findByTcpEndpointId(tcpEndpoint.getTcpEndpointId());
                 ISOBridge isoBridge = isoBridgeService.findByISOBridgeId(sapEndpoint.getIsoBridgeId());
                 try{
                     start(isoPreprocessor, isoPostprocessor, sapEndpoint, nodeService, tcpEndpoint, isoBridge);
@@ -65,7 +65,7 @@ public class EndpointStarter {
     public static void start(IsoPreprocessor isoPreprocessor, IsoPostprocessor isoPostprocessor, SAPEndpoint sapEndpoint, NodeService nodeService, TCPEndpoint tcpEndpoint, ISOBridge isoBridge)throws Exception{
         SAPInterchange sapInterchange = new SAPInterchange(isoPreprocessor, isoPostprocessor, sapEndpoint, nodeService, tcpEndpoint, isoBridge);
         sapInterchange.start();
-        sapInterchangeTreeMap.put(sapEndpoint.getId(), sapInterchange);
+        sapInterchangeTreeMap.put(sapEndpoint.getSapEndpointId(), sapInterchange);
     }
 
     public static void stop(SAPEndpoint sapEndpoint){
@@ -134,7 +134,7 @@ public class EndpointStarter {
             TCPEndpoint tcpEndpoint1 = new TCPEndpoint();
             tcpEndpoint1.setName("IP Address");
             tcpEndpoint1.setDescription("");
-            tcpEndpoint1.setId(1L);
+            tcpEndpoint1.setTcpEndpointId(1L);
             tcpEndpoint1.setServer(true);
             tcpEndpoint1.setStatus(1);
             //TCPEndpointPortIP tcpEndpointPortIP1 = new TCPEndpointPortIP("0.0.0.0", 9000);
@@ -151,7 +151,7 @@ public class EndpointStarter {
             TCPEndpoint tcpEndpoint2 = new TCPEndpoint();
             tcpEndpoint2.setName("IP Address");
             tcpEndpoint2.setDescription("");
-            tcpEndpoint2.setId(1L);
+            tcpEndpoint2.setTcpEndpointId(1L);
             tcpEndpoint2.setServer(false);
             tcpEndpoint2.setStatus(1);
             //TCPEndpointPortIP tcpEndpointPortIP2 = new TCPEndpointPortIP("127.0.0.1", 9000);

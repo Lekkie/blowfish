@@ -19,7 +19,7 @@ public class Key extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long keyId;
     @Column(name = "data", nullable = false)
     private String data;
     @Column(name = "check_digit", nullable = true)
@@ -38,12 +38,12 @@ public class Key extends BaseModel implements Serializable {
     private int status = 1;
 
 
-    public Long getId() {
-        return id;
+    public Long getKeyId() {
+        return keyId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setKeyId(Long keyId) {
+        this.keyId = keyId;
     }
 
     public String getVersion() {

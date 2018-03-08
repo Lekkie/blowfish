@@ -18,7 +18,8 @@ import java.util.List;
 public interface TCPEndpointRepository extends JpaRepository<TCPEndpoint, String> {
 
     //@Cacheable(value = "endpointById")
-    TCPEndpoint findById(@Param("id") Long id);
+    @Query("FROM TCPEndpoint e WHERE e.tcpEndpointId = :tcpEndpointId")
+    TCPEndpoint findByTcpEndpointId(@Param("tcpEndpointId") Long tcpEndpointId);
     //@Cacheable(value = "endpointByName")
     TCPEndpoint findByNameAllIgnoringCase(@Param("name") String name);
     //@Cacheable(value = "endpointByEndpointPortIp")

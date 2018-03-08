@@ -18,7 +18,8 @@ import java.util.List;
 public interface AcquirerMerchantTranTypeBinRepository extends JpaRepository<AcquirerMerchantTranTypeBin, Long> {
 
     //@Cacheable(value = "endpointById")
-    AcquirerMerchantTranTypeBin findById(@Param("id") Long id);
+    @Query("FROM AcquirerMerchantTranTypeBin a WHERE a.acquirerMerchantTranTypeBinId = :acquirerMerchantTranTypeBinId")
+    AcquirerMerchantTranTypeBin findByAcquirerMerchantTranTypeBinId(@Param("acquirerMerchantTranTypeBinId") Long acquirerMerchantTranTypeBinId);
     //@Cacheable(value = "endpointByName")
     List<AcquirerMerchantTranTypeBin> findByAcquirerId(@Param("acquirerId") Long acquirerId);
     List<AcquirerMerchantTranTypeBin> findByMerchantId(@Param("merchantId") Long merchantId);

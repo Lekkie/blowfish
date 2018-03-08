@@ -19,7 +19,7 @@ public class Terminal  extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long terminalId;
     @Column(name = "code", nullable = false, unique = true)
     String code;
     @Column(name = "serial_no", nullable = false, unique = true)
@@ -42,12 +42,12 @@ public class Terminal  extends BaseModel implements Serializable {
     private int status = 1;
 
 
-    public Long getId() {
-        return id;
+    public Long getTerminalId() {
+        return terminalId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTerminalId(Long terminalId) {
+        this.terminalId = terminalId;
     }
 
     public String getCode() {

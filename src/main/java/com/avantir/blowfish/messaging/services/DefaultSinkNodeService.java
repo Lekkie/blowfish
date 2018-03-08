@@ -27,7 +27,7 @@ public class DefaultSinkNodeService {
 
         try
         {
-            return defaultSinkNodeRepository.findById(nodeId);
+            return defaultSinkNodeRepository.findByDefaultSinkNodeId(nodeId);
         }
         catch(Exception ex)
         {

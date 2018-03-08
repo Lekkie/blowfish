@@ -13,25 +13,24 @@ import java.io.Serializable;
 @DynamicInsert
 @Table(name = "tbl_acquirers_terminal_parameters")
 @SuppressWarnings("serial")
-public class AcquirerTerminalParameter extends BaseModel implements Serializable {
+public class AcquirerTermParam extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long acquirerTermParamId;
     @Column(name = "acquirer_id", nullable = false, unique = true)
     Long acquirerId;
-    @Column(name = "terminal_parameter_id", nullable = false)
-    Long terminalParameterId;
+    @Column(name = "term_param_id", nullable = false)
+    Long termParamId;
 
-
-    public Long getId() {
-        return id;
+    public Long getAcquirerTermParamId() {
+        return acquirerTermParamId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAcquirerTermParamId(Long acquirerTermParamId) {
+        this.acquirerTermParamId = acquirerTermParamId;
     }
 
     public Long getAcquirerId() {
@@ -42,11 +41,11 @@ public class AcquirerTerminalParameter extends BaseModel implements Serializable
         this.acquirerId = acquirerId;
     }
 
-    public Long getTerminalParameterId() {
-        return terminalParameterId;
+    public Long getTermParamId() {
+        return termParamId;
     }
 
-    public void setTerminalParameterId(Long terminalParameterId) {
-        this.terminalParameterId = terminalParameterId;
+    public void setTermParamId(Long termParamId) {
+        this.termParamId = termParamId;
     }
 }

@@ -45,7 +45,7 @@ public class RestPreprocessor extends APreprocessor {
         validateBase(mid, tid, tranTypeCode, pan, expDate);
 
         Key keyVersion = null;
-        Transaction transaction = MessageUtil.copyMessage(message, keyVersion.getId(), keyVersion.getSalt());
+        Transaction transaction = MessageUtil.copyMessage(message, keyVersion.getKeyId(), keyVersion.getSalt());
         requestExchange.setTransaction(transaction);
 
         // get processor

@@ -28,11 +28,11 @@ public class BinService {
 
 
     @Transactional(readOnly=true)
-    public Bin findById(Long id) {
+    public Bin findByBinId(Long id) {
 
         try
         {
-            return binRepository.findById(id);
+            return binRepository.findByBinId(id);
         }
         catch(Exception ex)
         {

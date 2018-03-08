@@ -35,13 +35,13 @@ public class MerchantTerminalTranTypeBinService {
 
 
     @Transactional(readOnly=true)
-    public MerchantTerminalTranTypeBin findById(Long id) {
+    public MerchantTerminalTranTypeBin findByMerchantTerminalTranTypeBinId(Long id) {
 
         try
         {
             //Optional<MerchantTerminalTranTypeBin> optional = merchantTerminalTranTypeBinRepository.findById(id);
             //return optional.orElse(null);
-            return merchantTerminalTranTypeBinRepository.findById(id);
+            return merchantTerminalTranTypeBinRepository.findByMerchantTerminalTranTypeBinId(id);
         }
         catch(Exception ex)
         {
@@ -88,7 +88,7 @@ public class MerchantTerminalTranTypeBinService {
             if(bin == null)
                 return null; // throw acquirer not configured exception
 
-            return merchantTerminalTranTypeBinRepository.findByMerchantIdTerminalIdTranTypeIdBinId(merchant.getId(), terminal.getId(), tranType.getId(), bin.getId());
+            return merchantTerminalTranTypeBinRepository.findByMerchantIdTerminalIdTranTypeIdBinId(merchant.getMerchantId(), terminal.getTerminalId(), tranType.getTranTypeId(), bin.getBinId());
         }
         catch(Exception ex)
         {

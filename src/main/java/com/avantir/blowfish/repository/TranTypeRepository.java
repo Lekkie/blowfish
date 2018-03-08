@@ -18,7 +18,7 @@ import java.util.List;
 public interface TranTypeRepository extends JpaRepository<TranType, String> {
 
     //@Cacheable(value = "endpointById")
-    TranType findById(@Param("id") Long id);
+    TranType findByTranTypeId(@Param("tranTypeId") Long tranTypeId);
     //@Cacheable(value = "endpointByName")
     TranType findByCodeAllIgnoringCase(@Param("code") String code);
     @Query("FROM TranType n WHERE n.status = :status")

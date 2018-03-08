@@ -4,10 +4,8 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.AcquirerMerchant;
-import com.avantir.blowfish.model.AcquirerTerminalParameter;
-import com.avantir.blowfish.repository.AcquirerMerchantRepository;
-import com.avantir.blowfish.repository.AcquirerTerminalParameterRepository;
+import com.avantir.blowfish.model.AcquirerTermParam;
+import com.avantir.blowfish.repository.AcquirerTermParamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -19,21 +17,21 @@ import org.springframework.transaction.annotation.Transactional;
  * delegate calls to Repository.
  */
 @Component
-public class AcquirerTerminalParameterService {
+public class AcquirerTermParamService {
 
     @Autowired
-    private AcquirerTerminalParameterRepository acquirerTerminalParameterRepository;
+    private AcquirerTermParamRepository acquirerTerminalParameterRepository;
 
 
     @Cacheable(value = "acqTermParam")
     @Transactional(readOnly=true)
-    public AcquirerTerminalParameter findById(Long id) {
+    public AcquirerTermParam findByAcquirerTermParamId(Long id) {
 
         try
         {
             //Optional<AcquirerMerchant> optional = acquirerMerchantRepository.findById(id);
             //return optional.orElse(null);
-            return acquirerTerminalParameterRepository.findById(id);
+            return acquirerTerminalParameterRepository.findByAcquirerTermParamId(id);
         }
         catch(Exception ex)
         {
@@ -44,7 +42,7 @@ public class AcquirerTerminalParameterService {
 
     @Cacheable(value = "acqTermParam")
     @Transactional(readOnly=true)
-    public AcquirerTerminalParameter findByAcquirerId(Long acquirerId) {
+    public AcquirerTermParam findByAcquirerId(Long acquirerId) {
 
         try
         {

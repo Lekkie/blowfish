@@ -20,7 +20,7 @@ public class Node extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    private Long nodeId;
     @Column(name = "name", nullable = false, unique = true)
     private String name;
     @Column(name = "type", nullable = false)
@@ -41,12 +41,12 @@ public class Node extends BaseModel implements Serializable {
     }
 
 
-    public Long getId() {
-        return id;
+    public Long getNodeId() {
+        return nodeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setNodeId(Long nodeId) {
+        this.nodeId = nodeId;
     }
 
     public String getName() {

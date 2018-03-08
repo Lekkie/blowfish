@@ -20,7 +20,7 @@ public class RouteByReceivingInst extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    private Long routeByReceivingInstId;
     @Column(name = "receiving_inst_id", nullable = false, unique = true)
     private String receivingInstId;
     @Column(name = "sink_node_id", nullable = false)
@@ -34,12 +34,13 @@ public class RouteByReceivingInst extends BaseModel implements Serializable {
 
     }
 
-    public Long getId() {
-        return id;
+
+    public Long getRouteByReceivingInstId() {
+        return routeByReceivingInstId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRouteByReceivingInstId(Long routeByReceivingInstId) {
+        this.routeByReceivingInstId = routeByReceivingInstId;
     }
 
     public String getReceivingInstId() {

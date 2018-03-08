@@ -17,18 +17,19 @@ public class AcquirerBin extends BaseModel{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long acquirerBinId;
     @Column(name = "acquirer_id", nullable = false)
     Long acquirerId;
     @Column(name = "bin_id", nullable = false, unique = true)
     Long binId;
 
-    public Long getId() {
-        return id;
+
+    public Long getAcquirerBinId() {
+        return acquirerBinId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAcquirerBinId(Long acquirerBinId) {
+        this.acquirerBinId = acquirerBinId;
     }
 
     public Long getAcquirerId() {

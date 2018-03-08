@@ -22,7 +22,7 @@ public class Transaction extends BaseModel{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long transactionId;
     @Column(name = "msg_type", nullable = false)
     String msgType;
     @Column(name = "stan", nullable = false)
@@ -147,12 +147,13 @@ public class Transaction extends BaseModel{
     @Column(name = "algo_version", nullable = false)
     Long algoVersion; // PAN hash algorithm version
 
-    public Long getId() {
-        return id;
+
+    public Long getTransactionId() {
+        return transactionId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
     }
 
     public String getMsgType() {

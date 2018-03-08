@@ -47,7 +47,7 @@ public class DomainService {
         if(newDomain != null){
             //Optional<Domain> optional = domainRepository.findById(newDomain.getId());
             //Domain oldDomain = optional.orElse(null);
-            Domain oldDomain = domainRepository.findById(newDomain.getId());
+            Domain oldDomain = domainRepository.findByDomainId(newDomain.getDomainId());
             if(!StringUtil.isEmpty(newDomain.getName()))
                 oldDomain.setName(newDomain.getName());
             if(!StringUtil.isEmpty(newDomain.getDescription()))
@@ -66,13 +66,13 @@ public class DomainService {
 
     @Cacheable(value = "domain")
     @Transactional(readOnly=true)
-    public Domain findById(Long id) {
+    public Domain findByDomainId(Long id) {
 
         try
         {
             //Optional<Domain> optional = domainRepository.findById(id);
             //return optional.orElse(null);
-            return domainRepository.findById(id);
+            return domainRepository.findByDomainId(id);
         }
         catch(Exception ex)
         {

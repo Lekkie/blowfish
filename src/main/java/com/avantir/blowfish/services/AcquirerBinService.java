@@ -31,7 +31,7 @@ public class AcquirerBinService {
         {
             //Optional<AcquirerMerchant> optional = acquirerMerchantRepository.findById(id);
             //return optional.orElse(null);
-            return acquirerBinRepository.findById(id);
+            return acquirerBinRepository.findByAcquirerBinId(id);
         }
         catch(Exception ex)
         {

@@ -19,7 +19,7 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, String> {
 
     //@Cacheable(value = "endpointById")
-    Transaction findById(@Param("id") Long id);
+    Transaction findByTransactionId(@Param("transactionId") Long transactionId);
     //@Cacheable(value = "endpointByName")
     @Query("FROM Transaction t WHERE t.msgType = :msgType " +
             "AND t.stan = :stan " +

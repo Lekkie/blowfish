@@ -45,7 +45,7 @@ public class MerchantTerminalService {
     @Transactional(readOnly=false)
     public MerchantTerminal update(MerchantTerminal newMerchantTerminal) {
         if(newMerchantTerminal != null){
-            MerchantTerminal oldMerchantTerminal = merchantTerminalRepository.findById(newMerchantTerminal.getId());
+            MerchantTerminal oldMerchantTerminal = merchantTerminalRepository.findByMerchantTerminalId(newMerchantTerminal.getMerchantTerminalId());
             if(newMerchantTerminal.getMerchantId() != 0)
                 oldMerchantTerminal.setMerchantId(newMerchantTerminal.getMerchantId());
             if(newMerchantTerminal.getTerminalId() != 0)
@@ -72,11 +72,11 @@ public class MerchantTerminalService {
 
     @Cacheable(value = "merchantTerminal")
     @Transactional(readOnly=true)
-    public MerchantTerminal findById(Long id) {
+    public MerchantTerminal findByMerchantTerminalId(Long id) {
 
         try
         {
-            return merchantTerminalRepository.findById(id);
+            return merchantTerminalRepository.findByMerchantTerminalId(id);
         }
         catch(Exception ex)
         {

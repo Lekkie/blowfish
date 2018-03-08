@@ -282,13 +282,13 @@ public class IsoUtil {
             logger.error("receiveRequestFromRemote: TMS key not found for this message");
             return 0L;
         }
-        return  tmsKeyOrigDataElem.getId();
+        return  tmsKeyOrigDataElem.getTmsKeyOrigDataElemId();
     }
 
     public static Long getTMSKey(IsoMessage isoMessage, TMSKeyOrigDataElemService tmsKeyOrigDataElemService){
         String originalDataElement = getOriginalDataElement(isoMessage);
         TMSKeyOrigDataElem tmsKeyOrigDataElem = tmsKeyOrigDataElemService.findByOriginalDataElement(originalDataElement);
-        return tmsKeyOrigDataElem == null ? 0L : tmsKeyOrigDataElem.getId();
+        return tmsKeyOrigDataElem == null ? 0L : tmsKeyOrigDataElem.getTmsKeyOrigDataElemId();
     }
 
 

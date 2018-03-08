@@ -29,7 +29,7 @@ public class NodeService {
 
         try
         {
-            return nodeRepository.findById(nodeId);
+            return nodeRepository.findByNodeId(nodeId);
         }
         catch(Exception ex)
         {

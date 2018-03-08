@@ -4,10 +4,7 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.Acquirer;
 import com.avantir.blowfish.model.Merchant;
-import com.avantir.blowfish.model.TerminalParameter;
-import com.avantir.blowfish.repository.AcquirerRepository;
 import com.avantir.blowfish.repository.MerchantRepository;
 import com.avantir.blowfish.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,17 +32,17 @@ public class MerchantService {
     @Autowired
     private MerchantRepository merchantRepository;
 
-    @CachePut(cacheNames="merchant", key = "#result.id")
+    @CachePut(cacheNames="merchant", key = "#merchant.merchantId")
     @Transactional(readOnly=false)
     public Merchant create(Merchant merchant) {
         return merchantRepository.save(merchant);
     }
 
-    @CachePut(cacheNames="merchant", unless="#result==null", key = "#result.id")
+    @CachePut(cacheNames="merchant", unless="#result==null", key = "#merchant.merchantId")
     @Transactional(readOnly=false)
     public Merchant update(Merchant newMerchant) {
         if(newMerchant != null){
-            Merchant oldMerchant = merchantRepository.findById(newMerchant.getId());
+            Merchant oldMerchant = merchantRepository.findByMerchantId(newMerchant.getMerchantId());
             if(!StringUtil.isEmpty(newMerchant.getDescription()))
                 oldMerchant.setDescription(newMerchant.getDescription());
             if(!StringUtil.isEmpty(newMerchant.getAddress()))
@@ -70,20 +67,20 @@ public class MerchantService {
         return null;
     }
 
-    @CacheEvict(value = "merchant")
+    @CacheEvict(value = "merchant", key = "#merchantId")
     @Transactional(readOnly=false)
-    public void delete(long id) {
-        merchantRepository.delete(id);
+    public void delete(long merchantId) {
+        merchantRepository.delete(merchantId);
     }
 
 
-    @Cacheable(value = "merchant")
+    @Cacheable(value = "merchant", key = "#merchantId")
     @Transactional(readOnly=true)
-    public Merchant findById(Long id) {
+    public Merchant findByMerchantId(Long merchantId) {
 
         try
         {
-            return merchantRepository.findById(id);
+            return merchantRepository.findByMerchantId(merchantId);
         }
         catch(Exception ex)
         {
@@ -92,13 +89,13 @@ public class MerchantService {
         return null;
     }
 
-    @Cacheable(value = "merchant")
+    @Cacheable(value = "merchant", key = "#merchantCode")
     @Transactional(readOnly=true)
-    public Merchant findByCode(String code) {
+    public Merchant findByCode(String merchantCode) {
 
         try
         {
-            return merchantRepository.findByCodeAllIgnoringCase(code);
+            return merchantRepository.findByCodeAllIgnoringCase(merchantCode);
         }
         catch(Exception ex)
         {

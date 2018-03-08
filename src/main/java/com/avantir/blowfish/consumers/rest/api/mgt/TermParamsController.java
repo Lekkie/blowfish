@@ -1,7 +1,5 @@
 package com.avantir.blowfish.consumers.rest.api.mgt;
 
-import com.avantir.blowfish.consumers.rest.model.Error;
-import com.avantir.blowfish.consumers.rest.model.Errors;
 import com.avantir.blowfish.consumers.rest.model.Parameter;
 import com.avantir.blowfish.exceptions.AcquirerMerchantNotLinkedException;
 import com.avantir.blowfish.exceptions.BlowfishException;
@@ -15,6 +13,8 @@ import com.avantir.blowfish.utils.KeyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,14 +24,14 @@ import java.util.List;
  * Created by lekanomotayo on 18/02/2018.
  */
 @RestController
-@RequestMapping("api/v1/terminals/parameters")
-public class TerminalParametersApi {
+@RequestMapping(value = "api/v1/termparams", produces = "application/hal+json")
+public class TermParamsController {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(TerminalParametersApi.class);
+    private static final Logger logger = LoggerFactory.getLogger(TermParamsController.class);
 
     @Autowired
-    TerminalParameterService terminalParameterService;
+    TermParamService termParamService;
     @Autowired
     TerminalService terminalService;
     @Autowired
@@ -41,11 +41,11 @@ public class TerminalParametersApi {
     @Autowired
     KeyService keyService;
     @Autowired
-    TerminalTerminalParameterService terminalTerminalParameterService;
+    TerminalTermParamService terminalTerminalParameterService;
     @Autowired
-    MerchantTerminalParameterService merchantTerminalParameterService;
+    MerchantTermParamService merchantTerminalParameterService;
     @Autowired
-    AcquirerTerminalParameterService acquirerTerminalParameterService;
+    AcquirerTermParamService acquirerTerminalParameterService;
     @Autowired
     MerchantTerminalService merchantTerminalService;
     @Autowired
@@ -56,15 +56,14 @@ public class TerminalParametersApi {
     DomainService domainService;
 
 
-    @RequestMapping(method= RequestMethod.POST,
-            consumes = "application/json",
-            produces = "application/json")
+    @RequestMapping(method= RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Object create(@RequestBody TerminalParameter terminalParameter, HttpServletResponse response)
+    public Object create(@RequestBody TermParam termParam, HttpServletResponse response)
     {
         try{
-            terminalParameterService.create(terminalParameter);
+            termParamService.create(termParam);
             response.setStatus(HttpServletResponse.SC_CREATED);
+            termParam = getLinks(termParam, response);
             return "";
         }
         catch(Exception ex){
@@ -73,21 +72,19 @@ public class TerminalParametersApi {
         }
     }
 
-    @RequestMapping(method= RequestMethod.PATCH,
-            consumes = "application/json",
-            value = "/{id}",
-            produces = "application/json")
+    @RequestMapping(method= RequestMethod.PATCH, consumes = "application/json", value = "/{id}")
     @ResponseBody
-    public Object update(@PathVariable("id") long id, @RequestBody TerminalParameter newTerminalParameter, HttpServletResponse response)
+    public Object update(@PathVariable("id") long id, @RequestBody TermParam newTermParam, HttpServletResponse response)
     {
         try{
-            if(newTerminalParameter == null)
+            if(newTermParam == null)
                 throw new Exception();
 
-            newTerminalParameter.setId(id);
-            newTerminalParameter = terminalParameterService.update(newTerminalParameter);
+            newTermParam.setTermParamId(id);
+            newTermParam = termParamService.update(newTermParam);
             response.setStatus(HttpServletResponse.SC_OK);
-            return newTerminalParameter;
+            newTermParam = getLinks(newTermParam, response);
+            return newTermParam;
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -95,15 +92,12 @@ public class TerminalParametersApi {
         }
     }
 
-    @RequestMapping(method= RequestMethod.DELETE,
-            consumes = "application/json",
-            value = "/{id}",
-            headers = "Accept=application/json")
+    @RequestMapping(method= RequestMethod.DELETE, consumes = "application/json", value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
     public Object delete(@PathVariable("id") long id, HttpServletResponse response)
     {
         try{
-            terminalParameterService.delete(id);
+            termParamService.delete(id);
             response.setStatus(HttpServletResponse.SC_OK);
             return "";
         }
@@ -113,8 +107,7 @@ public class TerminalParametersApi {
         }
     }
 
-    @RequestMapping(method= RequestMethod.GET,
-            headers = "Accept=application/json")
+    @RequestMapping(method= RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="deviceSerialNo", required = false) String deviceSerialNo, @RequestHeader(value="devicePublicKey", required = false) String devicePublicKey, HttpServletResponse response)
     {
@@ -127,9 +120,13 @@ public class TerminalParametersApi {
             if(deviceSerialNo != null && !deviceSerialNo.isEmpty())
                 return getByDeviceSerialNo(deviceSerialNo, devicePublicKey, response);
 
-            List<TerminalParameter> terminalParameterList = terminalParameterService.findAll();
+            List<TermParam> termParamList = termParamService.findAll();
             response.setStatus(HttpServletResponse.SC_OK);
-            return terminalParameterList;
+            for (TermParam termParam : termParamList) {
+                termParam = getLinks(termParam, response);
+            }
+
+            return termParamList;
         }
         catch(Exception ex)
         {
@@ -140,21 +137,17 @@ public class TerminalParametersApi {
         }
     }
 
-    /*
-    @RequestMapping(method= RequestMethod.GET,
-            value = "/{id}",
-            headers = "Accept=application/json")
+    @RequestMapping(method= RequestMethod.GET, value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
-    public Object getById(@PathVariable("id") long id, HttpServletResponse response)
-    */
-    public Object getById(long id, HttpServletResponse response)
+    public Object getById(@PathVariable Long id, HttpServletResponse response)
     {
         String fxnParams = "id=" + id + ",HttpServletResponse=" + response.toString();
         try
         {
-            TerminalParameter terminalParameter = terminalParameterService.findById(id);
+            TermParam termParam = termParamService.findByTermParamId(id);
             response.setStatus(HttpServletResponse.SC_OK);
-            return terminalParameter;
+            termParam = getLinks(termParam, response);
+            return termParam;
         }
         catch(Exception ex)
         {
@@ -187,39 +180,39 @@ public class TerminalParametersApi {
             Terminal terminal = terminalService.findBySerialNo(deviceSerialNo);
             if(terminal == null)
                 throw new TerminalNotSupportedException("Terminal has not been provisioned yet (Missing Terminal)");
-            TerminalParameter terminalParameter = null;
-            MerchantTerminal merchantTerminal = merchantTerminalService.findByTerminalId(terminal.getId());
+            TermParam terminalParameter = null;
+            MerchantTerminal merchantTerminal = merchantTerminalService.findByTerminalId(terminal.getTerminalId());
             if(merchantTerminal == null)
                 throw new MerchantTerminalNotLinkedException("Terminal has not been linked with any merchant (Missing Merchant)");
             AcquirerMerchant acquirerMerchant = acquirerMerchantService.findByMerchantId(merchantTerminal.getMerchantId());
             if(acquirerMerchant == null)
                 throw new AcquirerMerchantNotLinkedException("Merchant has not been linked with  an acquirer (Missing Acquirer)");
 
-            TerminalTerminalParameter terminalTerminalParameter = terminalTerminalParameterService.findByTerminalId(terminal.getId());
+            TerminalTermParam terminalTerminalParameter = terminalTerminalParameterService.findByTerminalId(terminal.getTerminalId());
             if(terminalTerminalParameter == null){
-                MerchantTerminalParameter merchantTerminalParameter = merchantTerminalParameterService.findByMerchantId(merchantTerminal.getId());
+                MerchantTermParam merchantTerminalParameter = merchantTerminalParameterService.findByMerchantId(merchantTerminal.getMerchantTerminalId());
                 if(merchantTerminalParameter == null){
-                    AcquirerTerminalParameter acquirerTerminalParameter = acquirerTerminalParameterService.findByAcquirerId(acquirerMerchant.getAcquirerId());
+                    AcquirerTermParam acquirerTerminalParameter = acquirerTerminalParameterService.findByAcquirerId(acquirerMerchant.getAcquirerId());
                     if(acquirerTerminalParameter != null){
-                        terminalParameter = terminalParameterService.findById(acquirerTerminalParameter.getTerminalParameterId());
+                        terminalParameter = termParamService.findByTermParamId(acquirerTerminalParameter.getTermParamId());
                     }
                 }
                 else{
-                    terminalParameter = terminalParameterService.findById(merchantTerminalParameter.getTerminalParameterId());
+                    terminalParameter = termParamService.findByTermParamId(merchantTerminalParameter.getTermParamId());
                 }
             }
             else{
-                terminalParameter = terminalParameterService.findById(terminalTerminalParameter.getTerminalParameterId());
+                terminalParameter = termParamService.findByTermParamId(terminalTerminalParameter.getTermParamId());
             }
 
             if(terminalParameter == null)
                 throw new BlowfishException("1401", "No Terminal Parameter configured");
 
-            Acquirer acquirer = acquirerService.findById(acquirerMerchant.getAcquirerId());
-            Merchant merchant = merchantService.findById(acquirerMerchant.getMerchantId());
-            Endpoint endpoint = endpointService.findById(terminalParameter.getTmsEndpointId());
-            Key ctmkKey = keyService.findById(terminalParameter.getCtmkKeyId());
-            Key bdkKey = keyService.findById(terminalParameter.getBdkKeyId());
+            Acquirer acquirer = acquirerService.findByAcquirerId(acquirerMerchant.getAcquirerId());
+            Merchant merchant = merchantService.findByMerchantId(acquirerMerchant.getMerchantId());
+            Endpoint endpoint = endpointService.findByEndpointId(terminalParameter.getTmsEndpointId());
+            Key ctmkKey = keyService.findByKeyId(terminalParameter.getCtmkKeyId());
+            Key bdkKey = keyService.findByKeyId(terminalParameter.getBdkKeyId());
             //  decrypt ctmkKey.getData(), before re-encrypting under RSA
             String base64Ctmk = KeyUtil.encryptWithRSA(devicePublicKey, ctmkKey.getData());
             if(base64Ctmk == null)
@@ -273,6 +266,27 @@ public class TerminalParametersApi {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return BlowfishUtil.getError(ex.getCode(), ex.getMessage());
         }
+    }
+
+
+
+    private TermParam getLinks(TermParam terminalParameter, HttpServletResponse response){
+        Link selfLink = ControllerLinkBuilder.linkTo(TermParamsController.class).slash(terminalParameter.getTermParamId()).withSelfRel();
+        terminalParameter.add(selfLink);
+
+        Object methodLink1 = ControllerLinkBuilder.methodOn(EndpointController.class).getById(terminalParameter.getTmsEndpointId(), response);
+        Link link1 = ControllerLinkBuilder.linkTo(methodLink1).withRel("endpoint");
+        terminalParameter.add(link1);
+
+        Object methodLink2 = ControllerLinkBuilder.methodOn(KeyController.class).getById(terminalParameter.getCtmkKeyId(), response);
+        Link link2 = ControllerLinkBuilder.linkTo(methodLink2).withRel("ctmkKey");
+        terminalParameter.add(link2);
+
+        Object methodLink3 = ControllerLinkBuilder.methodOn(KeyController.class).getById(terminalParameter.getBdkKeyId(), response);
+        Link link3 = ControllerLinkBuilder.linkTo(methodLink3).withRel("bdkKey");
+        terminalParameter.add(link3);
+
+        return terminalParameter;
     }
 
 }

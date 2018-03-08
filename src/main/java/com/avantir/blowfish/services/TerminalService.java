@@ -45,7 +45,7 @@ public class TerminalService {
     @Transactional(readOnly=false)
     public Terminal update(Terminal newTerminal) {
         if(newTerminal != null){
-            Terminal oldTerminal = terminalRepository.findById(newTerminal.getId());
+            Terminal oldTerminal = terminalRepository.findByTerminalId(newTerminal.getTerminalId());
             if(!StringUtil.isEmpty(newTerminal.getDescription()))
                 oldTerminal.setDescription(newTerminal.getDescription());
             if(!StringUtil.isEmpty(newTerminal.getSerialNo()))
@@ -83,11 +83,11 @@ public class TerminalService {
 
     @Cacheable(value = "terminal")
     @Transactional(readOnly=true)
-    public Terminal findById(Long id) {
+    public Terminal findByTerminalId(Long id) {
 
         try
         {
-            return terminalRepository.findById(id);
+            return terminalRepository.findByTerminalId(id);
         }
         catch(Exception ex)
         {

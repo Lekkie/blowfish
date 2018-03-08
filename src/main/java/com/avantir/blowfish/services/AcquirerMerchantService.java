@@ -27,13 +27,13 @@ public class AcquirerMerchantService {
 
 
     @Transactional(readOnly=true)
-    public AcquirerMerchant findById(Long id) {
+    public AcquirerMerchant findByAcquirerMerchantId(Long id) {
 
         try
         {
             //Optional<AcquirerMerchant> optional = acquirerMerchantRepository.findById(id);
             //return optional.orElse(null);
-            return acquirerMerchantRepository.findById(id);
+            return acquirerMerchantRepository.findByAcquirerMerchantId(id);
         }
         catch(Exception ex)
         {

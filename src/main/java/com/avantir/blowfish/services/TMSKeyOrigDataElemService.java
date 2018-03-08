@@ -27,11 +27,11 @@ public class TMSKeyOrigDataElemService {
     }
 
     @Transactional(readOnly=true)
-    public TMSKeyOrigDataElem findByID(Long switchKey) {
+    public TMSKeyOrigDataElem findByTmsKeyOrigDataElemId(Long switchKey) {
 
         try
         {
-            return tmsKeyOrigDataElemRepository.findById(switchKey);
+            return tmsKeyOrigDataElemRepository.findByTmsKeyOrigDataElemId(switchKey);
         }
         catch(Exception ex)
         {

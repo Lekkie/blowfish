@@ -19,7 +19,7 @@ import java.util.List;
 public interface BinRepository extends JpaRepository<Bin, String> {
 
     //@Cacheable(value = "endpointById")
-    Bin findById(@Param("id") Long id);
+    Bin findByBinId(@Param("binId") Long binId);
     //@Cacheable(value = "endpointByName")
     Bin findByCodeAllIgnoringCase(@Param("code") String code);
     @Query("FROM Bin n WHERE n.status = :status")

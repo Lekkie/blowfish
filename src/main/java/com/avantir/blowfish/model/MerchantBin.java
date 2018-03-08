@@ -17,18 +17,18 @@ public class MerchantBin extends BaseModel{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long merchantBinId;
     @Column(name = "merchant_id", nullable = false)
     Long merchantId;
     @Column(name = "bin_id", nullable = false)
     Long binId;
 
-    public Long getId() {
-        return id;
+    public Long getMerchantBinId() {
+        return merchantBinId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMerchantBinId(Long merchantBinId) {
+        this.merchantBinId = merchantBinId;
     }
 
     public Long getMerchantId() {

@@ -49,7 +49,7 @@ public class ISOBridgeService {
 
         try
         {
-            return isoBridgeRepository.findById(isoBridgeId);
+            return isoBridgeRepository.findByIsoBridgeId(isoBridgeId);
         }
         catch(Exception ex)
         {

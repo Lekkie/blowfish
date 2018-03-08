@@ -18,7 +18,7 @@ public class Bin extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long binId;
     @Column(name = "code", nullable = false, unique = true)
     private String code;
     @Column(name = "description", nullable = true)
@@ -27,12 +27,12 @@ public class Bin extends BaseModel implements Serializable {
     private int status = 1;
 
 
-    public Long getId() {
-        return id;
+    public Long getBinId() {
+        return binId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setBinId(Long binId) {
+        this.binId = binId;
     }
 
     public String getCode() {

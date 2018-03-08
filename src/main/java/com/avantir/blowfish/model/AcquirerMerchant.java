@@ -17,18 +17,19 @@ public class AcquirerMerchant extends BaseModel{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long acquirerMerchantId;
     @Column(name = "acquirer_id", nullable = false)
     Long acquirerId;
     @Column(name = "merchant_id", nullable = false, unique = true)
     Long merchantId;
 
-    public Long getId() {
-        return id;
+
+    public Long getAcquirerMerchantId() {
+        return acquirerMerchantId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAcquirerMerchantId(Long acquirerMerchantId) {
+        this.acquirerMerchantId = acquirerMerchantId;
     }
 
     public Long getAcquirerId() {

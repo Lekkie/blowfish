@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Entity
 @DynamicInsert
-@Table(name = "tbl_nodes")
+@Table(name = "tbl_default_sink_nodes")
 @SuppressWarnings("serial")
 public class DefaultSinkNode extends BaseModel implements Serializable {
 
@@ -20,19 +20,19 @@ public class DefaultSinkNode extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long defaultSinkNodeId;
     @Column(name = "name", nullable = false, unique = true)
     private String name = "DEFAULT";
     @Column(name = "sink_node_id", nullable = false, unique = true)
     private Long sinkNodeId;
 
 
-    public Long getId() {
-        return id;
+    public Long getDefaultSinkNodeId() {
+        return defaultSinkNodeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setDefaultSinkNodeId(Long defaultSinkNodeId) {
+        this.defaultSinkNodeId = defaultSinkNodeId;
     }
 
     public String getName() {

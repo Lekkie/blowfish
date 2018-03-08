@@ -13,25 +13,25 @@ import java.io.Serializable;
 @DynamicInsert
 @Table(name = "tbl_merchants_terminal_parameters")
 @SuppressWarnings("serial")
-public class MerchantTerminalParameter extends BaseModel implements Serializable {
+public class MerchantTermParam extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long merchantTermParamId;
     @Column(name = "merchant_id", nullable = false, unique = true)
     Long merchantId;
-    @Column(name = "terminal_parameter_id", nullable = false)
-    Long terminalParameterId;
+    @Column(name = "term_param_id", nullable = false)
+    Long termParamId;
 
 
-    public Long getId() {
-        return id;
+    public Long getMerchantTermParamId() {
+        return merchantTermParamId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMerchantTermParamId(Long merchantTermParamId) {
+        this.merchantTermParamId = merchantTermParamId;
     }
 
     public Long getMerchantId() {
@@ -42,11 +42,11 @@ public class MerchantTerminalParameter extends BaseModel implements Serializable
         this.merchantId = merchantId;
     }
 
-    public Long getTerminalParameterId() {
-        return terminalParameterId;
+    public Long getTermParamId() {
+        return termParamId;
     }
 
-    public void setTerminalParameterId(Long terminalParameterId) {
-        this.terminalParameterId = terminalParameterId;
+    public void setTermParamId(Long termParamId) {
+        this.termParamId = termParamId;
     }
 }

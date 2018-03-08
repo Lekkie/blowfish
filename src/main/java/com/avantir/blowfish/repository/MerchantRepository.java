@@ -19,7 +19,7 @@ import java.util.List;
 public interface MerchantRepository extends JpaRepository<Merchant, Long> {
 
     //@Cacheable(value = "endpointById")
-    Merchant findById(@Param("id") Long id);
+    Merchant findByMerchantId(@Param("merchantId") Long merchantId);
     //@Cacheable(value = "endpointByName")
     Merchant findByCodeAllIgnoringCase(@Param("code") String code);
     @Query("FROM Merchant n WHERE n.status = :status")

@@ -19,7 +19,7 @@ public class Endpoint extends BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    private Long endpointId;
     @Column(name = "hostname", nullable = true)
     private String hostname;
     @Column(name = "ip", nullable = false)
@@ -36,12 +36,12 @@ public class Endpoint extends BaseModel implements Serializable {
     private int status = 1;
 
 
-    public Long getId() {
-        return id;
+    public Long getEndpointId() {
+        return endpointId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEndpointId(Long endpointId) {
+        this.endpointId = endpointId;
     }
 
     public String getIp() {

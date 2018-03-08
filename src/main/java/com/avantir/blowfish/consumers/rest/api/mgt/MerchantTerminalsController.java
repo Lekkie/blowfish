@@ -1,7 +1,6 @@
 package com.avantir.blowfish.consumers.rest.api.mgt;
 
 import com.avantir.blowfish.model.BlowfishLog;
-import com.avantir.blowfish.model.Merchant;
 import com.avantir.blowfish.model.MerchantTerminal;
 import com.avantir.blowfish.services.MerchantService;
 import com.avantir.blowfish.services.MerchantTerminalService;
@@ -10,6 +9,8 @@ import com.avantir.blowfish.utils.IsoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,26 +20,25 @@ import java.util.List;
  * Created by lekanomotayo on 18/02/2018.
  */
 @RestController
-@RequestMapping("api/v1/merchants/terminals")
-public class MerchantTerminalsApi {
+@RequestMapping(value = "api/v1/merchants/terminals", produces = "application/hal+json")
+public class MerchantTerminalsController {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(MerchantTerminalsApi.class);
+    private static final Logger logger = LoggerFactory.getLogger(MerchantTerminalsController.class);
     @Autowired
     MerchantService merchantService;
     @Autowired
     MerchantTerminalService merchantTerminalService;
 
 
-    @RequestMapping(method= RequestMethod.POST,
-            consumes = "application/json",
-            produces = "application/json")
+    @RequestMapping(method= RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     public Object create(@RequestBody MerchantTerminal merchantTerminal, HttpServletResponse response)
     {
         try{
             merchantTerminalService.create(merchantTerminal);
             response.setStatus(HttpServletResponse.SC_CREATED);
+            merchantTerminal = getLinks(merchantTerminal, response);
             return "";
         }
         catch(Exception ex){
@@ -58,9 +58,10 @@ public class MerchantTerminalsApi {
             if(newMerchantTerminal == null)
                 throw new Exception();
 
-            newMerchantTerminal.setId(id);
+            newMerchantTerminal.setMerchantTerminalId(id);
             newMerchantTerminal = merchantTerminalService.update(newMerchantTerminal);
             response.setStatus(HttpServletResponse.SC_OK);
+            newMerchantTerminal = getLinks(newMerchantTerminal, response);
             return newMerchantTerminal;
         }
         catch(Exception ex){
@@ -69,10 +70,7 @@ public class MerchantTerminalsApi {
         }
     }
 
-    @RequestMapping(method= RequestMethod.DELETE,
-            consumes = "application/json",
-            value = "/{id}",
-            headers = "Accept=application/json")
+    @RequestMapping(method= RequestMethod.DELETE, consumes = "application/json", value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
     public Object delete(@PathVariable("id") long id, HttpServletResponse response)
     {
@@ -87,8 +85,7 @@ public class MerchantTerminalsApi {
         }
     }
 
-    @RequestMapping(method= RequestMethod.GET,
-            headers = "Accept=application/json")
+    @RequestMapping(method= RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="merchant_id", required = false) Long merchantId, @RequestHeader(value="terminal_id", required = false) Long terminalId, HttpServletResponse response)
     {
@@ -106,6 +103,11 @@ public class MerchantTerminalsApi {
 
             List<MerchantTerminal> merchantTerminalList = merchantTerminalService.findAll();
             response.setStatus(HttpServletResponse.SC_OK);
+            for (MerchantTerminal merchantTerminal : merchantTerminalList) {
+                merchantTerminal = getLinks(merchantTerminal, response);
+            }
+
+
             return merchantTerminalList;
         }
         catch(Exception ex)
@@ -118,13 +120,16 @@ public class MerchantTerminalsApi {
     }
 
 
-    public Object getById(long id, HttpServletResponse response)
+    @RequestMapping(method= RequestMethod.GET, value = "/{id}", headers = "Accept=application/json")
+    @ResponseBody
+    public Object getById(@PathVariable Long id, HttpServletResponse response)
     {
         String fxnParams = "id=" + id + ",HttpServletResponse=" + response.toString();
         try
         {
-            MerchantTerminal merchantTerminal = merchantTerminalService.findById(id);
+            MerchantTerminal merchantTerminal = merchantTerminalService.findByMerchantTerminalId(id);
             response.setStatus(HttpServletResponse.SC_OK);
+            merchantTerminal = getLinks(merchantTerminal, response);
             return merchantTerminal;
         }
         catch(Exception ex)
@@ -137,13 +142,16 @@ public class MerchantTerminalsApi {
     }
 
 
-    public Object getByMerchantId(long merchantId, HttpServletResponse response)
+    public Object getByMerchantId(Long merchantId, HttpServletResponse response)
     {
         String fxnParams = "merchantId=" + merchantId + ",HttpServletResponse=" + response.toString();
         try
         {
             List<MerchantTerminal> merchantTerminalList = merchantTerminalService.findByMerchantId(merchantId);
             response.setStatus(HttpServletResponse.SC_OK);
+            for (MerchantTerminal merchantTerminal : merchantTerminalList) {
+                merchantTerminal = getLinks(merchantTerminal, response);
+            }
             return merchantTerminalList;
         }
         catch(Exception ex)
@@ -155,13 +163,14 @@ public class MerchantTerminalsApi {
         }
     }
 
-    public Object getByTerminalId(long terminalId, HttpServletResponse response)
+    public Object getByTerminalId(Long terminalId, HttpServletResponse response)
     {
         String fxnParams = "terminalId=" + terminalId + ",HttpServletResponse=" + response.toString();
         try
         {
             MerchantTerminal merchantTerminal = merchantTerminalService.findByTerminalId(terminalId);
             response.setStatus(HttpServletResponse.SC_OK);
+            merchantTerminal = getLinks(merchantTerminal, response);
             return merchantTerminal;
         }
         catch(Exception ex)
@@ -171,6 +180,22 @@ public class MerchantTerminalsApi {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
+    }
+
+
+    private MerchantTerminal getLinks(MerchantTerminal merchantTerminal, HttpServletResponse response){
+        Link selfLink = ControllerLinkBuilder.linkTo(MerchantTerminalsController.class).slash(merchantTerminal.getMerchantTerminalId()).withSelfRel();
+        merchantTerminal.add(selfLink);
+
+        Object linkBuilder1 = ControllerLinkBuilder.methodOn(MerchantsController.class).getById(merchantTerminal.getMerchantId(), response);
+        Link link1 = ControllerLinkBuilder.linkTo(linkBuilder1).withRel("merchant");
+        merchantTerminal.add(link1);
+
+        Object linkBuilder2 = ControllerLinkBuilder.methodOn(TerminalsController.class).getById(merchantTerminal.getTerminalId(), response);
+        Link link2 = ControllerLinkBuilder.linkTo(linkBuilder2).withRel("terminal");
+        merchantTerminal.add(link2);
+
+        return merchantTerminal;
     }
 
 }
