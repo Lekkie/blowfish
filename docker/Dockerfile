@@ -21,7 +21,7 @@ ENV DB_USER blowfish
 ENV DB_PASSWD nk30ny3
 
 
-ENV DB_URL jdbc:mysql://172.31.1.223:4000/blowfish
+ENV DB_URL jdbc:mysql://instance1.c06j8m625dsj.eu-west-2.rds.amazonaws.com:3306/blowfish
 ENV DB_DRIVER com.mysql.cj.jdbc.Driver
 ENV DB_PLATFORM mysql
 ENV DB_DATABASE_PLATFORM org.hibernate.dialect.MySQLDialect
