@@ -9,6 +9,7 @@
         </layout>
     </appender>
 
+    
     <!-- This is the kafkaAppender -->
 <!--
     <appender name="asyncTasLogKafka"
