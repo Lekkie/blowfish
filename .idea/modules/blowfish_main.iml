@@ -38,6 +38,7 @@
     <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-healthchecks:3.2.5" level="project" />
     <orderEntry type="library" name="Gradle: io.dropwizard.metrics:metrics-jvm:3.2.5" level="project" />
     <orderEntry type="library" name="Gradle: com.github.gquintana.metrics:metrics-sql:3.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.projectlombok:lombok:1.16.20" level="project" />
     <orderEntry type="library" name="Gradle: org.json:json:20180130" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" name="Gradle: com.github.danielwegener:logback-kafka-appender:0.1.0" level="project" />

@@ -102,6 +102,8 @@ dependencies {
     //compile group: 'com.soulgalore', name: 'jdbcmetrics', version: '2.0.1'
 
 
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
+
     compile group: 'org.json', name: 'json', version: '20180130'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     compile group: 'com.github.danielwegener', name: 'logback-kafka-appender', version: '0.1.0'

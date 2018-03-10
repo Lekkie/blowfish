@@ -1,4 +1,4 @@
-package com.avantir.blowfish.interceptors;
+package com.avantir.blowfish.instrumentation;
 
 import org.springframework.boot.actuate.trace.TraceProperties;
 import org.springframework.boot.actuate.trace.TraceRepository;

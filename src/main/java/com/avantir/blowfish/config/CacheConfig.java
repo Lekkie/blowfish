@@ -1,5 +1,12 @@
 package com.avantir.blowfish.config;
 
+import com.lambdaworks.redis.ReadFrom;
+import com.lambdaworks.redis.RedisClient;
+import com.lambdaworks.redis.RedisURI;
+import com.lambdaworks.redis.codec.Utf8StringCodec;
+import com.lambdaworks.redis.masterslave.MasterSlave;
+import com.lambdaworks.redis.masterslave.StatefulRedisMasterSlaveConnection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -10,11 +17,15 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.cache.transaction.TransactionAwareCacheManagerProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.*;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +51,73 @@ public class CacheConfig extends CachingConfigurerSupport {
     private String redisHost = "127.0.0.1";
     @Value("${spring.redis.port}")
     private int redisPort = 6379;
+    @Value("${spring.redis.cluster-mode}")
+    private boolean clusterMode = false;
+
+    //@Value("${spring.redis.master-host}")
+    //private String masterHost = "redis1-001.4un0o7.0001.euw2.cache.amazonaws.com";
+    //@Value("${spring.redis.master-port}")
+    //private int masterPort = 6379;
+
+    //@Value("${spring.redis.sentinel-host1}")
+    //private String sentinelHost1 = "redis1-002.4un0o7.0001.euw2.cache.amazonaws.com";
+    //@Value("${spring.redis.sentinel-port1}")
+    //private int sentinelPort1 = 6379;
+    //@Value("${spring.redis.sentinel-host2}")
+    //private String sentinelHost2 = "redis1-003.4un0o7.0001.euw2.cache.amazonaws.com";
+    //@Value("${spring.redis.sentinel-port2}")
+    //private int sentinelPort2 = 6379;
+
+
+    @Resource
+    ConfigurableEnvironment environment;
+
+
+
+    @Bean
+    public PropertySource propertySource() {
+        MutablePropertySources mutablePropertySources = environment.getPropertySources();
+        List<PropertySource> propertySourceList = new ArrayList<>();
+        for(PropertySource propertySource : mutablePropertySources){
+            String propertyName = propertySource.getName();
+            if(propertyName.contains("application.yml"))
+                propertySourceList.add(propertySource);
+            System.out.println(propertyName);
+        }
+
+        PropertySource propertySource = propertySourceList.get(0);
+        if(propertySourceList.size() > 1) {
+            for (PropertySource propertySourceTmp : propertySourceList) {
+                if (!propertySourceTmp.getName().contains("applicationConfig: [classpath:/application.yml]"))
+                    propertySource = propertySourceTmp;
+            }
+        }
+
+        System.out.println("Selected propertySource file: " + propertySource.getName());
+        //MapPropertySource propertiesPropertySource =(MapPropertySource) mutablePropertySources.get("applicationConfig: [classpath:/application.yml]");
+        return propertySource;
+    }
+
+
+
+    @Bean
+    public RedisSentinelConfiguration sentinelConfiguration() {
+
+        //LettuceClientConfiguration
+        PropertySource propertySource = propertySource();
+        return new RedisSentinelConfiguration(propertySource);
+    }
+
+
+    @Bean
+    public RedisClusterConfiguration clusterConfiguration() {
+        //RedisSentinelConfiguration sentinelConfig = new RedisSentinelConfiguration().master(masterHost)
+        //        .sentinel("127.0.0.1", 26379)
+        //        .sentinel("127.0.0.1", 26380);
+        PropertySource propertySource = propertySource();
+        return new RedisClusterConfiguration(propertySource);
+    }
+
 
     /*
     @Bean
@@ -55,14 +133,24 @@ public class CacheConfig extends CachingConfigurerSupport {
 
     @Bean
     public RedisConnectionFactory connectionFactory() {
-        /*
-        RedisSentinelConfiguration sentinelConfig = new RedisSentinelConfiguration()
-                .master("mymaster")
-                .sentinel("127.0.0.1", 26379)
-                .sentinel("127.0.0.1", 26380);
-        return new LettuceConnectionFactory(sentinelConfig);
-        */
 
+        if(clusterMode) {
+
+            /*
+            RedisClient redisClient = RedisClient.create();
+            List<RedisURI> nodes = Arrays.asList(RedisURI.create("redis://host1"),
+                    RedisURI.create("redis://host2"),
+                    RedisURI.create("redis://host3"));
+            StatefulRedisMasterSlaveConnection<String, String> connection = MasterSlave
+                    .connect(redisClient, new Utf8StringCodec(), nodes);
+            connection.setReadFrom(ReadFrom.MASTER_PREFERRED);
+            */
+
+            return new LettuceConnectionFactory(clusterConfiguration());
+        }
+
+        // For Amazon cloud, point to master only, amazon will failover for you
+        //https://stackoverflow.com/questions/41048313/redis-client-lettuce-master-slave-configuration-for-aws-elasticache
         return new LettuceConnectionFactory(redisHost, redisPort);
     }
 

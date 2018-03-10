@@ -19,14 +19,10 @@ EXPOSE 8080
 ENV DB_NAME blowfish
 ENV DB_USER blowfish
 ENV DB_PASSWD nk30ny3
-
-
 ENV DB_URL jdbc:mysql://instance1.c06j8m625dsj.eu-west-2.rds.amazonaws.com:3306/blowfish
 ENV DB_DRIVER com.mysql.cj.jdbc.Driver
 ENV DB_PLATFORM mysql
 ENV DB_DATABASE_PLATFORM org.hibernate.dialect.MySQLDialect
-
-
 #ENV DB_URL jdbc:h2:mem:blowfish;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
 #ENV DB_DRIVER org.h2.Driver
 #ENV DB_PLATFORM h2
@@ -34,8 +30,11 @@ ENV DB_DATABASE_PLATFORM org.hibernate.dialect.MySQLDialect
 
 ENV H2_ENABLED false
 
-ENV REDIS_HOST 172.31.1.223
-ENV REDIS_PORT 4001
+ENV REDIS_CLUSTER_MODE false
+ENV REDIS_HOST redis1.4un0o7.ng.0001.euw2.cache.amazonaws.com
+ENV REDIS_PORT 6379
+ENV REDIS_CLUSTER_NODES redis1.4un0o7.ng.0001.euw2.cache.amazonaws.com:6379,redis1-002.4un0o7.0001.euw2.cache.amazonaws.com:6379,redis1-003.4un0o7.0001.euw2.cache.amazonaws.com:6379
+ENV REDIS_CLUSTER_MAX_REDIRECT 3
 
 VOLUME /tmp
 #WORKDIR /root/blowfish

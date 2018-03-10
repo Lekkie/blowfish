@@ -12,8 +12,11 @@ sed -i '/password: test/c\    password: '${DB_PASSWD} application.yml
 sed -i '/driverClassName: org.h2.Driver/c\    driverClassName: '${DB_DRIVER} application.yml
 sed -i '/database-platform: org.hibernate.dialect.H2Dialect/c\    database-platform: '${DB_DATABASE_PLATFORM} application.yml
 
+sed -i '/cluster-mode: false/c\    cluster-mode: '${REDIS_CLUSTER_MODE} application.yml
 sed -i '/host: localhost/c\    host: '${REDIS_HOST} application.yml
 sed -i '/port: 6379/c\    port: '${REDIS_PORT} application.yml
+sed -i '/nodes: redis1.4un0o7.ng.0001.euw2.cache.amazonaws.com:6379/c\      nodes: '${REDIS_CLUSTER_NODES} application.yml
+sed -i '/max-redirects: 3/c\      max-redirects: '${REDIS_CLUSTER_MAX_REDIRECT} application.yml
 
 sed -i '/enabled: true/c\      enabled: '${H2_ENABLED} application.yml
 

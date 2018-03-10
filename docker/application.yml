@@ -54,22 +54,29 @@ spring:
           numHelperThreads: 15
 #        connection:
 #          provider_class: org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider
+
+# https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
   redis:
+    cluster-mode: false
     database: 0 # Database index used by the connection factory.
     host: localhost # Redis server host.
     port: 6379 # Redis server port.
+    cluster:
+      nodes: redis1.4un0o7.ng.0001.euw2.cache.amazonaws.com:6379,redis1-002.4un0o7.0001.euw2.cache.amazonaws.com:6379,redis1-003.4un0o7.0001.euw2.cache.amazonaws.com:6379 # Comma-separated list of host:port pairs.
+      max-redirects: 3
     #password: # Login password of the redis server.
     pool:
       max-active: 8 # Max number of connections that can be allocated by the pool at a given time. Use a negative value for no limit.
       max-idle: 8 # Max number of "idle" connections in the pool. Use a negative value to indicate an unlimited number of idle connections.
       max-wait: -1 # Maximum amount of time (in milliseconds) a connection allocation should block before throwing an exception when the pool is exhausted. Use a negative value to block indefinitely.
       min-idle: 0 # Target for the minimum number of idle connections to maintain in the pool. This setting only has an effect if it is positive.
-#    sentinel:
-#      master: # Name of Redis server.
-#      nodes: # Comma-separated list of host:port pairs.
-    timeout: 0 # Connection timeout in milliseconds.
+    timeout: 20000 # Connection timeout in milliseconds.
+
+
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+
+
   metrics:
     export:
       delay-millis: 60000

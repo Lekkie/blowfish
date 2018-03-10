@@ -1,6 +1,6 @@
 package com.avantir.blowfish.config;
 
-import com.avantir.blowfish.interceptors.KafkaMetricWriter;
+import com.avantir.blowfish.instrumentation.KafkaMetricWriter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.codahale.metrics.jvm.*;

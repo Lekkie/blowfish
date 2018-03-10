@@ -16,7 +16,7 @@ version="${version%.*}.$((${version##*.}+1))"
 echo $version > './docker/VERSION'
 echo "version: $version"
 
-docker build -t $USERNAME/$IMAGE docker/
+docker build -t $USERNAME/$IMAGE ./docker/
 
 docker tag $USERNAME/$IMAGE $USERNAME/$IMAGE:$version
 

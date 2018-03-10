@@ -114,6 +114,7 @@ public class TermParamsController {
         String fxnParams = "id=" + id + ", deviceSerialNo=" + deviceSerialNo + ",devicePublicKey=" + devicePublicKey + ",HttpServletResponse=" + response.toString();
         try
         {
+            logger.debug(fxnParams);
             if(id != null && id > 0)
                 return getById(id, response);
 

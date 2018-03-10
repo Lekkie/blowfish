@@ -1,4 +1,4 @@
-package com.avantir.blowfish.interceptors;
+package com.avantir.blowfish.instrumentation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
