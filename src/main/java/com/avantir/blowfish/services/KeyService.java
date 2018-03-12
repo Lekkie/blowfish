@@ -101,7 +101,7 @@ public class KeyService {
         return null;
     }
 
-    @Cacheable(value = "keys", key = "#root.target.ACTIVE_KEY")
+    @Cacheable(value = "key", key = "#root.target.ACTIVE_KEY")
     @Transactional(readOnly=true)
     public List<Key> findAllActive() {
 
@@ -119,7 +119,7 @@ public class KeyService {
 
 
 
-    @Cacheable(value = "keys", key = "#root.target.ALL_KEY")
+    @Cacheable(value = "key", key = "#root.target.ALL_KEY")
     @Transactional(readOnly=true)
     public List<Key> findAll() {
 

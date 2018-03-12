@@ -107,7 +107,7 @@ public class TerminalTermParamService {
         return null;
     }
 
-    @Cacheable(value = "termTermParams", key = "#root.target.ALL_TERM_TERM_PARAM")
+    @Cacheable(value = "termTermParam", key = "#root.target.ALL_TERM_TERM_PARAM")
     @Transactional(readOnly=true)
     public List<TerminalTermParam> findAll() {
 

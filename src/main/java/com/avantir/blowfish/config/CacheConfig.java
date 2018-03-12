@@ -39,11 +39,20 @@ import java.util.List;
 @EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
 
-    String[] cacheStrings = new String[]{"default", "terminalparameter", "terminalparameters",
-            "endpoint", "endpoints", "acquirer", "acquirers", "key", "keys",
-            "acquirerterminalparameter", "acquirerterminalparameters", "merchantterminalparameter",
-            "merchantterminalparameters", "terminalterminalparameter", "terminalterminalparameters",
-            "merchant", "merchants", "merchantTerminal", "merchantTerminals"};
+    String[] cacheStrings = new String[]{"default",
+            "termParam", "termParam",
+            "endpoint", "endpoints",
+            "acquirer", "acquirers",
+            "key", "keys",
+            "acqTermParam", "acqTermParams",
+            "merchTermParam", "merchTermParams",
+            "termTermParam", "termTermParams",
+            "merchant", "merchants",
+            "merchantTerminal", "merchantTerminals",
+            "acquirerMerchant", "acquirerMerchants",
+            "acquirerBin", "acquirerBins",
+            "bin", "bins",
+            "merchantBin", "merchantBins"};
 
     //@Value("${blowfish.redis.defaultexpiration}")
     private int redisExpiration = 300;

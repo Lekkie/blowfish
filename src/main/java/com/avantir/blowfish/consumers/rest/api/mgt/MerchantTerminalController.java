@@ -1,9 +1,9 @@
 package com.avantir.blowfish.consumers.rest.api.mgt;
 
 import com.avantir.blowfish.model.BlowfishLog;
-import com.avantir.blowfish.model.MerchantTermParam;
+import com.avantir.blowfish.model.MerchantTerminal;
 import com.avantir.blowfish.services.MerchantService;
-import com.avantir.blowfish.services.MerchantTermParamService;
+import com.avantir.blowfish.services.MerchantTerminalService;
 import com.avantir.blowfish.utils.BlowfishUtil;
 import com.avantir.blowfish.utils.IsoUtil;
 import org.slf4j.Logger;
@@ -20,25 +20,25 @@ import java.util.List;
  * Created by lekanomotayo on 18/02/2018.
  */
 @RestController
-@RequestMapping(value = "api/v1/merchants/termparams", produces = "application/hal+json")
-public class MerchantTermParamsController {
+@RequestMapping(value = "api/v1/merchants/terminals", produces = "application/hal+json")
+public class MerchantTerminalController {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(MerchantTermParamsController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MerchantTerminalController.class);
     @Autowired
     MerchantService merchantService;
     @Autowired
-    MerchantTermParamService merchantTermParamService;
+    MerchantTerminalService merchantTerminalService;
 
 
     @RequestMapping(method= RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Object create(@RequestBody MerchantTermParam merchantTermParam, HttpServletResponse response)
+    public Object create(@RequestBody MerchantTerminal merchantTerminal, HttpServletResponse response)
     {
         try{
-            merchantTermParamService.create(merchantTermParam);
+            merchantTerminalService.create(merchantTerminal);
             response.setStatus(HttpServletResponse.SC_CREATED);
-            merchantTermParam = getLinks(merchantTermParam, response);
+            merchantTerminal = getLinks(merchantTerminal, response);
             return "";
         }
         catch(Exception ex){
@@ -49,17 +49,17 @@ public class MerchantTermParamsController {
 
     @RequestMapping(method= RequestMethod.PATCH, consumes = "application/json", value = "/{id}")
     @ResponseBody
-    public Object update(@PathVariable("id") long id, @RequestBody MerchantTermParam newMerchantTermParam, HttpServletResponse response)
+    public Object update(@PathVariable("id") long id, @RequestBody MerchantTerminal newMerchantTerminal, HttpServletResponse response)
     {
         try{
-            if(newMerchantTermParam == null)
+            if(newMerchantTerminal == null)
                 throw new Exception();
 
-            newMerchantTermParam.setMerchantTermParamId(id);
-            newMerchantTermParam = merchantTermParamService.update(newMerchantTermParam);
+            newMerchantTerminal.setMerchantTerminalId(id);
+            newMerchantTerminal = merchantTerminalService.update(newMerchantTerminal);
             response.setStatus(HttpServletResponse.SC_OK);
-            newMerchantTermParam = getLinks(newMerchantTermParam, response);
-            return newMerchantTermParam;
+            newMerchantTerminal = getLinks(newMerchantTerminal, response);
+            return newMerchantTerminal;
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -72,7 +72,7 @@ public class MerchantTermParamsController {
     public Object delete(@PathVariable("id") long id, HttpServletResponse response)
     {
         try{
-            merchantTermParamService.delete(id);
+            merchantTerminalService.delete(id);
             response.setStatus(HttpServletResponse.SC_OK);
             return "";
         }
@@ -84,9 +84,9 @@ public class MerchantTermParamsController {
 
     @RequestMapping(method= RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="merchantId", required = false) Long merchantId, @RequestHeader(value="termParamId", required = false) Long termParamId, HttpServletResponse response)
+    public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="merchant_id", required = false) Long merchantId, @RequestHeader(value="terminal_id", required = false) Long terminalId, HttpServletResponse response)
     {
-        String fxnParams = "id=" + id + ", merchant_id=" + merchantId + ", termParamId=" + termParamId + ",HttpServletResponse=" + response.toString();
+        String fxnParams = "id=" + id + ", merchant_id=" + merchantId + ", terminal_id=" + terminalId + ",HttpServletResponse=" + response.toString();
         try
         {
             if(id != null && id > 0)
@@ -95,17 +95,17 @@ public class MerchantTermParamsController {
             if(merchantId != null && merchantId > 0)
                 return getByMerchantId(merchantId, response);
 
-            if(termParamId != null && termParamId > 0)
-                return getByTermParamId(termParamId, response);
+            if(terminalId != null && terminalId > 0)
+                return getByTerminalId(terminalId, response);
 
-            List<MerchantTermParam> merchantTermParamList = merchantTermParamService.findAll();
+            List<MerchantTerminal> merchantTerminalList = merchantTerminalService.findAll();
             response.setStatus(HttpServletResponse.SC_OK);
-            for (MerchantTermParam merchantTermParam : merchantTermParamList) {
-                merchantTermParam = getLinks(merchantTermParam, response);
+            for (MerchantTerminal merchantTerminal : merchantTerminalList) {
+                merchantTerminal = getLinks(merchantTerminal, response);
             }
 
 
-            return merchantTermParamList;
+            return merchantTerminalList;
         }
         catch(Exception ex)
         {
@@ -124,10 +124,10 @@ public class MerchantTermParamsController {
         String fxnParams = "id=" + id + ",HttpServletResponse=" + response.toString();
         try
         {
-            MerchantTermParam merchantTermParam = merchantTermParamService.findByMerchantTermParamId(id);
+            MerchantTerminal merchantTerminal = merchantTerminalService.findByMerchantTerminalId(id);
             response.setStatus(HttpServletResponse.SC_OK);
-            merchantTermParam = getLinks(merchantTermParam, response);
-            return merchantTermParam;
+            merchantTerminal = getLinks(merchantTerminal, response);
+            return merchantTerminal;
         }
         catch(Exception ex)
         {
@@ -144,28 +144,9 @@ public class MerchantTermParamsController {
         String fxnParams = "merchantId=" + merchantId + ",HttpServletResponse=" + response.toString();
         try
         {
-            MerchantTermParam merchantTermParam = merchantTermParamService.findByMerchantId(merchantId);
+            List<MerchantTerminal> merchantTerminalList = merchantTerminalService.findByMerchantId(merchantId);
             response.setStatus(HttpServletResponse.SC_OK);
-            merchantTermParam = getLinks(merchantTermParam, response);
-            return merchantTermParam;
-        }
-        catch(Exception ex)
-        {
-            BlowfishLog log = new BlowfishLog(fxnParams, ex);
-            logger.error(log.toString());
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
-        }
-    }
-
-    public Object getByTermParamId(Long termParamId, HttpServletResponse response)
-    {
-        String fxnParams = "termParamId=" + termParamId + ",HttpServletResponse=" + response.toString();
-        try
-        {
-            List<MerchantTermParam> merchantTerminalList = merchantTermParamService.findByTermParamId(termParamId);
-            response.setStatus(HttpServletResponse.SC_OK);
-            for (MerchantTermParam merchantTerminal : merchantTerminalList) {
+            for (MerchantTerminal merchantTerminal : merchantTerminalList) {
                 merchantTerminal = getLinks(merchantTerminal, response);
             }
             return merchantTerminalList;
@@ -179,22 +160,39 @@ public class MerchantTermParamsController {
         }
     }
 
-
-    private MerchantTermParam getLinks(MerchantTermParam merchantTerminal, HttpServletResponse response){
-        Link selfLink = ControllerLinkBuilder.linkTo(MerchantTermParamsController.class).slash(merchantTerminal.getMerchantTermParamId()).withSelfRel();
-        merchantTerminal.add(selfLink);
-
-        Object linkBuilder2 = ControllerLinkBuilder.methodOn(TermParamsController.class).getById(merchantTerminal.getTermParamId(), response);
-        Link link2 = ControllerLinkBuilder.linkTo(linkBuilder2).withRel("termparam");
-        merchantTerminal.add(link2);
-
-        Object linkBuilder1 = ControllerLinkBuilder.methodOn(MerchantsController.class).getById(merchantTerminal.getMerchantId(), response);
-        Link link1 = ControllerLinkBuilder.linkTo(linkBuilder1).withRel("merchant");
-        merchantTerminal.add(link1);
-
-        return merchantTerminal;
+    public Object getByTerminalId(Long terminalId, HttpServletResponse response)
+    {
+        String fxnParams = "terminalId=" + terminalId + ",HttpServletResponse=" + response.toString();
+        try
+        {
+            MerchantTerminal merchantTerminal = merchantTerminalService.findByTerminalId(terminalId);
+            response.setStatus(HttpServletResponse.SC_OK);
+            merchantTerminal = getLinks(merchantTerminal, response);
+            return merchantTerminal;
+        }
+        catch(Exception ex)
+        {
+            BlowfishLog log = new BlowfishLog(fxnParams, ex);
+            logger.error(log.toString());
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+        }
     }
 
 
+    private MerchantTerminal getLinks(MerchantTerminal merchantTerminal, HttpServletResponse response){
+        Link selfLink = ControllerLinkBuilder.linkTo(MerchantTerminalController.class).slash(merchantTerminal.getMerchantTerminalId()).withSelfRel();
+        merchantTerminal.add(selfLink);
+
+        Object linkBuilder1 = ControllerLinkBuilder.methodOn(MerchantController.class).getById(merchantTerminal.getMerchantId(), response);
+        Link link1 = ControllerLinkBuilder.linkTo(linkBuilder1).withRel("merchant");
+        merchantTerminal.add(link1);
+
+        Object linkBuilder2 = ControllerLinkBuilder.methodOn(TerminalController.class).getById(merchantTerminal.getTerminalId(), response);
+        Link link2 = ControllerLinkBuilder.linkTo(linkBuilder2).withRel("terminal");
+        merchantTerminal.add(link2);
+
+        return merchantTerminal;
+    }
 
 }

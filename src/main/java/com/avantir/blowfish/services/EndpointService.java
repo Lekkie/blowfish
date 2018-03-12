@@ -102,7 +102,7 @@ public class EndpointService {
     }
 
 
-    @Cacheable(value = "endpoints", key = "#root.target.ACTIVE_ENDPOINT")
+    @Cacheable(value = "endpoint", key = "#root.target.ACTIVE_ENDPOINT")
     @Transactional(readOnly=true)
     public List<Endpoint> findAllActive() {
 
@@ -119,7 +119,7 @@ public class EndpointService {
     }
 
 
-    @Cacheable(value = "endpoints", key = "#root.target.ALL_ENDPOINT")
+    @Cacheable(value = "endpoint", key = "#root.target.ALL_ENDPOINT")
     @Transactional(readOnly=true)
     public List<Endpoint> findAll() {
 

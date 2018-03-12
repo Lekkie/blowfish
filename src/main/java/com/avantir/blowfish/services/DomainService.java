@@ -97,13 +97,29 @@ public class DomainService {
     }
 
 
-    @Cacheable(value = "domains", key = "#root.target.ACTIVE_DOMAIN")
+    @Cacheable(value = "domain", key = "#root.target.ACTIVE_DOMAIN")
     @Transactional(readOnly=true)
     public List<Domain> findAllActive() {
 
         try
         {
             List<Domain> list = domainRepository.findByStatus(1);
+            return list;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Cacheable(value = "domain", key = "#root.target.ALL_DOMAIN")
+    @Transactional(readOnly=true)
+    public List<Domain> findAll() {
+
+        try
+        {
+            List<Domain> list = domainRepository.findAll();
             return list;
         }
         catch(Exception ex)

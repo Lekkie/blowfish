@@ -134,7 +134,7 @@ public class TermParamService {
 
 
 
-    @Cacheable(value = "termParams", key = "#root.target.ACTIVE_TERM_PARAM")
+    @Cacheable(value = "termParam", key = "#root.target.ACTIVE_TERM_PARAM")
     @Transactional(readOnly=true)
     public List<TermParam> findAllActive() {
 
@@ -150,7 +150,7 @@ public class TermParamService {
         return null;
     }
 
-    @Cacheable(value = "termParams", key = "#root.target.ALL_TERM_PARAM")
+    @Cacheable(value = "termParam", key = "#root.target.ALL_TERM_PARAM")
     @Transactional(readOnly=true)
     public List<TermParam> findAll() {
 

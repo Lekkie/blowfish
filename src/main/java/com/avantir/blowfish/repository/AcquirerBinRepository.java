@@ -20,7 +20,6 @@ public interface AcquirerBinRepository extends JpaRepository<AcquirerBin, Long> 
 
     //@Cacheable(value = "endpointById")
     AcquirerBin findByAcquirerBinId(@Param("acquirerBinId") Long acquirerBinId);
-    //@Cacheable(value = "endpointByName")
     List<AcquirerBin> findByAcquirerId(@Param("acquirerId") Long acquirerId);
     AcquirerBin findByBinId(@Param("binId") Long binId);
     @Query("FROM AcquirerBin a WHERE a.acquirerId = :acquirerId AND a.binId = :binId")

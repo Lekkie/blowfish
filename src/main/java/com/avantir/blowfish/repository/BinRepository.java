@@ -16,7 +16,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface BinRepository extends JpaRepository<Bin, String> {
+public interface BinRepository extends JpaRepository<Bin, Long> {
 
     //@Cacheable(value = "endpointById")
     Bin findByBinId(@Param("binId") Long binId);

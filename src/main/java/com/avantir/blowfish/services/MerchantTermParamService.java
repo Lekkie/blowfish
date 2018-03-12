@@ -44,8 +44,8 @@ public class MerchantTermParamService {
             MerchantTermParam oldMerchantTermParam = merchantTerminalParameterRepository.findByMerchantTermParamId(newMerchantTermParam.getMerchantTermParamId());
             if(newMerchantTermParam.getMerchantId() != 0)
                 oldMerchantTermParam.setMerchantId(newMerchantTermParam.getMerchantId());
-            if(newMerchantTermParam.getMerchantTermParamId() != 0)
-                oldMerchantTermParam.setMerchantTermParamId(newMerchantTermParam.getMerchantTermParamId());
+            if(newMerchantTermParam.getTermParamId() != 0)
+                oldMerchantTermParam.setTermParamId(newMerchantTermParam.getTermParamId());
             return merchantTerminalParameterRepository.save(oldMerchantTermParam);
         }
         return null;
@@ -108,7 +108,7 @@ public class MerchantTermParamService {
 
 
 
-    @Cacheable(value = "merchTermParams", key = "#root.target.ALL_MERCH_TERM_PARAM")
+    @Cacheable(value = "merchTermParam", key = "#root.target.ALL_MERCH_TERM_PARAM")
     @Transactional(readOnly=true)
     public List<MerchantTermParam> findAll() {
 

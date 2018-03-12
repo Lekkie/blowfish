@@ -19,10 +19,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "api/v1/merchants", produces = "application/hal+json")
-public class MerchantsController {
+public class MerchantController {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(MerchantsController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MerchantController.class);
     @Autowired
     MerchantService merchantService;
     @Autowired
@@ -32,9 +32,9 @@ public class MerchantsController {
     @Autowired
     MerchantTerminalTranTypeBinService merchantTerminalTranTypeBinService;
     @Autowired
-    MerchantTerminalsController merchantTerminalsController;
+    MerchantTerminalController merchantTerminalsController;
     @Autowired
-    MerchantTermParamsController merchantTermParamsController;
+    MerchantTermParamController merchantTermParamsController;
 
 
     @RequestMapping(method= RequestMethod.POST, consumes = "application/json")
@@ -179,21 +179,21 @@ public class MerchantsController {
 
 
     private Merchant getLinks(Merchant merchant, HttpServletResponse response){
-        Link selfLink = ControllerLinkBuilder.linkTo(MerchantsController.class).slash(merchant.getMerchantId()).withSelfRel();
+        Link selfLink = ControllerLinkBuilder.linkTo(MerchantController.class).slash(merchant.getMerchantId()).withSelfRel();
         merchant.add(selfLink);
 
-        Object domainMethodLinkBuilder = ControllerLinkBuilder.methodOn(DomainController.class).get(merchant.getDomainId(), response);
+        Object domainMethodLinkBuilder = ControllerLinkBuilder.methodOn(DomainController.class).getById(merchant.getDomainId(), response);
         Link domainLink = ControllerLinkBuilder.linkTo(domainMethodLinkBuilder).withRel("merchantDomain");
         merchant.add(domainLink);
 
         if (merchantTerminalService.findByMerchantId(merchant.getMerchantId()).size() > 0) {
-            Object methodLinkBuilder = ControllerLinkBuilder.methodOn(MerchantsController.class).getMerchantTerminalByMerchantId(merchant.getMerchantId(), response);
+            Object methodLinkBuilder = ControllerLinkBuilder.methodOn(MerchantController.class).getMerchantTerminalByMerchantId(merchant.getMerchantId(), response);
             Link link = ControllerLinkBuilder.linkTo(methodLinkBuilder).withRel("allMerchantTerminals");
             merchant.add(link);
         }
 
         if (merchantTerminalParameterService.findByMerchantId(merchant.getMerchantId()) != null) {
-            Object methodLinkBuilder = ControllerLinkBuilder.methodOn(MerchantsController.class).getMerchantTermParamByMerchantId(merchant.getMerchantId(), response);
+            Object methodLinkBuilder = ControllerLinkBuilder.methodOn(MerchantController.class).getMerchantTermParamByMerchantId(merchant.getMerchantId(), response);
             Link link = ControllerLinkBuilder.linkTo(methodLinkBuilder).withRel("allMerchantTermParams");
             merchant.add(link);
         }

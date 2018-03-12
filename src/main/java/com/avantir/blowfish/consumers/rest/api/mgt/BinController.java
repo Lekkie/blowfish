@@ -1,8 +1,8 @@
 package com.avantir.blowfish.consumers.rest.api.mgt;
 
+import com.avantir.blowfish.model.Bin;
 import com.avantir.blowfish.model.BlowfishLog;
-import com.avantir.blowfish.model.Domain;
-import com.avantir.blowfish.services.DomainService;
+import com.avantir.blowfish.services.BinService;
 import com.avantir.blowfish.utils.BlowfishUtil;
 import com.avantir.blowfish.utils.IsoUtil;
 import org.slf4j.Logger;
@@ -16,29 +16,27 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * Created by lekanomotayo on 06/02/2018.
+ * Created by lekanomotayo on 18/02/2018.
  */
-
 @RestController
-@RequestMapping(value = "api/v1/domains", produces = "application/hal+json")
-public class DomainController {
+@RequestMapping(value = "api/v1/bins", produces = "application/hal+json")
+public class BinController {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(DomainController.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(BinController.class);
     @Autowired
-    DomainService domainService;
+    BinService binService;
 
 
     @RequestMapping(method= RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Object create(@RequestBody Domain domain, HttpServletResponse response)
+    public Object create(@RequestBody Bin bin, HttpServletResponse response)
     {
         try{
-            domainService.create(domain);
-            domain = getLinks(domain, response);
+            binService.create(bin);
             response.setStatus(HttpServletResponse.SC_CREATED);
-            return domain;
+            bin = getLinks(bin, response);
+            return "";
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -48,17 +46,17 @@ public class DomainController {
 
     @RequestMapping(method= RequestMethod.PATCH, consumes = "application/json", value = "/{id}")
     @ResponseBody
-    public Object update(@PathVariable("id") long id, @RequestBody Domain domain, HttpServletResponse response)
+    public Object update(@PathVariable("id") long id, @RequestBody Bin newBin, HttpServletResponse response)
     {
         try{
-            if(domain == null)
+            if(newBin == null)
                 throw new Exception();
 
-            domain.setDomainId(id);
-            domain = domainService.update(domain);
+            newBin.setBinId(id);
+            newBin = binService.update(newBin);
             response.setStatus(HttpServletResponse.SC_OK);
-            domain = getLinks(domain, response);
-            return domain;
+            newBin = getLinks(newBin, response);
+            return newBin;
         }
         catch(Exception ex){
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -66,12 +64,15 @@ public class DomainController {
         }
     }
 
-    @RequestMapping(method= RequestMethod.DELETE, consumes = "application/json", value = "/{id}", headers = "Accept=application/json")
+    @RequestMapping(method= RequestMethod.DELETE,
+            consumes = "application/json",
+            value = "/{id}",
+            headers = "Accept=application/json")
     @ResponseBody
     public Object delete(@PathVariable("id") long id, HttpServletResponse response)
     {
         try{
-            domainService.delete(id);
+            binService.delete(id);
             response.setStatus(HttpServletResponse.SC_OK);
             return "";
         }
@@ -81,8 +82,8 @@ public class DomainController {
         }
     }
 
-
-    @RequestMapping(method= RequestMethod.GET, headers = "Accept=application/json")
+    @RequestMapping(method= RequestMethod.GET,
+            headers = "Accept=application/json")
     @ResponseBody
     public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="code", required = false) String code, HttpServletResponse response)
     {
@@ -95,12 +96,14 @@ public class DomainController {
             if(code != null && !code.isEmpty())
                 return getByCode(code, response);
 
-            List<Domain> domainList = domainService.findAll();
-            response.setStatus(HttpServletResponse.SC_OK);
-            for (Domain domain : domainList) {
-                domain = getLinks(domain, response);
+            List<Bin> binList = binService.findAll();
+            for (Bin bin : binList) {
+                bin = getLinks(bin, response);
             }
-            return domainList;
+
+            response.setStatus(HttpServletResponse.SC_OK);
+
+            return binList;
         }
         catch(Exception ex)
         {
@@ -111,34 +114,38 @@ public class DomainController {
         }
     }
 
+
     @RequestMapping(method= RequestMethod.GET, value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
-    public Object getById(@PathVariable("id") long id, HttpServletResponse response)
+    public Object getById(@PathVariable long id, HttpServletResponse response)
     {
+        String fxnParams = "id=" + id + ",HttpServletResponse=" + response.toString();
         try
         {
-            Domain domain = domainService.findByDomainId(id);
+            Bin bin = binService.findByBinId(id);
             response.setStatus(HttpServletResponse.SC_OK);
-            domain = getLinks(domain, response);
-            return domain;
+            bin = getLinks(bin, response);
+            return bin;
         }
         catch(Exception ex)
         {
+            BlowfishLog log = new BlowfishLog(fxnParams, ex);
+            logger.error(log.toString());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
     }
+
 
     public Object getByCode(String code, HttpServletResponse response)
     {
         String fxnParams = "code=" + code + ",HttpServletResponse=" + response.toString();
         try
         {
-            Domain domain = domainService.findByCode(code);
+            Bin bin = binService.findByCode(code);
             response.setStatus(HttpServletResponse.SC_OK);
-            domain = getLinks(domain, response);
-
-            return domain;
+            bin = getLinks(bin, response);
+            return bin;
         }
         catch(Exception ex)
         {
@@ -149,10 +156,12 @@ public class DomainController {
         }
     }
 
+    private Bin getLinks(Bin terminal, HttpServletResponse response){
+        Link selfLink = ControllerLinkBuilder.linkTo(BinController.class).slash(terminal.getBinId()).withSelfRel();
+        terminal.add(selfLink);
 
-    private Domain getLinks(Domain domain, HttpServletResponse response){
-        Link selfLink = ControllerLinkBuilder.linkTo(DomainController.class).slash(domain.getDomainId()).withSelfRel();
-        domain.add(selfLink);
-        return domain;
+        return terminal;
     }
+
+
 }

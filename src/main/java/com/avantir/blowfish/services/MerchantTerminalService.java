@@ -100,7 +100,7 @@ public class MerchantTerminalService {
         return null;
     }
 
-    @Cacheable(value = "merchantTerminals")
+    @Cacheable(value = "merchantTerminal")
     @Transactional(readOnly=true)
     public List<MerchantTerminal> findByMerchantId(Long merchantId) {
 
@@ -115,7 +115,7 @@ public class MerchantTerminalService {
         return null;
     }
 
-    @Cacheable(value = "merchantTerminals", key = "#root.target.ALL_MERCHANT_TERMINAL")
+    @Cacheable(value = "merchantTerminal", key = "#root.target.ALL_MERCHANT_TERMINAL")
     @Transactional(readOnly=true)
     public List<MerchantTerminal> findAll() {
 
@@ -131,7 +131,7 @@ public class MerchantTerminalService {
         return null;
     }
 
-    @CacheEvict(value="merchantTerminals",allEntries=true)
+    @CacheEvict(value="merchantTerminal",allEntries=true)
     public void evictAllCache() {
         //LogUtil.log("Evicting all entries from fooCache.");
     }

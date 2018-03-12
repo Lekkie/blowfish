@@ -1,7 +1,6 @@
 package com.avantir.blowfish.consumers.rest.api.mgt;
 
 import com.avantir.blowfish.model.BlowfishLog;
-import com.avantir.blowfish.model.TermParam;
 import com.avantir.blowfish.model.TerminalTermParam;
 import com.avantir.blowfish.services.MerchantService;
 import com.avantir.blowfish.services.TerminalTermParamService;
@@ -22,10 +21,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "api/v1/terminals/termparams", produces = "application/hal+json")
-public class TerminalTermParamsController {
+public class TerminalTermParamController {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(TerminalTermParamsController.class);
+    private static final Logger logger = LoggerFactory.getLogger(TerminalTermParamController.class);
     @Autowired
     MerchantService merchantService;
     @Autowired
@@ -48,10 +47,7 @@ public class TerminalTermParamsController {
         }
     }
 
-    @RequestMapping(method= RequestMethod.PATCH,
-            consumes = "application/json",
-            value = "/{id}",
-            produces = "application/json")
+    @RequestMapping(method= RequestMethod.PATCH, consumes = "application/json", value = "/{id}")
     @ResponseBody
     public Object update(@PathVariable("id") long id, @RequestBody TerminalTermParam newTerminalTermParam, HttpServletResponse response)
     {
@@ -185,14 +181,14 @@ public class TerminalTermParamsController {
 
 
     private TerminalTermParam getLinks(TerminalTermParam terminalTermParam, HttpServletResponse response){
-        Link selfLink = ControllerLinkBuilder.linkTo(TerminalTermParamsController.class).slash(terminalTermParam.getTerminalTermParamId()).withSelfRel();
+        Link selfLink = ControllerLinkBuilder.linkTo(TerminalTermParamController.class).slash(terminalTermParam.getTerminalTermParamId()).withSelfRel();
         terminalTermParam.add(selfLink);
 
-        Object linkBuilder1 = ControllerLinkBuilder.methodOn(TermParamsController.class).getById(terminalTermParam.getTermParamId(), response);
+        Object linkBuilder1 = ControllerLinkBuilder.methodOn(TermParamController.class).getById(terminalTermParam.getTermParamId(), response);
         Link link1 = ControllerLinkBuilder.linkTo(linkBuilder1).withRel("termparam");
         terminalTermParam.add(link1);
 
-        Object linkBuilder2 = ControllerLinkBuilder.methodOn(TerminalsController.class).getById(terminalTermParam.getTerminalId(), response);
+        Object linkBuilder2 = ControllerLinkBuilder.methodOn(TerminalController.class).getById(terminalTermParam.getTerminalId(), response);
         Link link2 = ControllerLinkBuilder.linkTo(linkBuilder2).withRel("terminal");
         terminalTermParam.add(link2);
 

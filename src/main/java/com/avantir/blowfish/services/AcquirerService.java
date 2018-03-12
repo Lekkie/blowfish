@@ -98,13 +98,29 @@ public class AcquirerService {
     }
 
 
-    @Cacheable(value = "acquirers", key = "#root.target.ACTIVE_ACQUIRER")
+    @Cacheable(value = "acquirer", key = "#root.target.ACTIVE_ACQUIRER")
     @Transactional(readOnly=true)
     public List<Acquirer> findAllActive() {
 
         try
         {
             List<Acquirer> list = acquirerRepository.findByStatus(1);
+            return list;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Cacheable(value = "acquirer", key = "#root.target.ALL_ACQUIRER")
+    @Transactional(readOnly=true)
+    public List<Acquirer> findAll() {
+
+        try
+        {
+            List<Acquirer> list = acquirerRepository.findAll();
             return list;
         }
         catch(Exception ex)

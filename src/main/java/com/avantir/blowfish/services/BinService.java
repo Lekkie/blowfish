@@ -8,7 +8,11 @@ import com.avantir.blowfish.model.Acquirer;
 import com.avantir.blowfish.model.Bin;
 import com.avantir.blowfish.repository.AcquirerRepository;
 import com.avantir.blowfish.repository.BinRepository;
+import com.avantir.blowfish.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +27,45 @@ import java.util.List;
 @Component
 public class BinService {
 
+    public static final String ALL_BIN = "ALL_BIN";
+    public static final String ACTIVE_BIN = "ACTIVE_BIN";
+
     @Autowired
     private BinRepository binRepository;
 
 
+
+
+    @CachePut(cacheNames="bin", key="#bin.binId")
+    @Transactional(readOnly=false)
+    public Bin create(Bin acquirer) {
+        return binRepository.save(acquirer);
+    }
+
+
+    @CachePut(cacheNames="bin", key="#newBin.binId")
+    @Transactional(readOnly=false)
+    public Bin update(Bin newBin) {
+        if(newBin != null){
+            Bin oldBin = binRepository.findByBinId(newBin.getBinId());
+            if(!StringUtil.isEmpty(newBin.getCode()))
+                oldBin.setCode(newBin.getCode());
+            if(!StringUtil.isEmpty(newBin.getDescription()))
+                oldBin.setDescription(newBin.getDescription());
+            oldBin.setStatus(newBin.getStatus());
+            return binRepository.save(oldBin);
+        }
+        return null;
+    }
+
+    @CacheEvict(value = "bin")
+    @Transactional(readOnly=false)
+    public void delete(long id) {
+        binRepository.delete(id);
+    }
+
+
+    @Cacheable(value = "bin")
     @Transactional(readOnly=true)
     public Bin findByBinId(Long id) {
 
@@ -41,6 +80,7 @@ public class BinService {
         return null;
     }
 
+    @Cacheable(value = "bin")
     @Transactional(readOnly=true)
     public Bin findByCode(String code) {
 
@@ -56,6 +96,7 @@ public class BinService {
     }
 
 
+    @Cacheable(value = "bin")
     @Transactional(readOnly=true)
     public Bin findByPan(String pan) {
 
@@ -89,6 +130,7 @@ public class BinService {
     }
 
 
+    @Cacheable(value = "bin", key = "#root.target.ACTIVE_BIN")
     @Transactional(readOnly=true)
     public List<Bin> findAllActive() {
 
@@ -103,5 +145,22 @@ public class BinService {
         }
         return null;
     }
+
+    @Cacheable(value = "bin", key = "#root.target.ALL_BIN")
+    @Transactional(readOnly=true)
+    public List<Bin> findAll() {
+
+        try
+        {
+            List<Bin> list = binRepository.findAll();
+            return list;
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

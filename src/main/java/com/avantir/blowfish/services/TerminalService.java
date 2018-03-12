@@ -127,7 +127,7 @@ public class TerminalService {
     }
 
 
-    @Cacheable(value = "terminals", key = "#root.target.ACTIVE_TERMINAL")
+    @Cacheable(value = "terminal", key = "#root.target.ACTIVE_TERMINAL")
     @Transactional(readOnly=true)
     public List<Terminal> findAllActive() {
 
@@ -145,7 +145,7 @@ public class TerminalService {
 
 
 
-    @Cacheable(value = "terminals", key = "#root.target.ALL_TERMINAL")
+    @Cacheable(value = "terminal", key = "#root.target.ALL_TERMINAL")
     @Transactional(readOnly=true)
     public List<Terminal> findAll() {
 

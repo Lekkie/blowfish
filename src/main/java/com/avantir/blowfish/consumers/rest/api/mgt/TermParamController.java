@@ -25,10 +25,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "api/v1/termparams", produces = "application/hal+json")
-public class TermParamsController {
+public class TermParamController {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(TermParamsController.class);
+    private static final Logger logger = LoggerFactory.getLogger(TermParamController.class);
 
     @Autowired
     TermParamService termParamService;
@@ -114,6 +114,7 @@ public class TermParamsController {
         String fxnParams = "id=" + id + ", deviceSerialNo=" + deviceSerialNo + ",devicePublicKey=" + devicePublicKey + ",HttpServletResponse=" + response.toString();
         try
         {
+            //String token = MDC.get(Slf4jMDCFilterConfig.DEFAULT_MDC_UUID_TOKEN_KEY);
             logger.debug(fxnParams);
             if(id != null && id > 0)
                 return getById(id, response);
@@ -132,7 +133,7 @@ public class TermParamsController {
         catch(Exception ex)
         {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
-            logger.error(log.toString());
+            logger.error("Error occurred - {}", log.toString());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
         }
@@ -272,7 +273,7 @@ public class TermParamsController {
 
 
     private TermParam getLinks(TermParam terminalParameter, HttpServletResponse response){
-        Link selfLink = ControllerLinkBuilder.linkTo(TermParamsController.class).slash(terminalParameter.getTermParamId()).withSelfRel();
+        Link selfLink = ControllerLinkBuilder.linkTo(TermParamController.class).slash(terminalParameter.getTermParamId()).withSelfRel();
         terminalParameter.add(selfLink);
 
         Object methodLink1 = ControllerLinkBuilder.methodOn(EndpointController.class).getById(terminalParameter.getTmsEndpointId(), response);

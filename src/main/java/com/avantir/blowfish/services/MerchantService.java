@@ -105,7 +105,7 @@ public class MerchantService {
     }
 
 
-    @Cacheable(value = "merchants", key = "#root.target.ACTIVE_MERCHANT")
+    @Cacheable(value = "merchant", key = "#root.target.ACTIVE_MERCHANT")
     @Transactional(readOnly=true)
     public List<Merchant> findAllActive() {
 
@@ -122,7 +122,7 @@ public class MerchantService {
     }
 
 
-    @Cacheable(value = "merchants", key = "#root.target.ALL_MERCHANT")
+    @Cacheable(value = "merchant", key = "#root.target.ALL_MERCHANT")
     @Transactional(readOnly=true)
     public List<Merchant> findAll() {
 
