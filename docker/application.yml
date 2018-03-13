@@ -109,6 +109,7 @@ management:
 flyway:
   baselineOnMigrate: true
 
+# /metrics, /health
 #security.user.name=admin
 #security.user.password=secret
 #management.security.role=SUPERUSER
