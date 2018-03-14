@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -34,23 +36,22 @@ public class AcquirerTermParamController {
 
     @RequestMapping(method= RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Object create(@RequestBody AcquirerTermParam acquirerTermParam, HttpServletResponse response)
+    public Object create(@RequestBody AcquirerTermParam acquirerTermParam)
     {
         try{
             acquirerTermParamService.create(acquirerTermParam);
-            response.setStatus(HttpServletResponse.SC_CREATED);
-            acquirerTermParam = getLinks(acquirerTermParam, response);
-            return "";
+            acquirerTermParam = getLinks(acquirerTermParam);
+
+            return new ResponseEntity<Object>("", HttpStatus.CREATED);
         }
         catch(Exception ex){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(method= RequestMethod.PATCH, consumes = "application/json", value = "/{id}")
     @ResponseBody
-    public Object update(@PathVariable("id") long id, @RequestBody AcquirerTermParam acquirerTermParam, HttpServletResponse response)
+    public Object update(@PathVariable("id") long id, @RequestBody AcquirerTermParam acquirerTermParam)
     {
         try{
             if(acquirerTermParam == null)
@@ -58,138 +59,130 @@ public class AcquirerTermParamController {
 
             acquirerTermParam.setAcquirerTermParamId(id);
             acquirerTermParam = acquirerTermParamService.update(acquirerTermParam);
-            response.setStatus(HttpServletResponse.SC_OK);
-            acquirerTermParam = getLinks(acquirerTermParam, response);
-            return acquirerTermParam;
+            acquirerTermParam = getLinks(acquirerTermParam);
+
+            return new ResponseEntity<Object>(acquirerTermParam, HttpStatus.OK);
         }
         catch(Exception ex){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(method= RequestMethod.DELETE, consumes = "application/json", value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
-    public Object delete(@PathVariable("id") long id, HttpServletResponse response)
+    public Object delete(@PathVariable("id") long id)
     {
         try{
             acquirerTermParamService.delete(id);
-            response.setStatus(HttpServletResponse.SC_OK);
-            return "";
+            return new ResponseEntity<Object>("", HttpStatus.OK);
         }
         catch(Exception ex){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(method= RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="acquirerId", required = false) Long acquirerId, @RequestHeader(value="termParamId", required = false) Long termParamId, HttpServletResponse response)
+    public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="acquirerId", required = false) Long acquirerId, @RequestHeader(value="termParamId", required = false) Long termParamId)
     {
-        String fxnParams = "id=" + id + ", acquirerId=" + acquirerId + ", termParamId=" + termParamId + ",HttpServletResponse=" + response.toString();
+        String fxnParams = "id=" + id + ", acquirerId=" + acquirerId + ", termParamId=" + termParamId;
         try
         {
             if(id != null && id > 0)
-                return getById(id, response);
+                return getById(id);
 
             if(acquirerId != null && acquirerId > 0)
-                return getByAcquirerId(acquirerId, response);
+                return getByAcquirerId(acquirerId);
 
             if(termParamId != null && termParamId > 0)
-                return getByTermParamId(termParamId, response);
+                return getByTermParamId(termParamId);
 
             List<AcquirerTermParam> acquirerTermParamList = acquirerTermParamService.findAll();
-            response.setStatus(HttpServletResponse.SC_OK);
             for (AcquirerTermParam acquirerTermParam : acquirerTermParamList) {
-                acquirerTermParam = getLinks(acquirerTermParam, response);
+                acquirerTermParam = getLinks(acquirerTermParam);
             }
 
 
-            return acquirerTermParamList;
+            return new ResponseEntity<Object>(acquirerTermParamList, HttpStatus.OK);
         }
         catch(Exception ex)
         {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
 
     @RequestMapping(method= RequestMethod.GET, value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
-    public Object getById(@PathVariable Long id, HttpServletResponse response)
+    public Object getById(@PathVariable Long id)
     {
-        String fxnParams = "id=" + id + ",HttpServletResponse=" + response.toString();
+        String fxnParams = "id=" + id;
         try
         {
             AcquirerTermParam acquirerTermParam = acquirerTermParamService.findByAcquirerTermParamId(id);
-            response.setStatus(HttpServletResponse.SC_OK);
-            acquirerTermParam = getLinks(acquirerTermParam, response);
-            return acquirerTermParam;
+            acquirerTermParam = getLinks(acquirerTermParam);
+
+            return new ResponseEntity<Object>(acquirerTermParam, HttpStatus.OK);
         }
         catch(Exception ex)
         {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
 
-    public Object getByAcquirerId(Long acquirerId, HttpServletResponse response)
+    public Object getByAcquirerId(Long acquirerId)
     {
-        String fxnParams = "acquirerId=" + acquirerId + ",HttpServletResponse=" + response.toString();
+        String fxnParams = "acquirerId=" + acquirerId;
         try
         {
             AcquirerTermParam acquirerTermParam = acquirerTermParamService.findByAcquirerId(acquirerId);
-            response.setStatus(HttpServletResponse.SC_OK);
-            acquirerTermParam = getLinks(acquirerTermParam, response);
-            return acquirerTermParam;
+            acquirerTermParam = getLinks(acquirerTermParam);
+
+            return new ResponseEntity<Object>(acquirerTermParam, HttpStatus.OK);
         }
         catch(Exception ex)
         {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
-    public Object getByTermParamId(Long termParamId, HttpServletResponse response)
+    public Object getByTermParamId(Long termParamId)
     {
-        String fxnParams = "termParamId=" + termParamId + ",HttpServletResponse=" + response.toString();
+        String fxnParams = "termParamId=" + termParamId;
         try
         {
             List<AcquirerTermParam> acquirerTermParamList = acquirerTermParamService.findByTermParamId(termParamId);
-            response.setStatus(HttpServletResponse.SC_OK);
             for (AcquirerTermParam acquirerTermParam : acquirerTermParamList) {
-                acquirerTermParam = getLinks(acquirerTermParam, response);
+                acquirerTermParam = getLinks(acquirerTermParam);
             }
-            return acquirerTermParamList;
+
+            return new ResponseEntity<Object>(acquirerTermParamList, HttpStatus.OK);
         }
         catch(Exception ex)
         {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
 
-    private AcquirerTermParam getLinks(AcquirerTermParam merchantTerminal, HttpServletResponse response){
+    private AcquirerTermParam getLinks(AcquirerTermParam merchantTerminal){
         Link selfLink = ControllerLinkBuilder.linkTo(AcquirerTermParamController.class).slash(merchantTerminal.getAcquirerTermParamId()).withSelfRel();
         merchantTerminal.add(selfLink);
 
-        Object linkBuilder2 = ControllerLinkBuilder.methodOn(TermParamController.class).getById(merchantTerminal.getTermParamId(), response);
+        Object linkBuilder2 = ControllerLinkBuilder.methodOn(TermParamController.class).getById(merchantTerminal.getTermParamId());
         Link link2 = ControllerLinkBuilder.linkTo(linkBuilder2).withRel("termparam");
         merchantTerminal.add(link2);
 
-        Object linkBuilder1 = ControllerLinkBuilder.methodOn(AcquirerController.class).getById(merchantTerminal.getAcquirerId(), response);
+        Object linkBuilder1 = ControllerLinkBuilder.methodOn(AcquirerController.class).getById(merchantTerminal.getAcquirerId());
         Link link1 = ControllerLinkBuilder.linkTo(linkBuilder1).withRel("acquirer");
         merchantTerminal.add(link1);
 

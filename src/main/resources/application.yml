@@ -94,6 +94,9 @@ spring:
         trace: false
         web-allow-others: false
 
+  oauth2:
+    resource:
+      filter-order: 3
 
 endpoints:
   trace:

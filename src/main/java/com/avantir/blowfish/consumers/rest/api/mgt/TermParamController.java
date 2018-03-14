@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -62,101 +64,94 @@ public class TermParamController {
     {
         try{
             termParamService.create(termParam);
-            response.setStatus(HttpServletResponse.SC_CREATED);
-            termParam = getLinks(termParam, response);
-            return "";
+            termParam = getLinks(termParam);
+
+            return new ResponseEntity<Object>(termParam, HttpStatus.CREATED);
         }
         catch(Exception ex){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(method= RequestMethod.PATCH, consumes = "application/json", value = "/{id}")
     @ResponseBody
-    public Object update(@PathVariable("id") long id, @RequestBody TermParam newTermParam, HttpServletResponse response)
+    public Object update(@PathVariable("id") long id, @RequestBody TermParam termParam, HttpServletResponse response)
     {
         try{
-            if(newTermParam == null)
+            if(termParam == null)
                 throw new Exception();
 
-            newTermParam.setTermParamId(id);
-            newTermParam = termParamService.update(newTermParam);
-            response.setStatus(HttpServletResponse.SC_OK);
-            newTermParam = getLinks(newTermParam, response);
-            return newTermParam;
+            termParam.setTermParamId(id);
+            termParam = termParamService.update(termParam);
+            termParam = getLinks(termParam);
+
+            return new ResponseEntity<Object>(termParam, HttpStatus.OK);
         }
         catch(Exception ex){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(method= RequestMethod.DELETE, consumes = "application/json", value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
-    public Object delete(@PathVariable("id") long id, HttpServletResponse response)
+    public Object delete(@PathVariable("id") long id)
     {
         try{
             termParamService.delete(id);
-            response.setStatus(HttpServletResponse.SC_OK);
-            return "";
+            return new ResponseEntity<Object>("", HttpStatus.OK);
         }
         catch(Exception ex){
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(method= RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="deviceSerialNo", required = false) String deviceSerialNo, @RequestHeader(value="devicePublicKey", required = false) String devicePublicKey, HttpServletResponse response)
+    public Object get(@RequestHeader(value="id", required = false) Long id, @RequestHeader(value="deviceSerialNo", required = false) String deviceSerialNo, @RequestHeader(value="devicePublicKey", required = false) String devicePublicKey)
     {
-        String fxnParams = "id=" + id + ", deviceSerialNo=" + deviceSerialNo + ",devicePublicKey=" + devicePublicKey + ",HttpServletResponse=" + response.toString();
+        String fxnParams = "id=" + id + ", deviceSerialNo=" + deviceSerialNo + ",devicePublicKey=" + devicePublicKey;
         try
         {
             //String token = MDC.get(Slf4jMDCFilterConfig.DEFAULT_MDC_UUID_TOKEN_KEY);
             logger.debug(fxnParams);
             if(id != null && id > 0)
-                return getById(id, response);
+                return getById(id);
 
             if(deviceSerialNo != null && !deviceSerialNo.isEmpty())
-                return getByDeviceSerialNo(deviceSerialNo, devicePublicKey, response);
+                return getByDeviceSerialNo(deviceSerialNo, devicePublicKey);
 
             List<TermParam> termParamList = termParamService.findAll();
-            response.setStatus(HttpServletResponse.SC_OK);
             for (TermParam termParam : termParamList) {
-                termParam = getLinks(termParam, response);
+                termParam = getLinks(termParam);
             }
 
-            return termParamList;
+            return new ResponseEntity<Object>(termParamList, HttpStatus.OK);
         }
         catch(Exception ex)
         {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error("Error occurred - {}", log.toString());
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(method= RequestMethod.GET, value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
-    public Object getById(@PathVariable Long id, HttpServletResponse response)
+    public Object getById(@PathVariable Long id)
     {
-        String fxnParams = "id=" + id + ",HttpServletResponse=" + response.toString();
+        String fxnParams = "id=" + id;
         try
         {
             TermParam termParam = termParamService.findByTermParamId(id);
-            response.setStatus(HttpServletResponse.SC_OK);
-            termParam = getLinks(termParam, response);
-            return termParam;
+            termParam = getLinks(termParam);
+
+            return new ResponseEntity<Object>(termParam, HttpStatus.OK);
         }
         catch(Exception ex)
         {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -167,9 +162,9 @@ public class TermParamController {
             headers = "Accept=application/json")
     @ResponseBody
     */
-    public Object getByDeviceSerialNo(String deviceSerialNo, String devicePublicKey, HttpServletResponse response)
+    public Object getByDeviceSerialNo(String deviceSerialNo, String devicePublicKey)
     {
-        String fxnParams = "deviceSerialNo=" + deviceSerialNo + ",devicePublicKey=" + devicePublicKey + ",HttpServletResponse=" + response.toString();
+        String fxnParams = "deviceSerialNo=" + deviceSerialNo + ",devicePublicKey=" + devicePublicKey;
         try
         {
             Domain domain = domainService.findByCode("OWNER");
@@ -265,26 +260,25 @@ public class TermParamController {
         {
             BlowfishLog log = new BlowfishLog(fxnParams, ex);
             logger.error(log.toString());
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return BlowfishUtil.getError(ex.getCode(), ex.getMessage());
+            return new ResponseEntity<Object>(BlowfishUtil.getError(IsoUtil.RESP_06, ex.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 
 
 
-    private TermParam getLinks(TermParam terminalParameter, HttpServletResponse response){
+    private TermParam getLinks(TermParam terminalParameter){
         Link selfLink = ControllerLinkBuilder.linkTo(TermParamController.class).slash(terminalParameter.getTermParamId()).withSelfRel();
         terminalParameter.add(selfLink);
 
-        Object methodLink1 = ControllerLinkBuilder.methodOn(EndpointController.class).getById(terminalParameter.getTmsEndpointId(), response);
+        Object methodLink1 = ControllerLinkBuilder.methodOn(EndpointController.class).getById(terminalParameter.getTmsEndpointId());
         Link link1 = ControllerLinkBuilder.linkTo(methodLink1).withRel("endpoint");
         terminalParameter.add(link1);
 
-        Object methodLink2 = ControllerLinkBuilder.methodOn(KeyController.class).getById(terminalParameter.getCtmkKeyId(), response);
+        Object methodLink2 = ControllerLinkBuilder.methodOn(KeyController.class).getById(terminalParameter.getCtmkKeyId());
         Link link2 = ControllerLinkBuilder.linkTo(methodLink2).withRel("ctmkKey");
         terminalParameter.add(link2);
 
-        Object methodLink3 = ControllerLinkBuilder.methodOn(KeyController.class).getById(terminalParameter.getBdkKeyId(), response);
+        Object methodLink3 = ControllerLinkBuilder.methodOn(KeyController.class).getById(terminalParameter.getBdkKeyId());
         Link link3 = ControllerLinkBuilder.linkTo(methodLink3).withRel("bdkKey");
         terminalParameter.add(link3);
 

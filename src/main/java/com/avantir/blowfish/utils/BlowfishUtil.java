@@ -3,18 +3,34 @@ package com.avantir.blowfish.utils;
 import com.avantir.blowfish.consumers.rest.model.Error;
 import com.avantir.blowfish.consumers.rest.model.Errors;
 import com.avantir.blowfish.model.Bin;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lekanomotayo on 12/01/2018.
  */
 public class BlowfishUtil {
 
+
+    public static Map<String, Object> getOAuth2JWTToken(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object details = authentication.getDetails();
+        if (details instanceof OAuth2AuthenticationDetails){
+            OAuth2AuthenticationDetails oAuth2AuthenticationDetails = (OAuth2AuthenticationDetails)details;
+            Map<String, Object> decodedDetails = (Map<String, Object>)oAuth2AuthenticationDetails.getDecodedDetails();
+            System.out.println( "My custom claim value: " + decodedDetails.get("MyClaim") );
+            return decodedDetails;
+        }
+        return null;
+    }
 
     public static Errors getError(String code, String msg){
         Errors errors = new Errors();
