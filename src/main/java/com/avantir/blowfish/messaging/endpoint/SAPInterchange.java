@@ -1,40 +1,33 @@
 package com.avantir.blowfish.messaging.endpoint;
 
-import com.avantir.blowfish.consumers.iso8583.ISO8583SrcNode;
-import com.avantir.blowfish.consumers.iso8583.ServerConnection;
-import com.avantir.blowfish.consumers.iso8583.SrcNodeListener;
-import com.avantir.blowfish.messaging.model.ISOBridge;
-import com.avantir.blowfish.messaging.model.Node;
-import com.avantir.blowfish.messaging.model.SAPEndpoint;
-import com.avantir.blowfish.messaging.model.TCPEndpoint;
+import com.avantir.blowfish.servers.iso8583.ISO8583SrcNode;
+import com.avantir.blowfish.servers.iso8583.ServerConnection;
+import com.avantir.blowfish.servers.iso8583.SrcNodeListener;
+import com.avantir.blowfish.messaging.entity.ISOBridge;
+import com.avantir.blowfish.messaging.entity.Node;
+import com.avantir.blowfish.messaging.entity.SAPEndpoint;
+import com.avantir.blowfish.messaging.entity.TCPEndpoint;
 import com.avantir.blowfish.messaging.services.NodeService;
-import com.avantir.blowfish.processor.IsoPostprocessor;
-import com.avantir.blowfish.processor.IsoPreprocessor;
-import com.avantir.blowfish.providers.iso8583.ClientConnection;
-import com.avantir.blowfish.providers.iso8583.ISO8583SinkNode;
-import com.avantir.blowfish.providers.iso8583.SinkNodeListener;
+import com.avantir.blowfish.clients.iso8583.ClientConnection;
+import com.avantir.blowfish.clients.iso8583.ISO8583SinkNode;
+import com.avantir.blowfish.clients.iso8583.SinkNodeListener;
+import com.avantir.blowfish.services.SpringContextService;
 
 /**
  * Created by lekanomotayo on 04/01/2018.
  */
 public class SAPInterchange {
 
-    IsoPreprocessor isoPreprocessor;
-    IsoPostprocessor isoPostprocessor;
     SAPEndpoint sapEndpoint;
     ISO8583SrcNode iso8583SrcNode;
     ISO8583SinkNode iso8583SinkNode;
-    NodeService nodeService;
     ISOBridge isoBridge;
     TCPEndpoint tcpEndpoint;
     IConnection connection;
 
 
-    public SAPInterchange(IsoPreprocessor isoPreprocessor, IsoPostprocessor isoPostprocessor, SAPEndpoint sapEndpoint, NodeService nodeService, TCPEndpoint tcpEndpoint, ISOBridge isoBridge){
-        this.isoPreprocessor = isoPreprocessor;
-        this.isoPostprocessor = isoPostprocessor;
+    public SAPInterchange(SAPEndpoint sapEndpoint, TCPEndpoint tcpEndpoint, ISOBridge isoBridge){
         this.sapEndpoint = sapEndpoint;
-        this.nodeService = nodeService;
         this.tcpEndpoint = tcpEndpoint;
         this.isoBridge = isoBridge;
     }
@@ -63,20 +56,21 @@ public class SAPInterchange {
             }
         }
 
+        NodeService nodeService = (NodeService) SpringContextService.getApplicationContext().getBean("nodeService");
         SrcNodeListener srcNodeListener = null;
         SinkNodeListener sinkNodeListener = null;
         Long srcNodeId = sapEndpoint.getSrcNodeId();
         Long snkNodeId = sapEndpoint.getSnkNodeId();
         if(srcNodeId > 0) {
             Node node = nodeService.findByNodeId(srcNodeId);
-            iso8583SrcNode = new ISO8583SrcNode(isoPreprocessor, sapEndpoint, node, isoBridge, connection);
+            iso8583SrcNode = new ISO8583SrcNode(sapEndpoint, node, isoBridge, connection);
             EndpointStarter.addSrcNode(srcNodeId, iso8583SrcNode);
             srcNodeListener = new SrcNodeListener(iso8583SrcNode);
             connection.setSrcNodeListener(srcNodeListener);
         }
         if(snkNodeId > 0) {
             Node node = nodeService.findByNodeId(snkNodeId);
-            iso8583SinkNode = new ISO8583SinkNode(isoPostprocessor, sapEndpoint, node, isoBridge, connection);
+            iso8583SinkNode = new ISO8583SinkNode(sapEndpoint, node, isoBridge, connection);
             EndpointStarter.addSinkNode(snkNodeId, iso8583SinkNode);
             sinkNodeListener = new SinkNodeListener(iso8583SinkNode);
             connection.setSinkNodeListener(sinkNodeListener);

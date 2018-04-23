@@ -1,9 +1,11 @@
 package com.avantir.blowfish.messaging;
 
+import com.avantir.blowfish.model.RestRequest;
+
 /**
  * Created by lekanomotayo on 11/01/2018.
  */
-public class Message {
+public abstract class Message implements RestRequest{
 
     public String f0;
     public String f2;
@@ -1490,4 +1492,5 @@ public class Message {
     public void setF127_39(String f127_39) {
         this.f127_39 = f127_39;
     }
+
 }

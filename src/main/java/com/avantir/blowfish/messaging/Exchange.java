@@ -1,8 +1,8 @@
 package com.avantir.blowfish.messaging;
 
 import com.avantir.blowfish.messaging.endpoint.ISO8583Node;
-import com.avantir.blowfish.messaging.model.Node;
-import com.avantir.blowfish.model.Transaction;
+import com.avantir.blowfish.messaging.entity.Node;
+import com.avantir.blowfish.entity.Transaction;
 import com.solab.iso8583.IsoMessage;
 import io.netty.channel.ChannelHandlerContext;
 

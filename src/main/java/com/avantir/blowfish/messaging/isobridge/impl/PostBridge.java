@@ -1,7 +1,7 @@
 package com.avantir.blowfish.messaging.isobridge.impl;
 
 import com.avantir.blowfish.messaging.isobridge.AInterchange;
-import com.avantir.blowfish.messaging.model.ISOBridge;
+import com.avantir.blowfish.messaging.entity.ISOBridge;
 import com.solab.iso8583.IsoMessage;
 import org.springframework.stereotype.Component;
 

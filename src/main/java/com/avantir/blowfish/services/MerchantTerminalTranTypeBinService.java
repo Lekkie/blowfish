@@ -4,13 +4,16 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.*;
+import com.avantir.blowfish.entity.*;
+import com.avantir.blowfish.exceptions.BlowfishEntityNotFoundException;
 import com.avantir.blowfish.repository.*;
 import com.avantir.blowfish.utils.BlowfishUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +22,7 @@ import java.util.Optional;
  * Specify transactional behavior and mainly
  * delegate calls to Repository.
  */
-@Component
+@Service
 public class MerchantTerminalTranTypeBinService {
 
     @Autowired
@@ -31,70 +34,53 @@ public class MerchantTerminalTranTypeBinService {
     @Autowired
     private TranTypeRepository tranTypeRepository;
     @Autowired
-    private BinRepository binRepository;
+    private BinService binService;
+    @Autowired
+    StringService stringService;
+
+    @Transactional(readOnly=false)
+    public Optional<MerchantTerminalTranTypeBin> create(MerchantTerminalTranTypeBin merchantTerminalTranTypeBin) {
+        return Optional.ofNullable(merchantTerminalTranTypeBinRepository.save(merchantTerminalTranTypeBin));
+    }
+
+    @Transactional(readOnly=false)
+    public Optional<MerchantTerminalTranTypeBin> update(MerchantTerminalTranTypeBin newMerchantTerminalTranTypeBin) {
+
+        MerchantTerminalTranTypeBin oldMerchantTerminalTranTypeBin = merchantTerminalTranTypeBinRepository.findByMerchantTerminalTranTypeBinId(newMerchantTerminalTranTypeBin.getMerchantTerminalTranTypeBinId()).orElseThrow(() -> new BlowfishEntityNotFoundException("MerchantTerminalTranTypeBin"));
+
+        if(newMerchantTerminalTranTypeBin.getMerchantId() > 0)
+            oldMerchantTerminalTranTypeBin.setMerchantId(newMerchantTerminalTranTypeBin.getMerchantId());
+        if(newMerchantTerminalTranTypeBin.getTerminalId() > 0)
+            oldMerchantTerminalTranTypeBin.setTerminalId(newMerchantTerminalTranTypeBin.getTerminalId());
+        if(newMerchantTerminalTranTypeBin.getTranTypeId() > 0)
+            oldMerchantTerminalTranTypeBin.setTranTypeId(newMerchantTerminalTranTypeBin.getTranTypeId());
+        if(newMerchantTerminalTranTypeBin.getBinId() > 0)
+            oldMerchantTerminalTranTypeBin.setBinId(newMerchantTerminalTranTypeBin.getBinId());
+        return Optional.ofNullable(merchantTerminalTranTypeBinRepository.save(oldMerchantTerminalTranTypeBin));
+    }
 
 
     @Transactional(readOnly=true)
-    public MerchantTerminalTranTypeBin findByMerchantTerminalTranTypeBinId(Long id) {
-
-        try
-        {
-            //Optional<MerchantTerminalTranTypeBin> optional = merchantTerminalTranTypeBinRepository.findById(id);
-            //return optional.orElse(null);
-            return merchantTerminalTranTypeBinRepository.findByMerchantTerminalTranTypeBinId(id);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<MerchantTerminalTranTypeBin> findByMerchantTerminalTranTypeBinId(Long id) {
+        return merchantTerminalTranTypeBinRepository.findByMerchantTerminalTranTypeBinId(id);
     }
 
     @Transactional(readOnly=true)
-    public MerchantTerminalTranTypeBin findByMerchantIdTerminalIdTranTypeIdBinId(Long mid, Long tid, Long tranTypeId, Long binId) {
-
-        try
-        {
-            return merchantTerminalTranTypeBinRepository.findByMerchantIdTerminalIdTranTypeIdBinId(mid, tid, tranTypeId, binId);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<MerchantTerminalTranTypeBin> findByMerchantIdTerminalIdTranTypeIdBinId(Long mid, Long tid, Long tranTypeId, Long binId) {
+        return merchantTerminalTranTypeBinRepository.findByMerchantIdTerminalIdTranTypeIdBinId(mid, tid, tranTypeId, binId);
     }
 
+
+    // Throw caught exception when you cant find, so that user can handle
     @Transactional(readOnly=true)
-    public MerchantTerminalTranTypeBin findByMerchantTerminalTranTypePan(String merchantCode, String terminalCode, String tranTypeCode, String pan) throws Exception {
+    public Optional<MerchantTerminalTranTypeBin> findByMerchantTerminalTranTypePan(String merchantCode, String terminalCode, String tranTypeCode, String pan) throws Exception {
 
-        try
-        {
-            Merchant merchant = merchantRepository.findByCodeAllIgnoringCase(merchantCode);
-            if(merchant == null)
-                return null; // throw acquirer not configured exception
+        Merchant merchant = merchantRepository.findByCodeAllIgnoringCase(merchantCode).orElseThrow(() -> new BlowfishEntityNotFoundException("Merchant " + merchantCode));
+        Terminal terminal = terminalRepository.findByCodeAllIgnoringCase(terminalCode).orElseThrow(() -> new BlowfishEntityNotFoundException("Terminal " + terminalCode));
+        TranType tranType = tranTypeRepository.findByCodeAllIgnoringCase(tranTypeCode).orElseThrow(() -> new BlowfishEntityNotFoundException("TranType " + tranTypeCode));
+        Bin bin = binService.findByPan(pan).orElseThrow(() -> new BlowfishEntityNotFoundException("Bin " + pan));
 
-
-            Terminal terminal = terminalRepository.findByCodeAllIgnoringCase(terminalCode);
-            if(terminal == null)
-                return null; // throw acquirer not configured exception
-
-
-            TranType tranType = tranTypeRepository.findByCodeAllIgnoringCase(tranTypeCode);
-            if(tranType == null)
-                return null; // throw acquirer not configured exception
-
-            List<Bin> binList = binRepository.findByStatus(1);
-            Bin bin = BlowfishUtil.getBinFromPan(binList, pan);
-            if(bin == null)
-                return null; // throw acquirer not configured exception
-
-            return merchantTerminalTranTypeBinRepository.findByMerchantIdTerminalIdTranTypeIdBinId(merchant.getMerchantId(), terminal.getTerminalId(), tranType.getTranTypeId(), bin.getBinId());
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+        return merchantTerminalTranTypeBinRepository.findByMerchantIdTerminalIdTranTypeIdBinId(merchant.getMerchantId(), terminal.getTerminalId(), tranType.getTranTypeId(), bin.getBinId());
     }
 
 

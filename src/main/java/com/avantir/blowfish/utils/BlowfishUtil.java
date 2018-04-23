@@ -1,18 +1,12 @@
 package com.avantir.blowfish.utils;
 
-import com.avantir.blowfish.consumers.rest.model.Error;
-import com.avantir.blowfish.consumers.rest.model.Errors;
-import com.avantir.blowfish.model.Bin;
+import javafx.collections.transformation.SortedList;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by lekanomotayo on 12/01/2018.
@@ -20,148 +14,310 @@ import java.util.Map;
 public class BlowfishUtil {
 
 
-    public static Map<String, Object> getOAuth2JWTToken(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object details = authentication.getDetails();
-        if (details instanceof OAuth2AuthenticationDetails){
-            OAuth2AuthenticationDetails oAuth2AuthenticationDetails = (OAuth2AuthenticationDetails)details;
-            Map<String, Object> decodedDetails = (Map<String, Object>)oAuth2AuthenticationDetails.getDecodedDetails();
-            System.out.println( "My custom claim value: " + decodedDetails.get("MyClaim") );
-            return decodedDetails;
+    public static void main(String[] args){
+
+        /*
+        BlowfishUtil.possibilities(".");
+        BlowfishUtil.possibilities(".-");
+        BlowfishUtil.possibilities("?");
+        BlowfishUtil.possibilities("?.");
+        BlowfishUtil.possibilities(".?");
+
+        BlowfishUtil.possibilities("?..");
+        BlowfishUtil.possibilities("??.");
+        BlowfishUtil.possibilities("???");
+        */
+
+        BlowfishUtil.sjf(Arrays.asList(30, 3,10,10,20,1,2),3);
+
+        //System.out.println(2000 >> 1);
+    }
+
+
+    private static class JobOrder{
+
+        public static final transient Comparator<JobOrder> BY_CC_TIME = new ByCCTime();
+
+        private Integer order;
+        private Integer ccTime;
+
+        public JobOrder(Integer order, Integer ccTime){
+            this.ccTime = ccTime;
+            this.order = order;
         }
-        return null;
+
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            JobOrder jobOrder = (JobOrder) o;
+
+            if (ccTime != null ? !ccTime.equals(jobOrder.ccTime) : jobOrder.ccTime != null) return false;
+            return order != null ? order.equals(jobOrder.order) : jobOrder.order == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = 17;
+            result = 31 * result + (order != null ? order.hashCode() : 0);
+            result = 31 * result + (ccTime != null ? ccTime.hashCode() : 0);
+            return result;
+        }
+
+        private static class ByCCTime implements Comparator<JobOrder> {
+            public int compare(JobOrder v, JobOrder w){
+                int a = v.order;
+                int b = w.order;
+
+                int x = v.ccTime;
+                int y = w.ccTime;
+                return (x < y) ? -1 : ((x == y) ? ((a < b) ? -1 : ((a == b) ? 0 : 1)) : 1);
+            }
+        }
+
+        public Integer getOrder() {
+            return order;
+        }
+
+        public void setOrder(Integer order) {
+            this.order = order;
+        }
+
+        public Integer getCcTime() {
+            return ccTime;
+        }
+
+        public void setCcTime(Integer ccTime) {
+            this.ccTime = ccTime;
+        }
     }
 
-    public static Errors getError(String code, String msg){
-        Errors errors = new Errors();
-        Error[]  errorArr = new Error[1];
-        errorArr[0] = new Error(code, msg);
-        errors.setErrors(errorArr);
-        return errors;
+    public static Integer sjf(List<Integer> jobs, Integer index ) {
+
+        List<JobOrder> jobOrderList = new ArrayList<>();
+        int i = 0;
+        for(Integer job: jobs){
+            jobOrderList.add(new JobOrder(i++, job));
+        }
+
+        List<JobOrder> orderedJob = jobOrderList.stream()
+                .sorted((a, b)  -> JobOrder.BY_CC_TIME.compare(a, b))
+                .collect(Collectors.toList());
+
+        System.out.println(orderedJob);
+        int cc = 0;
+        for(JobOrder jobOrder: orderedJob){
+            if(jobOrder.getOrder() == index)
+            {
+                System.out.println(cc);
+                return cc;
+            }
+            //executeJob()
+            cc += jobOrder.getCcTime();
+        }
+
+        System.out.println(cc);
+        return cc;
     }
 
-    public static boolean validatePan(String pan) {
-        if(pan == null)
-            return false;
 
-        try{
-            int sum = 0;
-            boolean alternate = false;
-            for (int i = pan.length() - 1; i >= 0; i--) {
-                int n = Integer.parseInt(pan.substring(i, i + 1));
-                if (alternate) {
-                    n *= 2;
-                    if (n > 9) {
-                        n = (n % 10) + 1;
-                    }
+    private static Node root = new Node();
+    static{
+        buildBinaryTree();
+    }
+
+    public static List<String> possibilities(String word ) {
+        List test = convertMorseCode2Letter(word);
+        System.out.println(test);
+        return test;
+    }
+
+
+    private static List<String> convertMorseCode2Letter(String morse){
+        List<String> possibleStrList = new ArrayList();
+        List<Node> possbileRootList = new ArrayList();
+        possbileRootList.add(root);
+        return convertMorseCode2Letter(morse, possibleStrList, possbileRootList, 0);
+    }
+
+    private static List<String> convertMorseCode2Letter(String morse, List<String> possibleGeneratedStringList, List<Node> currentRootNodeList, int index){
+
+        if (index == morse.length()){
+            return possibleGeneratedStringList;
+        }
+        else{
+            char currentChar = morse.charAt(index);
+            List<Node> possibleNextNodeList = new ArrayList();
+            for(Node node: currentRootNodeList){
+                possibleNextNodeList = next(node, currentChar);
+                for(Node nodeTmp: possibleNextNodeList){
+                    List<Node> nextNodeTmpList = new ArrayList();
+                    nextNodeTmpList.add(nodeTmp);
+                    if ((morse.length() - 1) == index)
+                        possibleGeneratedStringList.add(String.valueOf(nodeTmp.getLetter()));
+                    convertMorseCode2Letter(morse, possibleGeneratedStringList, nextNodeTmpList, index + 1);
                 }
-                sum += n;
-                alternate = !alternate;
             }
-            return (sum % 10 == 0);
+            return possibleGeneratedStringList;
         }
-        catch(Exception ex){
-            ex.printStackTrace();
-        }
-        return false;
     }
 
-    public static boolean validateExpDate(String expDate){
-        if(expDate == null)
-            return false;
-        try{
-            String expYear = expDate.substring(0, 2);
-            int expMonth = Integer.parseInt(expDate.substring(2, 4));
-            Calendar cal = Calendar.getInstance();
-            int thisMonth = cal.get(Calendar.MONTH) + 1;
-            int thisYear = cal.get(Calendar.YEAR);
-            String thisYearStrPrefix = String.valueOf(thisYear).substring(0, 2);
-            String fullExpYear = thisYearStrPrefix + expYear;
-            if(Integer.parseInt(fullExpYear) > thisYear)
-                return true;
+    private static List<Node> next(Node current, char d) {
+        switch (d) {
+            case '.':
+                if (current.getLeft() == null)
+                    current.setLeft(new Node());
+                List possiblitiesLeft = new ArrayList();
+                possiblitiesLeft.add(current.getLeft());
+                return possiblitiesLeft;
 
-            if(Integer.parseInt(fullExpYear) == thisYear && thisMonth < expMonth)
-                return true;
+            case '-':
+                if (current.getRight() == null)
+                    current.setRight(new Node());
+                List possiblitiesRight = new ArrayList();
+                possiblitiesRight.add(current.getRight());
+                return possiblitiesRight;
+            case '?':
+                if (current.getRight() == null)
+                    current.setRight(new Node());
+                if (current.getLeft() == null)
+                    current.setLeft(new Node());
+                List possiblities = new ArrayList();
+                possiblities.add(current.getLeft());
+                possiblities.add(current.getRight());
+                return possiblities;
+            default:
+                return null;
         }
-        catch(Exception ex){
-            ex.printStackTrace();
-        }
-        return false;
     }
 
-    public static Bin getBinFromPan(List<Bin> binList, String pan){
-
-        List<Bin> matchedBinList = new ArrayList<Bin>();
-        for(Bin bin: binList){
-            String binStr = bin.getCode();
-            if(pan.startsWith(binStr))
-                matchedBinList.add(bin);
+    private static void add(char letter, String morse) {
+        Node current = root;
+        for (int i = 0; i < morse.length(); i++) {
+            List<Node> nextNodeList = next(current, morse.charAt(i));
+            current = nextNodeList.get(0);
         }
-        if(matchedBinList.size() > 1){
-            Bin maxLenBin = matchedBinList.get(0);
-            int maxLenBinLen = maxLenBin.getCode().length();
-            for(Bin bin : matchedBinList){
-                if(maxLenBinLen < bin.getCode().length())
-                    maxLenBin = bin;
-            }
-            return maxLenBin;
-        }
-        else if(matchedBinList.size() == 1){
-            return matchedBinList.get(0);
-        }
-        return null;
+        current.setLetter(letter);
+        current.setMorse(morse);
     }
 
 
-    public static String maskPan(String strText, int start, int end, char maskChar) {
+    private static class Node{
 
-        if(strText == null || strText.equals(""))
-            return "";
+        private char letter;
+        private String morse;
+        private Node left;
+        private Node right;
 
-        if(start < 0)
-            start = 0;
-
-        if( end > strText.length() )
-            end = strText.length();
-
-        //if(start > end)
-        //    return strText;
-
-        int maskLength = strText.length() - end - start;
-
-        if(maskLength <= 0)
-            return strText;
-
-        StringBuilder sbMaskString = new StringBuilder();
-        //StringBuilder sbMaskString = new StringBuilder(maskLength);
-
-        for(int i = 0; i < maskLength; i++){
-            sbMaskString.append(maskChar);
+        public Node() {
+            letter = '\b';
+            left = null;
+            right = null;
         }
 
-        return strText.substring(0, start)
-                + sbMaskString.toString()
-                + strText.substring(start + maskLength);
+        public void setLetter(char letter) {
+            this.letter = letter;
+        }
+
+        public char getLetter(){
+            return letter;
+        }
+
+        public void setMorse(String morse) {
+            this.morse = morse;
+        }
+
+        public String getMorse() {
+            return morse;
+        }
+
+        public void setLeft(Node left) {
+            this.left = left;
+        }
+
+        public Node getLeft() {
+            return left;
+        }
+
+        public void setRight(Node right) {
+            this.right = right;
+        }
+
+        public Node getRight() {
+            return right;
+        }
     }
 
 
-    public static String getSHA512(String data, String salt){
-        String hash = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(salt.getBytes("UTF-8"));
-            byte[] bytes = md.digest(data.getBytes("UTF-8"));
-            StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length ;i++){
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            hash = sb.toString();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return hash;
+    private static void buildBinaryTree() {
+        add('A', ".-");
+        add('B', "-...");
+        add('C', "-.-.");
+        add('D', "-..");
+        add('E', ".");
+        add('F', "..-.");
+        add('G', "--.");
+        add('H', "....");
+        add('I', "..");
+        add('J', ".---");
+        add('K', "-.-");
+        add('L', ".-..");
+        add('M', "--");
+        add('N', "-.");
+        add('O', "---");
+        add('P', ".--.");
+        add('Q', "--.-");
+        add('R', ".-.");
+        add('S', "...");
+        add('T', "-");
+        add('U', "..-");
+        add('V', "...-");
+        add('W', ".--");
+        add('X', "-..-");
+        add('Y', "-.--");
+        add('Z',"--..");
+        add('Ü',"..--");
+        add('Ä', ".-.-");
+        add('Ö', "---.");
+        //add('CH', "----");
+        add('5', ".....");
+        add('4', "....-");
+        add('Ŝ', "...-.");
+        add('3', "...--");
+        add('É', "..-..");
+        add('Đ', "..--.");
+        add('2', "..---");
+        add('È', ".-..-");
+        add('+', ".-.-.");
+        add('Þ', ".--..");
+        add('À', ".--.-");
+        add('Ĵ', ".---.");
+        add('1', ".----");
+        add('6', "-....");
+        add('=', "-...-");
+        add('/', "-..-.");
+        add('Ç', "-.-..");
+        add('Ĥ', "-.--.");
+        add('7', "--...");
+        add('Ĝ', "--.-.");
+        add('Ñ', "--.--");
+        add('8', "---..");
+        add('9', "----.");
+        add('0', "-----");
+        add('?', "..--..");
+        add('_', "..--.-");
+        add('"', ".-..-.");
+        add('.', ".-.-.-");
+        add('@', ".--.-.");
+        add('\'', ".----.");
+        add('-', "-....-");
+        add('\b', "-.-.-");
+        add(';', "-.-.-.");
+        add('!', "-.-.--");
+        //add('()', "-.--.-");
+        add('\b', "--..-");
+        add(',', "--..--");
+        add(':', "---...");
     }
-
-
 }

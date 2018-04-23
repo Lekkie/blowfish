@@ -1,8 +1,12 @@
 package com.avantir.blowfish.exceptions;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 /**
  * Created by lekanomotayo on 28/02/2018.
  */
+
 public class BlowfishException extends Exception {
 
     String code;

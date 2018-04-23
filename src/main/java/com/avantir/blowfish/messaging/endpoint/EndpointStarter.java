@@ -1,17 +1,14 @@
 package com.avantir.blowfish.messaging.endpoint;
 
-import com.avantir.blowfish.consumers.iso8583.ISO8583SrcNode;
-import com.avantir.blowfish.consumers.iso8583.SrcNodeInfo;
-import com.avantir.blowfish.messaging.model.ISOBridge;
-import com.avantir.blowfish.messaging.model.SAPEndpoint;
-import com.avantir.blowfish.messaging.model.TCPEndpoint;
+import com.avantir.blowfish.servers.iso8583.ISO8583SrcNode;
+import com.avantir.blowfish.servers.iso8583.SrcNodeInfo;
+import com.avantir.blowfish.messaging.entity.ISOBridge;
+import com.avantir.blowfish.messaging.entity.SAPEndpoint;
+import com.avantir.blowfish.messaging.entity.TCPEndpoint;
 import com.avantir.blowfish.messaging.services.ISOBridgeService;
-import com.avantir.blowfish.messaging.services.NodeService;
 import com.avantir.blowfish.messaging.services.SAPEndpointService;
 import com.avantir.blowfish.messaging.services.TCPEndpointService;
-import com.avantir.blowfish.processor.IsoPostprocessor;
-import com.avantir.blowfish.processor.IsoPreprocessor;
-import com.avantir.blowfish.providers.iso8583.ISO8583SinkNode;
+import com.avantir.blowfish.clients.iso8583.ISO8583SinkNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -45,14 +42,14 @@ public class EndpointStarter {
 
 
     @Autowired
-    public EndpointStarter(IsoPreprocessor isoPreprocessor, IsoPostprocessor isoPostprocessor, TCPEndpointService tcpEndpointService, SAPEndpointService sapEndpointService, NodeService nodeService, ISOBridgeService isoBridgeService){
+    public EndpointStarter(TCPEndpointService tcpEndpointService, SAPEndpointService sapEndpointService, ISOBridgeService isoBridgeService){
         List<TCPEndpoint> TCPEndpointList = tcpEndpointService.findAllActive();
         if(TCPEndpointList != null && TCPEndpointList.size() > 0){
             for(TCPEndpoint tcpEndpoint : TCPEndpointList){
                 SAPEndpoint sapEndpoint = sapEndpointService.findByTcpEndpointId(tcpEndpoint.getTcpEndpointId());
                 ISOBridge isoBridge = isoBridgeService.findByISOBridgeId(sapEndpoint.getIsoBridgeId());
                 try{
-                    start(isoPreprocessor, isoPostprocessor, sapEndpoint, nodeService, tcpEndpoint, isoBridge);
+                    start(sapEndpoint, tcpEndpoint, isoBridge);
                 }
                 catch(Exception ex){
                     ex.printStackTrace();
@@ -62,8 +59,8 @@ public class EndpointStarter {
     }
 
 
-    public static void start(IsoPreprocessor isoPreprocessor, IsoPostprocessor isoPostprocessor, SAPEndpoint sapEndpoint, NodeService nodeService, TCPEndpoint tcpEndpoint, ISOBridge isoBridge)throws Exception{
-        SAPInterchange sapInterchange = new SAPInterchange(isoPreprocessor, isoPostprocessor, sapEndpoint, nodeService, tcpEndpoint, isoBridge);
+    public static void start(SAPEndpoint sapEndpoint, TCPEndpoint tcpEndpoint, ISOBridge isoBridge)throws Exception{
+        SAPInterchange sapInterchange = new SAPInterchange(sapEndpoint, tcpEndpoint, isoBridge);
         sapInterchange.start();
         sapInterchangeTreeMap.put(sapEndpoint.getSapEndpointId(), sapInterchange);
     }
@@ -116,6 +113,8 @@ public class EndpointStarter {
     public static TreeMap<String, SrcNodeInfo> getSrcNodeInfoTreeMap() {
         return srcNodeInfoTreeMap;
     }
+
+
 
     public static void main(String[] args){
         try{

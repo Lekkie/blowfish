@@ -1,11 +1,6 @@
 package com.avantir.blowfish.config;
 
-import com.lambdaworks.redis.ReadFrom;
-import com.lambdaworks.redis.RedisClient;
-import com.lambdaworks.redis.RedisURI;
-import com.lambdaworks.redis.codec.Utf8StringCodec;
-import com.lambdaworks.redis.masterslave.MasterSlave;
-import com.lambdaworks.redis.masterslave.StatefulRedisMasterSlaveConnection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
@@ -18,12 +13,6 @@ import org.springframework.cache.transaction.TransactionAwareCacheManagerProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.*;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisClusterConfiguration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.RedisSentinelConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
@@ -63,20 +52,6 @@ public class CacheConfig extends CachingConfigurerSupport {
     @Value("${spring.redis.cluster-mode}")
     private boolean clusterMode = false;
 
-    //@Value("${spring.redis.master-host}")
-    //private String masterHost = "redis1-001.4un0o7.0001.euw2.cache.amazonaws.com";
-    //@Value("${spring.redis.master-port}")
-    //private int masterPort = 6379;
-
-    //@Value("${spring.redis.sentinel-host1}")
-    //private String sentinelHost1 = "redis1-002.4un0o7.0001.euw2.cache.amazonaws.com";
-    //@Value("${spring.redis.sentinel-port1}")
-    //private int sentinelPort1 = 6379;
-    //@Value("${spring.redis.sentinel-host2}")
-    //private String sentinelHost2 = "redis1-003.4un0o7.0001.euw2.cache.amazonaws.com";
-    //@Value("${spring.redis.sentinel-port2}")
-    //private int sentinelPort2 = 6379;
-
 
     @Resource
     ConfigurableEnvironment environment;
@@ -109,6 +84,7 @@ public class CacheConfig extends CachingConfigurerSupport {
 
 
 
+    /*
     @Bean
     public RedisSentinelConfiguration sentinelConfiguration() {
 
@@ -126,6 +102,7 @@ public class CacheConfig extends CachingConfigurerSupport {
         PropertySource propertySource = propertySource();
         return new RedisClusterConfiguration(propertySource);
     }
+    */
 
 
     /*
@@ -140,10 +117,11 @@ public class CacheConfig extends CachingConfigurerSupport {
     }
     */
 
-    @Bean
-    public RedisConnectionFactory connectionFactory() {
 
-        if(clusterMode) {
+    //@Bean
+    //public RedisConnectionFactory connectionFactory() {
+
+      //  if(clusterMode) {
 
             /*
             RedisClient redisClient = RedisClient.create();
@@ -155,14 +133,15 @@ public class CacheConfig extends CachingConfigurerSupport {
             connection.setReadFrom(ReadFrom.MASTER_PREFERRED);
             */
 
-            return new LettuceConnectionFactory(clusterConfiguration());
-        }
+     //       return new LettuceConnectionFactory(clusterConfiguration());
+     //   }
 
         // For Amazon cloud, point to master only, amazon will failover for you
         //https://stackoverflow.com/questions/41048313/redis-client-lettuce-master-slave-configuration-for-aws-elasticache
-        return new LettuceConnectionFactory(redisHost, redisPort);
-    }
+    //    return new LettuceConnectionFactory(redisHost, redisPort);
+    //}
 
+    /*
     @Bean
     public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory cf) {
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<String, String>();
@@ -179,6 +158,7 @@ public class CacheConfig extends CachingConfigurerSupport {
         cacheManager.initializeCaches();
         return new TransactionAwareCacheManagerProxy(cacheManager);
     }
+    */
 
 
 
@@ -202,10 +182,9 @@ public class CacheConfig extends CachingConfigurerSupport {
         };
     }
 
-
-    private RedisCacheManager getRedisCacheManager(RedisTemplate redisTemplate){
-        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
-        List<String> cacheNameList = Arrays.asList(cacheStrings);
+    //private RedisCacheManager getRedisCacheManager(RedisTemplate redisTemplate){
+    //    RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+    //    List<String> cacheNameList = Arrays.asList(cacheStrings);
         /*
         List<String> cacheNameList = new ArrayList<String>();
         cacheNameList.add("default");
@@ -235,9 +214,11 @@ public class CacheConfig extends CachingConfigurerSupport {
         cacheNameList.add("trantypes");
         cacheManager.setCacheNames(cacheNameList);
         */
-        return cacheManager;
-    }
+   //     return cacheManager;
+   // }
 
+
+    /*
 
     private SimpleCacheManager getSimpleCacheManager(){
         SimpleCacheManager cacheManager = new SimpleCacheManager();
@@ -282,6 +263,9 @@ public class CacheConfig extends CachingConfigurerSupport {
         cacheManager.setCaches(concurrentMapCacheList);
         return cacheManager;
     }
+    */
+
+
      /*
     @Bean
     public CacheManager cacheManager() {

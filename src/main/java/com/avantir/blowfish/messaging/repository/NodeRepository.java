@@ -1,6 +1,6 @@
 package com.avantir.blowfish.messaging.repository;
 
-import com.avantir.blowfish.messaging.model.Node;
+import com.avantir.blowfish.messaging.entity.Node;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

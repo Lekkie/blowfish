@@ -1,5 +1,11 @@
 blowfish:
-  port: 3000
+  hsm:
+    host: localhost
+    port: 1501
+  key:
+    rsa:
+      length: 2048
+      modulus: 10001
 
 ###
 #   Database Settings
@@ -94,9 +100,22 @@ spring:
         trace: false
         web-allow-others: false
 
+
+
+  auth:
+   server:
+    url: http://localhost:9080/oauth/check_token
+    clientId: devglan-client
+    clientsecret: devglan-secret
+
+
   oauth2:
     resource:
       filter-order: 3
+      userInfoUri: http://localhost:9080/users
+
+
+
 
 endpoints:
   trace:
@@ -117,7 +136,11 @@ flyway:
 #security.user.password=secret
 #management.security.role=SUPERUSER
 
-
+logging:
+  pattern:
+#      file: '%-5p|%date{ISO8601}|%X{Slf4jMDCFilter.UUID}|%thread|%logger{36}.%M|%m%ex%n'
+      console: '%-5p|%date{ISO8601}|%X{Slf4jMDCFilter.UUID}|%thread|%logger{36}.%M|%m%ex%n'
+#  file: /home//lekanomotayo/Dropbox/projects/blowfish/logs/blowfish.log
 
 
 

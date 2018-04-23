@@ -4,17 +4,15 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.Acquirer;
-import com.avantir.blowfish.model.Domain;
-import com.avantir.blowfish.model.TranType;
+import com.avantir.blowfish.entity.Acquirer;
+import com.avantir.blowfish.exceptions.BlowfishEntityNotFoundException;
+import com.avantir.blowfish.exceptions.BlowfishIllegalArgumentException;
 import com.avantir.blowfish.repository.AcquirerRepository;
-import com.avantir.blowfish.repository.TranTypeRepository;
-import com.avantir.blowfish.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -25,7 +23,7 @@ import java.util.Optional;
  * Specify transactional behavior and mainly
  * delegate calls to Repository.
  */
-@Component
+@Service
 public class AcquirerService {
 
     public static final String ALL_ACQUIRER = "ALL_ACQUIRER";
@@ -33,29 +31,28 @@ public class AcquirerService {
 
     @Autowired
     private AcquirerRepository acquirerRepository;
+    @Autowired
+    StringService stringService;
 
     @CachePut(cacheNames="acquirer", key="#acquirer.acquirerId")
     @Transactional(readOnly=false)
-    public Acquirer create(Acquirer acquirer) {
-        return acquirerRepository.save(acquirer);
+    public Optional<Acquirer> create(Acquirer acquirer) {
+        return Optional.ofNullable(acquirerRepository.save(acquirer));
     }
 
 
     @CachePut(cacheNames="acquirer", key="#newAcquirer.acquirerId")
     @Transactional(readOnly=false)
-    public Acquirer update(Acquirer newAcquirer) {
-        if(newAcquirer != null){
-            //Optional<Acquirer> optional = acquirerRepository.findById(newAcquirer.getId());
-            //Acquirer oldAcquirer = optional.orElse(null);
-            Acquirer oldAcquirer = acquirerRepository.findByAcquirerId(newAcquirer.getAcquirerId());
-            if(!StringUtil.isEmpty(newAcquirer.getName()))
-                oldAcquirer.setName(newAcquirer.getName());
-            if(!StringUtil.isEmpty(newAcquirer.getDescription()))
-                oldAcquirer.setDescription(newAcquirer.getDescription());
-            oldAcquirer.setStatus(newAcquirer.getStatus());
-            return acquirerRepository.save(oldAcquirer);
-        }
-        return null;
+    public Optional<Acquirer> update(Acquirer newAcquirer) {
+
+        Acquirer oldAcquirer = acquirerRepository.findByAcquirerId(newAcquirer.getAcquirerId()).orElseThrow(() -> new BlowfishEntityNotFoundException("Acquirer"));
+
+        if(!stringService.isEmpty(newAcquirer.getName()))
+            oldAcquirer.setName(newAcquirer.getName());
+        if(!stringService.isEmpty(newAcquirer.getDescription()))
+            oldAcquirer.setDescription(newAcquirer.getDescription());
+        oldAcquirer.setStatus(newAcquirer.getStatus());
+        return Optional.ofNullable(acquirerRepository.save(oldAcquirer));
     }
 
     @CacheEvict(value = "acquirer")
@@ -67,67 +64,27 @@ public class AcquirerService {
 
     @Cacheable(value = "acquirer")
     @Transactional(readOnly=true)
-    public Acquirer findByAcquirerId(Long id) {
-
-        try
-        {
-            //Optional<Acquirer> optional = acquirerRepository.findById(id);
-            //return optional.orElse(null);
-            return acquirerRepository.findByAcquirerId(id);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<Acquirer> findByAcquirerId(Long id) {
+        return acquirerRepository.findByAcquirerId(id);
     }
 
     @Cacheable(value = "acquirer")
     @Transactional(readOnly=true)
-    public Acquirer findByCode(String code) {
-
-        try
-        {
-            return acquirerRepository.findByCodeAllIgnoringCase(code);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<Acquirer> findByCode(String code) {
+        return acquirerRepository.findByCodeAllIgnoringCase(code);
     }
 
 
     @Cacheable(value = "acquirer", key = "#root.target.ACTIVE_ACQUIRER")
     @Transactional(readOnly=true)
-    public List<Acquirer> findAllActive() {
-
-        try
-        {
-            List<Acquirer> list = acquirerRepository.findByStatus(1);
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<Acquirer>> findAllActive() {
+        return acquirerRepository.findByStatus(1);
     }
 
     @Cacheable(value = "acquirer", key = "#root.target.ALL_ACQUIRER")
     @Transactional(readOnly=true)
-    public List<Acquirer> findAll() {
-
-        try
-        {
-            List<Acquirer> list = acquirerRepository.findAll();
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<Acquirer>> findAll() {
+        return Optional.ofNullable(acquirerRepository.findAll());
     }
 
 }

@@ -1,7 +1,7 @@
 package com.avantir.blowfish.messaging.endpoint;
 
-import com.avantir.blowfish.consumers.iso8583.SrcNodeListener;
-import com.avantir.blowfish.providers.iso8583.SinkNodeListener;
+import com.avantir.blowfish.servers.iso8583.SrcNodeListener;
+import com.avantir.blowfish.clients.iso8583.SinkNodeListener;
 import com.solab.iso8583.IsoMessage;
 
 /**

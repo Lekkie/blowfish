@@ -4,26 +4,25 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.AcquirerBin;
-import com.avantir.blowfish.model.AcquirerMerchant;
+import com.avantir.blowfish.entity.AcquirerBin;
+import com.avantir.blowfish.exceptions.BlowfishEntityNotFoundException;
 import com.avantir.blowfish.repository.AcquirerBinRepository;
-import com.avantir.blowfish.repository.AcquirerMerchantRepository;
-import com.avantir.blowfish.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service layer.
  * Specify transactional behavior and mainly
  * delegate calls to Repository.
  */
-@Component
+@Service
 public class AcquirerBinService {
 
     public static final String ALL_ACQUIRER_BIN = "ALL_ACQUIRER_BIN";
@@ -32,34 +31,34 @@ public class AcquirerBinService {
 
     @Autowired
     private AcquirerBinRepository acquirerBinRepository;
+    @Autowired
+    StringService stringService;
 
 
     @CachePut(cacheNames="acquirerBin")
     // , key = "#result.firstName + #result.lastName"
     @Transactional(readOnly=false)
-    public AcquirerBin create(AcquirerBin acquirerMerchant) {
-        return acquirerBinRepository.save(acquirerMerchant);
+    public Optional<AcquirerBin> create(AcquirerBin acquirerMerchant) {
+        return Optional.ofNullable(acquirerBinRepository.save(acquirerMerchant));
     }
 
 
     @CachePut(cacheNames="acquirerBin", unless="#result==null", key = "#result.id")
     @Transactional(readOnly=false)
-    public AcquirerBin update(AcquirerBin newAcquirerMerchant) {
-        if(newAcquirerMerchant != null){
-            AcquirerBin oldMerchantTerminal = acquirerBinRepository.findByAcquirerBinId(newAcquirerMerchant.getAcquirerBinId());
-            if(newAcquirerMerchant.getBinId() != 0)
-                oldMerchantTerminal.setBinId(newAcquirerMerchant.getBinId());
-            if(newAcquirerMerchant.getAcquirerId() != 0)
-                oldMerchantTerminal.setAcquirerId(newAcquirerMerchant.getAcquirerId());
-            if(!StringUtil.isEmpty(newAcquirerMerchant.getCreatedBy()))
-                oldMerchantTerminal.setCreatedBy(newAcquirerMerchant.getCreatedBy());
-            if(newAcquirerMerchant.getCreatedOn() != null)
-                oldMerchantTerminal.setCreatedOn(newAcquirerMerchant.getCreatedOn());
-            AcquirerBin merchantTerminal1 = acquirerBinRepository.save(oldMerchantTerminal);
-            //evictAllCache();
-            return oldMerchantTerminal;
-        }
-        return null;
+    public Optional<AcquirerBin> update(AcquirerBin newAcquirerBin) {
+
+        Optional<AcquirerBin> oldAcqBinOptional = acquirerBinRepository.findByAcquirerBinId(newAcquirerBin.getAcquirerBinId());
+        AcquirerBin oldAcquirerBin = oldAcqBinOptional.orElseThrow(() -> new BlowfishEntityNotFoundException("AcquirerBin"));
+
+        if(newAcquirerBin.getBinId() != 0)
+            oldAcquirerBin.setBinId(newAcquirerBin.getBinId());
+        if(newAcquirerBin.getAcquirerId() != 0)
+            oldAcquirerBin.setAcquirerId(newAcquirerBin.getAcquirerId());
+        if(!stringService.isEmpty(newAcquirerBin.getCreatedBy()))
+            oldAcquirerBin.setCreatedBy(newAcquirerBin.getCreatedBy());
+        if(newAcquirerBin.getCreatedOn() != null)
+            oldAcquirerBin.setCreatedOn(newAcquirerBin.getCreatedOn());
+        return  Optional.ofNullable(acquirerBinRepository.save(oldAcquirerBin));
     }
 
 
@@ -72,68 +71,29 @@ public class AcquirerBinService {
 
     @Cacheable(value = "acquirerBin")
     @Transactional(readOnly=true)
-    public AcquirerBin findByAcquirerBinId(Long acquirerBinId) {
-
-        try
-        {
-            //Optional<AcquirerMerchant> optional = acquirerMerchantRepository.findById(id);
-            //return optional.orElse(null);
-            return acquirerBinRepository.findByAcquirerBinId(acquirerBinId);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<AcquirerBin> findByAcquirerBinId(Long acquirerBinId) {
+        return acquirerBinRepository.findByAcquirerBinId(acquirerBinId);
     }
 
 
     @Cacheable(value = "acquirerBin")
     @Transactional(readOnly=true)
-    public List<AcquirerBin> findByAcquirerId(Long acquirerId) {
-
-        try
-        {
+    public Optional<List<AcquirerBin>> findByAcquirerId(Long acquirerId) {
             return acquirerBinRepository.findByAcquirerId(acquirerId);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
     }
 
     @Cacheable(value = "acquirerBin")
     @Transactional(readOnly=true)
-    public AcquirerBin findByBinId(Long binId) {
-
-        try
-        {
-            return acquirerBinRepository.findByBinId(binId);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<AcquirerBin> findByBinId(Long binId) {
+        return acquirerBinRepository.findByBinId(binId);
     }
 
 
 
     @Cacheable(value = "acquirerBin", key = "#root.target.ALL_ACQUIRER_BIN")
     @Transactional(readOnly=true)
-    public List<AcquirerBin> findAll() {
-
-        try
-        {
-            List<AcquirerBin> list = acquirerBinRepository.findAll();
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<AcquirerBin>> findAll() {
+        return Optional.ofNullable(acquirerBinRepository.findAll());
     }
 
 }

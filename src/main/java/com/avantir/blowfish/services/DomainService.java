@@ -4,17 +4,14 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.Bin;
-import com.avantir.blowfish.model.Domain;
-import com.avantir.blowfish.model.TMSKeyOrigDataElem;
-import com.avantir.blowfish.repository.BinRepository;
+import com.avantir.blowfish.entity.Domain;
+import com.avantir.blowfish.exceptions.BlowfishEntityNotFoundException;
 import com.avantir.blowfish.repository.DomainRepository;
-import com.avantir.blowfish.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -25,7 +22,7 @@ import java.util.Optional;
  * Specify transactional behavior and mainly
  * delegate calls to Repository.
  */
-@Component
+@Service
 public class DomainService {
 
     public static final String ALL_DOMAIN = "ALL_DOMAIN";
@@ -33,29 +30,28 @@ public class DomainService {
 
     @Autowired
     private DomainRepository domainRepository;
+    @Autowired
+    StringService stringService;
 
 
     @CachePut(cacheNames="domain")
     @Transactional(readOnly=false)
-    public Domain create(Domain domain) {
-        return domainRepository.save(domain);
+    public Optional<Domain> create(Domain domain) {
+        return Optional.ofNullable(domainRepository.save(domain));
     }
 
     @CachePut(cacheNames="domain")
     @Transactional(readOnly=false)
-    public Domain update(Domain newDomain) {
-        if(newDomain != null){
-            //Optional<Domain> optional = domainRepository.findById(newDomain.getId());
-            //Domain oldDomain = optional.orElse(null);
-            Domain oldDomain = domainRepository.findByDomainId(newDomain.getDomainId());
-            if(!StringUtil.isEmpty(newDomain.getName()))
-                oldDomain.setName(newDomain.getName());
-            if(!StringUtil.isEmpty(newDomain.getDescription()))
-                oldDomain.setDescription(newDomain.getDescription());
-            oldDomain.setStatus(newDomain.getStatus());
-            return domainRepository.save(oldDomain);
-        }
-        return null;
+    public Optional<Domain> update(Domain newDomain) {
+
+        Domain oldDomain = domainRepository.findByDomainId(newDomain.getDomainId()).orElseThrow(() -> new BlowfishEntityNotFoundException("Domain"));
+
+        if(!stringService.isEmpty(newDomain.getName()))
+            oldDomain.setName(newDomain.getName());
+        if(!stringService.isEmpty(newDomain.getDescription()))
+            oldDomain.setDescription(newDomain.getDescription());
+        oldDomain.setStatus(newDomain.getStatus());
+        return Optional.ofNullable(domainRepository.save(oldDomain));
     }
 
     @CacheEvict(value = "domain")
@@ -66,67 +62,27 @@ public class DomainService {
 
     @Cacheable(value = "domain")
     @Transactional(readOnly=true)
-    public Domain findByDomainId(Long id) {
-
-        try
-        {
-            //Optional<Domain> optional = domainRepository.findById(id);
-            //return optional.orElse(null);
-            return domainRepository.findByDomainId(id);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<Domain> findByDomainId(Long id) {
+        return domainRepository.findByDomainId(id);
     }
 
     @Cacheable(value = "domain")
     @Transactional(readOnly=true)
-    public Domain findByCode(String code) {
-
-        try
-        {
-            return domainRepository.findOneByCode(code);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<Domain> findByCode(String code) {
+        return domainRepository.findOneByCode(code);
     }
 
 
     @Cacheable(value = "domain", key = "#root.target.ACTIVE_DOMAIN")
     @Transactional(readOnly=true)
-    public List<Domain> findAllActive() {
-
-        try
-        {
-            List<Domain> list = domainRepository.findByStatus(1);
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<Domain>> findAllActive() {
+        return domainRepository.findByStatus(1);
     }
 
     @Cacheable(value = "domain", key = "#root.target.ALL_DOMAIN")
     @Transactional(readOnly=true)
-    public List<Domain> findAll() {
-
-        try
-        {
-            List<Domain> list = domainRepository.findAll();
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<Domain>> findAll() {
+        return Optional.ofNullable(domainRepository.findAll());
     }
 
 }

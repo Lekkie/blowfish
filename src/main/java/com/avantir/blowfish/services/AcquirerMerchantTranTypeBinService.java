@@ -4,11 +4,13 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.*;
+import com.avantir.blowfish.entity.*;
+import com.avantir.blowfish.exceptions.*;
 import com.avantir.blowfish.repository.*;
 import com.avantir.blowfish.utils.BlowfishUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.Optional;
  * Specify transactional behavior and mainly
  * delegate calls to Repository.
  */
-@Component
+@Service
 public class AcquirerMerchantTranTypeBinService {
 
     @Autowired
@@ -32,65 +34,30 @@ public class AcquirerMerchantTranTypeBinService {
     private TranTypeRepository tranTypeRepository;
     @Autowired
     private BinRepository binRepository;
+    @Autowired
+    BinService binService;
 
 
     @Transactional(readOnly=true)
-    public AcquirerMerchantTranTypeBin findByAcquirerMerchantTranTypeBinId(Long id) {
-
-        try
-        {
-            return acquirerMerchantTranTypeBinRepository.findByAcquirerMerchantTranTypeBinId(id);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<AcquirerMerchantTranTypeBin> findByAcquirerMerchantTranTypeBinId(Long id) {
+        return acquirerMerchantTranTypeBinRepository.findByAcquirerMerchantTranTypeBinId(id);
     }
 
     @Transactional(readOnly=true)
-    public AcquirerMerchantTranTypeBin findByAcquirerIdMerchantIdTranTypeIdBinId(Long acqurerId, Long mid, Long tranTypeId, Long binId) {
-
-        try
-        {
-            return acquirerMerchantTranTypeBinRepository.findByAcquirerIdMerchantIdTranTypeIdBinId(acqurerId, mid, tranTypeId, binId);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<AcquirerMerchantTranTypeBin> findByAcquirerIdMerchantIdTranTypeIdBinId(Long acqurerId, Long mid, Long tranTypeId, Long binId) {
+        return acquirerMerchantTranTypeBinRepository.findByAcquirerIdMerchantIdTranTypeIdBinId(acqurerId, mid, tranTypeId, binId);
     }
 
+    // ensure that this has to be uncaught exception...it may be caught exception
     @Transactional(readOnly=true)
-    public AcquirerMerchantTranTypeBin findByAcquirerMerchantTranTypePan(String acquirerCode, String merchantCode, String tranTypeCode, String pan) throws Exception {
+    public Optional<AcquirerMerchantTranTypeBin> findByAcquirerMerchantTranTypePan(String acquirerCode, String merchantCode, String tranTypeCode, String pan) {
 
-        try
-        {
-            Acquirer acquirer = acquirerRepository.findByCodeAllIgnoringCase(acquirerCode);
-            if(acquirer == null)
-                return null; // throw acquirer not configured exception
+        Acquirer acquirer = acquirerRepository.findByCodeAllIgnoringCase(acquirerCode).orElseThrow(() -> new AcquirerNotSupportedException("Acquirer " + acquirerCode + " is not supported"));
+        Merchant merchant = merchantRepository.findByCodeAllIgnoringCase(merchantCode).orElseThrow(() -> new MerchantNotSupportedException("Merchant " + merchantCode + " is not supported"));
+        TranType tranType = tranTypeRepository.findByCodeAllIgnoringCase(tranTypeCode).orElseThrow(() -> new TranTypeNotSupportedException("TranType " + tranTypeCode + " is not supported"));
+        Bin bin = binService.findByPan(pan).orElseThrow(() -> new BinNotSupportedException("Bin " + pan.substring(0, 6)));
 
-            Merchant merchant = merchantRepository.findByCodeAllIgnoringCase(merchantCode);
-            if(merchant == null)
-                return null; // throw acquirer not configured exception
-
-            TranType tranType = tranTypeRepository.findByCodeAllIgnoringCase(tranTypeCode);
-            if(tranType == null)
-                return null; // throw acquirer not configured exception
-
-            List<Bin> binList = binRepository.findByStatus(1);
-            Bin bin = BlowfishUtil.getBinFromPan(binList, pan);
-            if(bin == null)
-                return null; // throw acquirer not configured exception
-
-            return acquirerMerchantTranTypeBinRepository.findByAcquirerIdMerchantIdTranTypeIdBinId(acquirer.getAcquirerId(), merchant.getMerchantId(), tranType.getTranTypeId(), bin.getBinId());
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+        return acquirerMerchantTranTypeBinRepository.findByAcquirerIdMerchantIdTranTypeIdBinId(acquirer.getAcquirerId(), merchant.getMerchantId(), tranType.getTranTypeId(), bin.getBinId());
     }
 
 

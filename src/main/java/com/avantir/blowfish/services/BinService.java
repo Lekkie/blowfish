@@ -4,27 +4,28 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.Acquirer;
-import com.avantir.blowfish.model.Bin;
-import com.avantir.blowfish.repository.AcquirerRepository;
+import com.avantir.blowfish.entity.Bin;
+import com.avantir.blowfish.exceptions.BlowfishEntityNotFoundException;
 import com.avantir.blowfish.repository.BinRepository;
-import com.avantir.blowfish.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service layer.
  * Specify transactional behavior and mainly
  * delegate calls to Repository.
  */
-@Component
+@Service
 public class BinService {
 
     public static final String ALL_BIN = "ALL_BIN";
@@ -32,31 +33,35 @@ public class BinService {
 
     @Autowired
     private BinRepository binRepository;
+    @Autowired
+    StringService stringService;
 
 
 
 
     @CachePut(cacheNames="bin", key="#bin.binId")
     @Transactional(readOnly=false)
-    public Bin create(Bin acquirer) {
-        return binRepository.save(acquirer);
+    public Optional<Bin> create(Bin acquirer) {
+        return Optional.ofNullable(binRepository.save(acquirer));
     }
 
 
     @CachePut(cacheNames="bin", key="#newBin.binId")
     @Transactional(readOnly=false)
-    public Bin update(Bin newBin) {
-        if(newBin != null){
-            Bin oldBin = binRepository.findByBinId(newBin.getBinId());
-            if(!StringUtil.isEmpty(newBin.getCode()))
-                oldBin.setCode(newBin.getCode());
-            if(!StringUtil.isEmpty(newBin.getDescription()))
-                oldBin.setDescription(newBin.getDescription());
-            oldBin.setStatus(newBin.getStatus());
-            return binRepository.save(oldBin);
-        }
-        return null;
+    public Optional<Bin> update(Bin newBin) {
+        Optional<Bin> oldAcqTermParamOptional = binRepository.findByBinId(newBin.getBinId());
+        Bin oldBin = oldAcqTermParamOptional.orElseThrow(() -> new BlowfishEntityNotFoundException("Bin"));
+
+        if(!stringService.isEmpty(newBin.getCode()))
+            oldBin.setCode(newBin.getCode());
+        if(!stringService.isEmpty(newBin.getDescription()))
+            oldBin.setDescription(newBin.getDescription());
+        oldBin.setStatus(newBin.getStatus());
+
+        return Optional.ofNullable(binRepository.save(oldBin));
     }
+
+
 
     @CacheEvict(value = "bin")
     @Transactional(readOnly=false)
@@ -67,100 +72,52 @@ public class BinService {
 
     @Cacheable(value = "bin")
     @Transactional(readOnly=true)
-    public Bin findByBinId(Long id) {
-
-        try
-        {
-            return binRepository.findByBinId(id);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<Bin> findByBinId(Long id) {
+        return binRepository.findByBinId(id);
     }
 
     @Cacheable(value = "bin")
     @Transactional(readOnly=true)
-    public Bin findByCode(String code) {
-
-        try
-        {
-            return binRepository.findByCodeAllIgnoringCase(code);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<Bin> findByCode(String code) {
+        return binRepository.findByCodeAllIgnoringCase(code);
     }
 
 
     @Cacheable(value = "bin")
     @Transactional(readOnly=true)
-    public Bin findByPan(String pan) {
+    public Optional<Bin> findByPan(String pan) {
+        Optional<List<Bin>> optionalBinList = Optional.ofNullable(binRepository.findAll());
+        List<Bin> binList = optionalBinList.orElseThrow(() -> new BlowfishEntityNotFoundException("Pan"));
+        return findByPan(binList, pan);
+    }
 
-        try
-        {
-            List<Bin> binList = binRepository.findAll();
-            List<Bin> matchedBinList = new ArrayList<Bin>();
-            for(Bin bin: binList){
-                String binCode = bin.getCode();
-                if(pan.startsWith(binCode))
-                    matchedBinList.add(bin);
-            }
-            if(matchedBinList.size() > 1){
-                Bin maxLenBin = matchedBinList.get(0);
-                int maxLenBinLen = maxLenBin.getCode().length();
-                for(Bin bin : matchedBinList){
-                    if(maxLenBinLen < bin.getCode().length())
-                        maxLenBin = bin;
-                }
-                return maxLenBin;
-            }
-            else if(matchedBinList.size() == 1){
-                return matchedBinList.get(0);
-            }
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    @Cacheable(value = "bin")
+    @Transactional(readOnly=true)
+    public Optional<Bin> findByPan(List<Bin> binList, String pan) {
+        List<Bin> matchedBinList = binList.stream()
+                .filter(bin -> pan.startsWith(bin.getCode()))
+                .collect(Collectors.toList());
+
+        Bin maxLenBin = matchedBinList.stream()
+                .max((a, b)  -> Bin.BY_BIN_CODE_LENGTH.compare(a, b))
+                .get();
+
+        return Optional.ofNullable(maxLenBin);
     }
 
 
     @Cacheable(value = "bin", key = "#root.target.ACTIVE_BIN")
     @Transactional(readOnly=true)
-    public List<Bin> findAllActive() {
-
-        try
-        {
-            List<Bin> list = binRepository.findByStatus(1);
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<Bin>> findAllActive() {
+        return binRepository.findByStatus(1);
     }
 
     @Cacheable(value = "bin", key = "#root.target.ALL_BIN")
     @Transactional(readOnly=true)
-    public List<Bin> findAll() {
-
-        try
-        {
-            List<Bin> list = binRepository.findAll();
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<Bin>> findAll() {
+        return Optional.ofNullable(binRepository.findAll());
     }
+
 
 
 }

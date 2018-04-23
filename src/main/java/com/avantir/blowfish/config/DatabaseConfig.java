@@ -50,7 +50,7 @@ public class DatabaseConfig {
                                                                        @Qualifier("dataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("com.avantir.blowfish.model", "com.avantir.blowfish.messaging.model")
+                .packages("com.avantir.blowfish.entity", "com.avantir.blowfish.messaging.entity")
                 .persistenceUnit("blowfish")
                 .build();
 

@@ -1,6 +1,6 @@
 package com.avantir.blowfish.messaging.repository;
 
-import com.avantir.blowfish.messaging.model.SAPEndpoint;
+import com.avantir.blowfish.messaging.entity.SAPEndpoint;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

@@ -1,14 +1,13 @@
 package com.avantir.blowfish.repository;
 
-import com.avantir.blowfish.model.Bin;
-import com.avantir.blowfish.model.Transaction;
+import com.avantir.blowfish.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by lekanomotayo on 01/01/2018.
@@ -19,7 +18,7 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, String> {
 
     //@Cacheable(value = "endpointById")
-    Transaction findByTransactionId(@Param("transactionId") Long transactionId);
+    Optional<Transaction> findByTransactionId(@Param("transactionId") Long transactionId);
     //@Cacheable(value = "endpointByName")
     @Query("FROM Transaction t WHERE t.msgType = :msgType " +
             "AND t.stan = :stan " +
@@ -28,7 +27,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, String
             "AND t.forwardingInstId = :forwardingInstId " +
             "AND t.terminalId = :terminalId " +
             "AND t.merchantId = :merchantId ")
-    Transaction findByMsgTypeStanTransmissionDateTimeAcquirerInstIdForwardingInstIdTerminalIdMerchantIdAllIgnoringCase(@Param("msgType") String msgType,
+    Optional<Transaction> findByMsgTypeStanTransmissionDateTimeAcquirerInstIdForwardingInstIdTerminalIdMerchantIdAllIgnoringCase(@Param("msgType") String msgType,
                                          @Param("stan") String stan,
                                          @Param("transmissionDateTime") String transmissionDateTime,
                                          @Param("acquirerInstId") String acquirerInstId,

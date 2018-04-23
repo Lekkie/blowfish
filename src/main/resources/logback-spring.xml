@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- <include resource="org/springframework/boot/logging/logback/base.xml" /> -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}blowfish.log}"/>
+    <!--
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    -->
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <!--<Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</Pattern>-->
+            <!--<Pattern>%-5p|%d{ISO8601}{GMT}|%X{Slf4MDCFilter.UUID}|%c{1}|%m%ex%n</Pattern>-->
+            <Pattern>%-5p|%date{ISO8601}|%X{Slf4jMDCFilter.UUID}|%thread|%logger{36}.%M|%m%ex%n</Pattern>
+        </layout>
+    </appender>
+
+
+    <!--
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%-5p|%date{ISO8601}|%X{Slf4jMDCFilter.UUID}|%thread|%logger{36}.%M|%m%ex%n</Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> -->
+            <!-- rollover daily -->
+    <!--
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>14</maxHistory>
+        </rollingPolicy>
+
+    </appender>
+    -->
+
+    
+    <!-- This is the kafkaAppender -->
+<!--
+    <appender name="asyncTasLogKafka"
+              class="net.logstash.logback.appender.LoggingEventAsyncDisruptorAppender">
+        <appender name="kafkaVerboseAppender"
+                  class="com.github.danielwegener.logback.kafka.KafkaAppender">
+            <encoder
+                    class="com.github.danielwegener.logback.kafka.encoding.LayoutKafkaMessageEncoder">
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <pattern>tas_logs-%msg</pattern>
+                </layout>
+            </encoder>
+            <topic>tas_logs</topic>
+            <keyingStrategy
+                    class="com.github.danielwegener.logback.kafka.keying.RoundRobinKeyingStrategy" />
+            <deliveryStrategy
+                    class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
+            <producerConfig>bootstrap.servers=localhost:9092</producerConfig>
+            <producerConfig>retries=2</producerConfig>
+        </appender>
+        <appender-ref ref="STDOUT"/>
+    </appender>
+    -->
+
+
+
+    <logger name="org.springframework" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="org.hibernate.SQL" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="io.netty" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="com.github.kpavlov" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="com.solab.iso8583" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="com.lambdaworks.redis" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="com.avantir.blowfish" level="debug" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!--
+    <root level="error">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+    -->
+
+</configuration>
+

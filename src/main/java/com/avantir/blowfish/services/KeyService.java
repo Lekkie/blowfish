@@ -4,62 +4,62 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.Acquirer;
-import com.avantir.blowfish.model.Key;
+import com.avantir.blowfish.entity.Key;
+import com.avantir.blowfish.exceptions.BlowfishEntityNotFoundException;
 import com.avantir.blowfish.repository.KeyRepository;
-import com.avantir.blowfish.utils.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service layer.
  * Specify transactional behavior and mainly
  * delegate calls to Repository.
  */
-@Component
+@Service
 public class KeyService {
+
+    private static final Logger logger = LoggerFactory.getLogger(KeyService.class);
 
     public static final String ALL = "all";
     public static final String ACTIVE_KEY = "ACTIVE_KEY";
 
     @Autowired
     private KeyRepository keyRepository;
+    @Autowired
+    StringService stringService;
 
     @CachePut(cacheNames="key")
     @Transactional(readOnly=false)
-    public Key create(Key key) {
-        return keyRepository.save(key);
+    public Optional<Key> create(Key key) {
+        return Optional.ofNullable(keyRepository.save(key));
     }
 
     @CachePut(cacheNames="key")
     @Transactional(readOnly=false)
-    public Key update(Key newKey) {
-        if(newKey != null){
-            Key oldKey = keyRepository.findByKeyId(newKey.getKeyId());
-            if(!StringUtil.isEmpty(newKey.getAlgo()))
-                oldKey.setAlgo(newKey.getAlgo());
-            if(!StringUtil.isEmpty(newKey.getCheckDigit()))
-                oldKey.setCheckDigit(newKey.getCheckDigit());
-            if(!StringUtil.isEmpty(newKey.getData()))
-                oldKey.setData(newKey.getData());
-            if(!StringUtil.isEmpty(newKey.getDescription()))
-                oldKey.setDescription(newKey.getDescription());
-            if(!StringUtil.isEmpty(newKey.getSalt()))
-                oldKey.setSalt(newKey.getSalt());
-            if(!StringUtil.isEmpty(newKey.getVersion()))
-                oldKey.setVersion(newKey.getVersion());
-            if(newKey.getUsage() != 0)
-                oldKey.setUsage(newKey.getUsage());
-            oldKey.setStatus(newKey.getStatus());
-            return keyRepository.save(oldKey);
-        }
-        return null;
+    public Optional<Key> update(Key newKey) {
+        Key oldKey = keyRepository.findByKeyId(newKey.getKeyId()).orElseThrow(() -> new BlowfishEntityNotFoundException("Key"));
+
+        if(!stringService.isEmpty(newKey.getCheckDigit()))
+            oldKey.setCheckDigit(newKey.getCheckDigit());
+        if(!stringService.isEmpty(newKey.getData()))
+            oldKey.setData(newKey.getData());
+        if(!stringService.isEmpty(newKey.getDescription()))
+            oldKey.setDescription(newKey.getDescription());
+        if(newKey.getKeyCryptographicTypeId() != 0)
+            oldKey.setKeyCryptographicTypeId(newKey.getKeyCryptographicTypeId());
+        if(newKey.getKeyUsageTypeId() != 0)
+            oldKey.setKeyUsageTypeId(newKey.getKeyUsageTypeId());
+        oldKey.setStatus(newKey.getStatus());
+        return Optional.ofNullable(keyRepository.save(oldKey));
     }
 
     @CacheEvict(value = "key")
@@ -73,67 +73,25 @@ public class KeyService {
 
     @Cacheable(value = "key")
     @Transactional(readOnly=true)
-    public Key findByKeyId(Long id) {
-
-        try
-        {
-            return keyRepository.findByKeyId(id);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    @Cacheable(value = "key")
-    @Transactional(readOnly=true)
-    public Key findByVersion(String version) {
-
-        try
-        {
-            return keyRepository.findByVersion(version);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<Key> findByKeyId(Long id) {
+        return keyRepository.findByKeyId(id);
     }
 
     @Cacheable(value = "key", key = "#root.target.ACTIVE_KEY")
     @Transactional(readOnly=true)
-    public List<Key> findAllActive() {
-
-        try
-        {
-            List<Key> list = keyRepository.findByStatus(1);
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<Key>> findAllActive() {
+        return keyRepository.findByStatus(1);
     }
-
-
 
     @Cacheable(value = "key", key = "#root.target.ALL_KEY")
     @Transactional(readOnly=true)
-    public List<Key> findAll() {
-
-        try
-        {
-            List<Key> list = keyRepository.findAll();
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<Key>> findAll() {
+        return Optional.ofNullable(keyRepository.findAll());
     }
+
+
+
+
 
 
 }

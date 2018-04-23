@@ -1,7 +1,6 @@
 package com.avantir.blowfish.repository;
 
-import com.avantir.blowfish.model.Bin;
-import com.avantir.blowfish.model.Merchant;
+import com.avantir.blowfish.entity.Bin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by lekanomotayo on 01/01/2018.
@@ -19,11 +19,11 @@ import java.util.List;
 public interface BinRepository extends JpaRepository<Bin, Long> {
 
     //@Cacheable(value = "endpointById")
-    Bin findByBinId(@Param("binId") Long binId);
+    Optional<Bin> findByBinId(@Param("binId") Long binId);
     //@Cacheable(value = "endpointByName")
-    Bin findByCodeAllIgnoringCase(@Param("code") String code);
+    Optional<Bin> findByCodeAllIgnoringCase(@Param("code") String code);
     @Query("FROM Bin n WHERE n.status = :status")
-    List<Bin> findByStatus(@Param("status") int status);
+    Optional<List<Bin>> findByStatus(@Param("status") int status);
 
 
 }

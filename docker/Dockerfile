@@ -19,7 +19,7 @@ EXPOSE 8080
 ENV DB_NAME blowfish
 ENV DB_USER blowfish
 ENV DB_PASSWD nk30ny3
-ENV DB_URL jdbc:mysql://instance1.c06j8m625dsj.eu-west-2.rds.amazonaws.com:3306/blowfish
+ENV DB_URL jdbc:mysql://10.0.0.28:3306/blowfish
 ENV DB_DRIVER com.mysql.cj.jdbc.Driver
 ENV DB_PLATFORM mysql
 ENV DB_DATABASE_PLATFORM org.hibernate.dialect.MySQLDialect
@@ -48,8 +48,6 @@ RUN bash -c '/root/blowfish/install.sh'
 # lets default to the blowfish dir so folks can more easily navigate to around the server install
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/root/blowfish/blowfish.jar", "--spring.config.location=/root/blowfish/application.yml"]
 
-
-#ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "-Dspring.config.location=/root/blowfish/application.yml", "/root/blowfish/blowfish.jar"]
 #CMD ["java","-jar", "-Dspring.config.location=/target/application.properties", "/home/blowfish-1.0-SNAPSHOT.jar"]
 
 

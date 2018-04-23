@@ -1,10 +1,11 @@
 package com.avantir.blowfish.instrumentation;
 
 import com.avantir.blowfish.config.Slf4jMDCFilterConfig;
+import com.avantir.blowfish.services.StringService;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,6 +27,9 @@ public class Slf4jMDCFilter extends OncePerRequestFilter {
     private final String mdcTokenKey;
     private final String requestHeader;
 
+    @Autowired
+    StringService stringService;
+
     public Slf4jMDCFilter() {
         responseHeader = Slf4jMDCFilterConfig.DEFAULT_RESPONSE_TOKEN_HEADER;
         mdcTokenKey = Slf4jMDCFilterConfig.DEFAULT_MDC_UUID_TOKEN_KEY;
@@ -43,13 +47,13 @@ public class Slf4jMDCFilter extends OncePerRequestFilter {
             throws java.io.IOException, ServletException {
         try {
             final String token;
-            if (!StringUtils.isEmpty(requestHeader) && !StringUtils.isEmpty(request.getHeader(requestHeader))) {
+            if (!stringService.isEmpty(requestHeader) && !stringService.isEmpty(request.getHeader(requestHeader))) {
                 token = request.getHeader(requestHeader);
             } else {
                 token = UUID.randomUUID().toString().toUpperCase().replace("-", "");
             }
             MDC.put(mdcTokenKey, token);
-            if (!StringUtils.isEmpty(responseHeader)) {
+            if (!stringService.isEmpty(responseHeader)) {
                 response.addHeader(responseHeader, token);
             }
             chain.doFilter(request, response);

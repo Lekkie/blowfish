@@ -1,7 +1,6 @@
 package com.avantir.blowfish.processor;
 
-import com.avantir.blowfish.messaging.model.Node;
-import com.avantir.blowfish.messaging.model.RouteByReceivingInst;
+import com.avantir.blowfish.messaging.entity.RouteByReceivingInst;
 import com.avantir.blowfish.messaging.services.RouteByReceivingInstService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

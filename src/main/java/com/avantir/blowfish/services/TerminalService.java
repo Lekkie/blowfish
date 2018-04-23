@@ -4,26 +4,25 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.Merchant;
-import com.avantir.blowfish.model.Terminal;
-import com.avantir.blowfish.repository.MerchantRepository;
+import com.avantir.blowfish.entity.Terminal;
+import com.avantir.blowfish.exceptions.BlowfishEntityNotFoundException;
 import com.avantir.blowfish.repository.TerminalRepository;
-import com.avantir.blowfish.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service layer.
  * Specify transactional behavior and mainly
  * delegate calls to Repository.
  */
-@Component
+@Service
 public class TerminalService {
 
 
@@ -33,45 +32,45 @@ public class TerminalService {
 
     @Autowired
     private TerminalRepository terminalRepository;
+    @Autowired
+    StringService stringService;
 
     @CachePut(cacheNames="terminal")
     @Transactional(readOnly=false)
-    public Terminal create(Terminal terminal) {
-        return terminalRepository.save(terminal);
+    public Optional<Terminal> create(Terminal terminal) {
+        return Optional.ofNullable(terminalRepository.save(terminal));
     }
 
 
     @CachePut(cacheNames="terminal", unless="#result==null")
     @Transactional(readOnly=false)
-    public Terminal update(Terminal newTerminal) {
-        if(newTerminal != null){
-            Terminal oldTerminal = terminalRepository.findByTerminalId(newTerminal.getTerminalId());
-            if(!StringUtil.isEmpty(newTerminal.getDescription()))
-                oldTerminal.setDescription(newTerminal.getDescription());
-            if(!StringUtil.isEmpty(newTerminal.getSerialNo()))
-                oldTerminal.setSerialNo(newTerminal.getSerialNo());
-            if(!StringUtil.isEmpty(newTerminal.getManufacturer()))
-                oldTerminal.setManufacturer(newTerminal.getManufacturer());
-            if(!StringUtil.isEmpty(newTerminal.getCode()))
-                oldTerminal.setCode(newTerminal.getCode());
-            if(!StringUtil.isEmpty(newTerminal.getModelNo()))
-                oldTerminal.setModelNo(newTerminal.getModelNo());
-            if(!StringUtil.isEmpty(newTerminal.getBuildNo()))
-                oldTerminal.setBuildNo(newTerminal.getBuildNo());
-            if(!StringUtil.isEmpty(newTerminal.getOs()))
-                oldTerminal.setOs(newTerminal.getOs());
-            if(!StringUtil.isEmpty(newTerminal.getOsVersion()))
-                oldTerminal.setOsVersion(newTerminal.getOsVersion());
-            if(!StringUtil.isEmpty(newTerminal.getFirmwareNo()))
-                oldTerminal.setFirmwareNo(newTerminal.getFirmwareNo());
-            if(!StringUtil.isEmpty(newTerminal.getCreatedBy()))
-                oldTerminal.setCreatedBy(newTerminal.getCreatedBy());
-            if(newTerminal.getCreatedOn() != null)
-                oldTerminal.setCreatedOn(newTerminal.getCreatedOn());
-            oldTerminal.setStatus(newTerminal.getStatus());
-            return terminalRepository.save(oldTerminal);
-        }
-        return null;
+    public Optional<Terminal> update(Terminal newTerminal) {
+        Terminal oldTerminal = terminalRepository.findByTerminalId(newTerminal.getTerminalId()).orElseThrow(() -> new BlowfishEntityNotFoundException("Terminal"));
+
+        if(!stringService.isEmpty(newTerminal.getDescription()))
+            oldTerminal.setDescription(newTerminal.getDescription());
+        if(!stringService.isEmpty(newTerminal.getSerialNo()))
+            oldTerminal.setSerialNo(newTerminal.getSerialNo());
+        if(!stringService.isEmpty(newTerminal.getManufacturer()))
+            oldTerminal.setManufacturer(newTerminal.getManufacturer());
+        if(!stringService.isEmpty(newTerminal.getCode()))
+            oldTerminal.setCode(newTerminal.getCode());
+        if(!stringService.isEmpty(newTerminal.getModelNo()))
+            oldTerminal.setModelNo(newTerminal.getModelNo());
+        if(!stringService.isEmpty(newTerminal.getBuildNo()))
+            oldTerminal.setBuildNo(newTerminal.getBuildNo());
+        if(!stringService.isEmpty(newTerminal.getOs()))
+            oldTerminal.setOs(newTerminal.getOs());
+        if(!stringService.isEmpty(newTerminal.getOsVersion()))
+            oldTerminal.setOsVersion(newTerminal.getOsVersion());
+        if(!stringService.isEmpty(newTerminal.getFirmwareNo()))
+            oldTerminal.setFirmwareNo(newTerminal.getFirmwareNo());
+        if(!stringService.isEmpty(newTerminal.getCreatedBy()))
+            oldTerminal.setCreatedBy(newTerminal.getCreatedBy());
+        if(newTerminal.getCreatedOn() != null)
+            oldTerminal.setCreatedOn(newTerminal.getCreatedOn());
+        oldTerminal.setStatus(newTerminal.getStatus());
+        return Optional.ofNullable(terminalRepository.save(oldTerminal));
     }
 
     @CacheEvict(value = "terminal")
@@ -83,82 +82,35 @@ public class TerminalService {
 
     @Cacheable(value = "terminal")
     @Transactional(readOnly=true)
-    public Terminal findByTerminalId(Long id) {
-
-        try
-        {
-            return terminalRepository.findByTerminalId(id);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<Terminal> findByTerminalId(Long id) {
+        return terminalRepository.findByTerminalId(id);
     }
 
     @Cacheable(value = "terminal")
     @Transactional(readOnly=true)
-    public Terminal findByCode(String code) {
-
-        try
-        {
-            return terminalRepository.findByCodeAllIgnoringCase(code);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<Terminal> findByCode(String code) {
+        return terminalRepository.findByCodeAllIgnoringCase(code);
     }
 
     @Cacheable(value = "terminal")
     @Transactional(readOnly=true)
-    public Terminal findBySerialNo(String serialNo) {
-
-        try
-        {
-            return terminalRepository.findBySerialNoAllIgnoringCase(serialNo);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<Terminal> findBySerialNo(String serialNo) {
+        return terminalRepository.findBySerialNoAllIgnoringCase(serialNo);
     }
 
 
     @Cacheable(value = "terminal", key = "#root.target.ACTIVE_TERMINAL")
     @Transactional(readOnly=true)
-    public List<Terminal> findAllActive() {
-
-        try
-        {
-            List<Terminal> list = terminalRepository.findByStatus(1);
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<Terminal>> findAllActive() {
+        return terminalRepository.findByStatus(1);
     }
 
 
 
     @Cacheable(value = "terminal", key = "#root.target.ALL_TERMINAL")
     @Transactional(readOnly=true)
-    public List<Terminal> findAll() {
-
-        try
-        {
-            List<Terminal> list = terminalRepository.findAll();
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<Terminal>> findAll() {
+        return Optional.ofNullable(terminalRepository.findAll());
     }
 
 }

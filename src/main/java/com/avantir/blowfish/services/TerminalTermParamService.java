@@ -4,23 +4,26 @@ package com.avantir.blowfish.services;
  * Created by lekanomotayo on 14/10/2017.
  */
 
-import com.avantir.blowfish.model.TerminalTermParam;
+import com.avantir.blowfish.entity.TerminalTermParam;
+import com.avantir.blowfish.exceptions.BlowfishEntityNotFoundException;
 import com.avantir.blowfish.repository.TerminalTermParamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service layer.
  * Specify transactional behavior and mainly
  * delegate calls to Repository.
  */
-@Component
+@Service
 public class TerminalTermParamService {
 
     public static final String ALL_TERM_TERM_PARAM = "ALL_TERM_TERM_PARAM";
@@ -32,23 +35,21 @@ public class TerminalTermParamService {
 
     @CachePut(cacheNames="termTermParam")
     @Transactional(readOnly=false)
-    public TerminalTermParam create(TerminalTermParam terminalTermParam) {
-        return terminalTerminalParameterRepository.save(terminalTermParam);
+    public Optional<TerminalTermParam> create(TerminalTermParam terminalTermParam) {
+        return Optional.ofNullable(terminalTerminalParameterRepository.save(terminalTermParam));
     }
 
 
     @CachePut(cacheNames="termTermParam")
     @Transactional(readOnly=false)
-    public TerminalTermParam update(TerminalTermParam newTerminalTermParam) {
-        if(newTerminalTermParam != null){
-            TerminalTermParam oldTerminalTermParam = terminalTerminalParameterRepository.findByTerminalTermParamId(newTerminalTermParam.getTerminalTermParamId());
-            if(newTerminalTermParam.getTerminalId() != 0)
-                oldTerminalTermParam.setTerminalId(newTerminalTermParam.getTerminalId());
-            if(newTerminalTermParam.getTerminalTermParamId() != 0)
-                oldTerminalTermParam.setTerminalTermParamId(newTerminalTermParam.getTerminalTermParamId());
-            return terminalTerminalParameterRepository.save(oldTerminalTermParam);
-        }
-        return null;
+    public Optional<TerminalTermParam> update(TerminalTermParam newTerminalTermParam) {
+        TerminalTermParam oldTerminalTermParam = terminalTerminalParameterRepository.findByTerminalTermParamId(newTerminalTermParam.getTerminalTermParamId()).orElseThrow(() -> new BlowfishEntityNotFoundException("TerminalTermParam"));
+
+        if(newTerminalTermParam.getTerminalId() != 0)
+            oldTerminalTermParam.setTerminalId(newTerminalTermParam.getTerminalId());
+        if(newTerminalTermParam.getTerminalTermParamId() != 0)
+            oldTerminalTermParam.setTerminalTermParamId(newTerminalTermParam.getTerminalTermParamId());
+        return Optional.ofNullable(terminalTerminalParameterRepository.save(oldTerminalTermParam));
     }
 
 
@@ -63,64 +64,27 @@ public class TerminalTermParamService {
 
     @Cacheable(value = "termTermParam")
     @Transactional(readOnly=true)
-    public TerminalTermParam findByTerminalTermParamId(Long terminalTermParamId) {
-
-        try
-        {
-            return terminalTerminalParameterRepository.findByTerminalTermParamId(terminalTermParamId);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<TerminalTermParam> findByTerminalTermParamId(Long terminalTermParamId) {
+        return terminalTerminalParameterRepository.findByTerminalTermParamId(terminalTermParamId);
     }
 
     @Cacheable(value = "termTermParam")
     @Transactional(readOnly=true)
-    public TerminalTermParam findByTerminalId(Long terminalId) {
-
-        try
-        {
-            return terminalTerminalParameterRepository.findByTerminalId(terminalId);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<TerminalTermParam> findByTerminalId(Long terminalId) {
+        return terminalTerminalParameterRepository.findByTerminalId(terminalId);
     }
 
 
     @Cacheable(value = "termTermParam")
     @Transactional(readOnly=true)
-    public List<TerminalTermParam> findByTermParamId(Long termParamId) {
-
-        try
-        {
-            return terminalTerminalParameterRepository.findByTermParamId(termParamId);
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<TerminalTermParam>> findByTermParamId(Long termParamId) {
+        return terminalTerminalParameterRepository.findByTermParamId(termParamId);
     }
 
     @Cacheable(value = "termTermParam", key = "#root.target.ALL_TERM_TERM_PARAM")
     @Transactional(readOnly=true)
-    public List<TerminalTermParam> findAll() {
-
-        try
-        {
-            List<TerminalTermParam> list = terminalTerminalParameterRepository.findAll();
-            return list;
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        return null;
+    public Optional<List<TerminalTermParam>> findAll() {
+        return Optional.ofNullable(terminalTerminalParameterRepository.findAll());
     }
 
 }

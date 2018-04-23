@@ -1,7 +1,6 @@
 package com.avantir.blowfish.repository;
 
-import com.avantir.blowfish.model.AcquirerBin;
-import com.avantir.blowfish.model.AcquirerMerchant;
+import com.avantir.blowfish.entity.AcquirerMerchant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by lekanomotayo on 01/01/2018.
@@ -19,12 +19,12 @@ import java.util.List;
 public interface AcquirerMerchantRepository extends JpaRepository<AcquirerMerchant, Long> {
 
     //@Cacheable(value = "endpointById")
-    AcquirerMerchant findByAcquirerMerchantId(@Param("acquirerMerchantId") Long acquirerMerchantId);
+    Optional<AcquirerMerchant> findByAcquirerMerchantId(@Param("acquirerMerchantId") Long acquirerMerchantId);
     //@Cacheable(value = "endpointByName")
-    List<AcquirerMerchant> findByAcquirerId(@Param("acquirerId") Long acquirerId);
-    AcquirerMerchant findByMerchantId(@Param("merchantId") Long merchantId);
+    Optional<List<AcquirerMerchant>> findByAcquirerId(@Param("acquirerId") Long acquirerId);
+    Optional<AcquirerMerchant> findByMerchantId(@Param("merchantId") Long merchantId);
     @Query("FROM AcquirerMerchant a WHERE a.acquirerId = :acquirerId AND a.merchantId = :merchantId")
-    AcquirerMerchant findByAcquirerIdMerchantId(@Param("acquirerId") Long acquirerId, @Param("merchantId") Long merchantId);
+    Optional<AcquirerMerchant> findByAcquirerIdMerchantId(@Param("acquirerId") Long acquirerId, @Param("merchantId") Long merchantId);
 
 
 }
